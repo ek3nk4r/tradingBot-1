@@ -6,7 +6,7 @@ const Orders = (props) => {
   const { order } = props;
 
   return (
-    <div>
+    <div key={order.id}>
       <div>
         <div>Side: {order.side}</div>
       </div>
