@@ -60,7 +60,7 @@ const App = (props) => {
   };
 
   return (
-    <div className="App">
+    <div className={classes.root}>
       <Tabs
         orientation="vertical"
         variant="scrollable"
@@ -72,14 +72,8 @@ const App = (props) => {
         <Tab label="Bybit" />
         <Tab label="Kraken" />
       </Tabs>
-      <TabPanel value={value} index={0}>
-        Bybit
-        {/* <Bybit></Bybit> */}
-      </TabPanel>
-      <TabPanel value={value} index={1}>
-        Kraken
-        {/* <Kraken></Kraken> */}
-      </TabPanel>
+      <TabPanel value={value} index={0}></TabPanel>
+      <TabPanel value={value} index={1}></TabPanel>
       {value === 0 && <Bybit />}
       {/* {value === 1 && <Kraken />} */}
     </div>

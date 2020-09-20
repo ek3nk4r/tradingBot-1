@@ -4,6 +4,8 @@ import Trades from "./Trades";
 import Orders from "./Orders";
 
 class Bybit extends Component {
+  _isMounted = false;
+
   state = {
     symbol: "",
     totalBTC: 0,
@@ -17,6 +19,7 @@ class Bybit extends Component {
   };
 
   componentDidMount = () => {
+    this._isMounted = true;
     axios.get("/bybit/ticker").then((res) => {
       console.log("bybitData:", res.data);
       const symbol = res.data[0].symbol;
@@ -42,6 +45,10 @@ class Bybit extends Component {
       });
     });
   };
+
+  componentWillUnmount() {
+    this._isMounted = false;
+  }
 
   render() {
     const {
