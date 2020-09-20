@@ -1,8 +1,6 @@
 import React from "react";
 
 const Orders = (props) => {
-  // console.log(props);
-
   const { order } = props;
 
   return (

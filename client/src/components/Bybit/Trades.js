@@ -1,8 +1,6 @@
 import React from "react";
 
 const Trades = (props) => {
-  // console.log(props);
-
   const { trade } = props;
 
   return (
