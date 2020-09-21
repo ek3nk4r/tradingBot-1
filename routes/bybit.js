@@ -14,23 +14,36 @@ var bybit = new ccxt.bybit({
 
 bybit.urls["api"] = bybit.urls["test"];
 
-router.get("/ticker", (req, res) => {
+router.get("/tickers", (req, res) => {
   (async function () {
     const exchangeData = await bybit.has;
     const markets = await bybit.load_markets();
-    const ticker = await bybit.fetchTicker("BTC/USD");
+    const tickers = await bybit.fetchTickers();
     const balance = await bybit.fetchBalance();
-    const symbol = "BTC/USD";
+    const bybitExchangeData = [exchangeData, markets, tickers, balance];
+    res.json(bybitExchangeData);
+    // console.log("Bybit Exchange Data:", bybitExchangeData);
+  })();
+});
+
+router.post("/ticker", (req, res) => {
+  console.log("FronendTickerSymbolReceived:", req.body.text);
+  const tickerSymbol = req.body.text;
+  // res.json(tickerSymbol);
+
+  (async function () {
+    // const ticker = await bybit.fetchTicker("BTC/USD");
+    const symbol = tickerSymbol;
     const since = undefined;
     const limit = 150;
     const trades = await bybit.fetchMyTrades(symbol, since, limit);
     const orders = await bybit.fetchClosedOrders(symbol, since, limit);
     const positions = await bybit.privateGetPositionList({
-      symbol: "BTCUSD",
+      symbol: tickerSymbol,
     });
-    const bybitData = [ticker, balance, positions.result, trades, orders];
+    const bybitData = [positions.result, trades, orders];
     res.json(bybitData);
-    console.log("node async bybit:", balance);
+    console.log("node async bybit:", ticker);
   })();
 });
 
