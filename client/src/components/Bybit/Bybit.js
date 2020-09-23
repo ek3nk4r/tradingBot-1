@@ -16,6 +16,7 @@ class Bybit extends Component {
 
   state = {
     markets: [],
+    marketNames: [],
     symbol: "",
     totalBTC: 0,
     usedBTC: 0,
@@ -25,7 +26,7 @@ class Bybit extends Component {
     unrealisedPnl: 0,
     trades: [],
     orders: [],
-    activeTab: 0,
+    value: 0,
   };
 
   componentDidMount = () => {
@@ -33,16 +34,32 @@ class Bybit extends Component {
     axios.get("/bybit/tickers").then((res) => {
       console.log("bybitExchangeData:", res.data);
       const markets = res.data[1];
+      const marketNames = Object.keys(markets)
+        .map((key) => {
+          return markets[key];
+        })
+        .map((market) => {
+          return market.info.name;
+        });
       const totalBTC = res.data[3].total.BTC;
       const usedBTC = res.data[3].used.BTC;
       const availableBTC = res.data[3].free.BTC;
       const realisedPnl = res.data[3].cum_realised_pnl;
       const unrealisedPnl = res.data[3].unrealised_pnl;
 
-      console.log(markets);
+      console.log(
+        Object.keys(markets)
+          .map((key) => {
+            return markets[key];
+          })
+          .map((market) => {
+            return market.info.name;
+          })
+      );
 
       this.setState({
         markets: markets,
+        marketNames: marketNames,
         totalBTC: totalBTC,
         usedBTC: usedBTC,
         availableBTC: availableBTC,
@@ -57,7 +74,7 @@ class Bybit extends Component {
   }
 
   handleChange = (event, newValue) => {
-    this.setState({ activeTab: newValue });
+    this.setState({ value: newValue });
     // console.log(event);
     // axios.post("/bybit/ticker", event).then((res) => {
     //   console.log("bybitTickerData:", res.data);
@@ -65,16 +82,16 @@ class Bybit extends Component {
     //   const openContracts = res.data[2].size;
     //   const trades = res.data[3];
     //   const orders = res.data[4];
-    //   const activeTab = this.state.markets.indexof(res.data[0].symbol);
+    //   const value = this.state.markets.indexof(res.data[0].symbol);
 
-    //   console.log(activeTab);
+    //   console.log(value);
 
     //   this.setState({
     //     symbol: symbol,
     //     openContracts: openContracts,
     //     trades: trades,
     //     orders: orders,
-    //     activeTab: activeTab,
+    //     value: value,
     //   });
     // });
   };
@@ -87,16 +104,16 @@ class Bybit extends Component {
   //     const openContracts = res.data[2].size;
   //     const trades = res.data[3];
   //     const orders = res.data[4];
-  //     // const activeTab = this.state.markets.indexof(res.data[0].symbol);
+  //     // const value = this.state.markets.indexof(res.data[0].symbol);
 
-  //     // console.log(activeTab);
+  //     // console.log(value);
 
   //     this.setState({
   //       symbol: symbol,
   //       openContracts: openContracts,
   //       trades: trades,
   //       orders: orders,
-  //       // activeTab: activeTab,
+  //       // value: value,
   //     });
   //   });
   // };
@@ -114,10 +131,10 @@ class Bybit extends Component {
       unrealisedPnl,
       trades,
       orders,
-      activeTab,
+      value,
     } = this.state;
 
-    console.log(markets);
+    console.log(marketNames);
 
     // console.log(
     //   Object.entries(markets).map((market) => {
@@ -129,14 +146,14 @@ class Bybit extends Component {
       <div>
         <Paper square>
           <Tabs
-            activetab={activeTab}
+            value={value}
             indicatorColor="primary"
             textColor="primary"
             onChange={this.handleChange}
             aria-label="disabled tabs example"
           >
-            {markets.length
-              ? markets.map((market) => {
+            {marketNames.length
+              ? marketNames.map((market) => {
                   console.log(market);
                   {
                     return (
