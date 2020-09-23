@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import axios from "axios";
 
 //  Components
-// import Instrument from "./Instrument";
+import Instrument from "./Instrument";
 import Trades from "./Trades";
 import Orders from "./Orders";
 
@@ -32,7 +32,6 @@ class Bybit extends Component {
   componentDidMount = () => {
     this._isMounted = true;
     axios.get("/bybit/tickers").then((res) => {
-      console.log("bybitExchangeData:", res.data);
       const markets = res.data[1];
       const marketNames = Object.keys(markets)
         .map((key) => {
@@ -46,16 +45,6 @@ class Bybit extends Component {
       const availableBTC = res.data[3].free.BTC;
       const realisedPnl = res.data[3].cum_realised_pnl;
       const unrealisedPnl = res.data[3].unrealised_pnl;
-
-      console.log(
-        Object.keys(markets)
-          .map((key) => {
-            return markets[key];
-          })
-          .map((market) => {
-            return market.info.name;
-          })
-      );
 
       this.setState({
         markets: markets,
@@ -96,27 +85,27 @@ class Bybit extends Component {
     // });
   };
 
-  // clickHandle = (event) => {
-  //   console.log(event);
-  //   axios.post("/bybit/ticker", { name: event }).then((res) => {
-  //     console.log("bybitTickerData:", res.data);
-  //     const symbol = res.data[0].symbol;
-  //     const openContracts = res.data[2].size;
-  //     const trades = res.data[3];
-  //     const orders = res.data[4];
-  //     // const value = this.state.markets.indexof(res.data[0].symbol);
+  clickHandle = (event) => {
+    console.log(event);
+    axios.post("/bybit/ticker", { name: event }).then((res) => {
+      console.log("bybitTickerData:", res.data);
+      const symbol = res.data[0].symbol;
+      const openContracts = res.data[2].size;
+      const trades = res.data[3];
+      const orders = res.data[4];
+      // const value = this.state.markets.indexof(res.data[0].symbol);
 
-  //     // console.log(value);
+      // console.log(value);
 
-  //     this.setState({
-  //       symbol: symbol,
-  //       openContracts: openContracts,
-  //       trades: trades,
-  //       orders: orders,
-  //       // value: value,
-  //     });
-  //   });
-  // };
+      this.setState({
+        symbol: symbol,
+        openContracts: openContracts,
+        trades: trades,
+        orders: orders,
+        // value: value,
+      });
+    });
+  };
 
   render() {
     const {
@@ -134,13 +123,7 @@ class Bybit extends Component {
       value,
     } = this.state;
 
-    console.log(marketNames);
-
-    // console.log(
-    //   Object.entries(markets).map((market) => {
-    //     return market[1].info.name;
-    //   })
-    // );
+    // console.log(markets);
 
     return (
       <div>
@@ -154,14 +137,11 @@ class Bybit extends Component {
           >
             {marketNames.length
               ? marketNames.map((market) => {
-                  console.log(market);
                   {
                     return (
                       <Tab
+                        // key={market.id}
                         label={market}
-                        totalbtc={totalBTC}
-                        usedbtc={usedBTC}
-                        availablebtc={availableBTC}
                         // onClick={() =>
                         //   this.clickHandle(
                         //     Object.entries(markets).map((market) => {
@@ -170,7 +150,11 @@ class Bybit extends Component {
                         //   )
                         // }
                       >
-                        {/* <Instrument /> */}
+                        {/* <Instrument
+                          totalbtc={totalBTC}
+                          usedbtc={usedBTC}
+                          availablebtc={availableBTC}
+                        /> */}
                       </Tab>
                     );
                   }

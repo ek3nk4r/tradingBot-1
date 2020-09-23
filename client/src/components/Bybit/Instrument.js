@@ -4,7 +4,7 @@ const Instrument = (props) => {
   console.log(props);
   return (
     <div>
-      {" "}
+      {/* {" "}
       <div>
         <div>{symbol}</div>
       </div>
@@ -37,7 +37,7 @@ const Instrument = (props) => {
         ) : (
           <></>
         )}
-      </div>
+      </div> */}
     </div>
   );
 };
