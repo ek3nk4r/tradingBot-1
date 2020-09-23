@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import axios from "axios";
 
 //  Components
+// import Instrument from "./Instrument";
 import Trades from "./Trades";
 import Orders from "./Orders";
 
@@ -31,7 +32,7 @@ class Bybit extends Component {
     this._isMounted = true;
     axios.get("/bybit/tickers").then((res) => {
       console.log("bybitExchangeData:", res.data);
-      const markets = Object.keys(res.data[1]);
+      const markets = res.data[1];
       const totalBTC = res.data[3].total.BTC;
       const usedBTC = res.data[3].used.BTC;
       const availableBTC = res.data[3].free.BTC;
@@ -57,33 +58,53 @@ class Bybit extends Component {
 
   handleChange = (event, newValue) => {
     this.setState({ activeTab: newValue });
-  };
-
-  clickHandle = (label) => {
-    console.log(label);
-    // axios.post("/bybit/ticker", label).then((res) => {
+    // console.log(event);
+    // axios.post("/bybit/ticker", event).then((res) => {
     //   console.log("bybitTickerData:", res.data);
-    // const symbol = res.data[0].symbol;
-    // const openContracts = res.data[2].size;
-    // const trades = res.data[3];
-    // const orders = res.data[4];
-    // const activeTab = ;
+    //   const symbol = res.data[0].symbol;
+    //   const openContracts = res.data[2].size;
+    //   const trades = res.data[3];
+    //   const orders = res.data[4];
+    //   const activeTab = this.state.markets.indexof(res.data[0].symbol);
 
-    // console.log(symbols.BTCUSDT.symbol);
+    //   console.log(activeTab);
 
-    // this.setState({
-    //   symbol: symbol,
-    //   openContracts: openContracts,
-    //   trades: trades,
-    //   orders: orders,
-    //   activeTab: 0,
-    // });
+    //   this.setState({
+    //     symbol: symbol,
+    //     openContracts: openContracts,
+    //     trades: trades,
+    //     orders: orders,
+    //     activeTab: activeTab,
+    //   });
     // });
   };
+
+  // clickHandle = (event) => {
+  //   console.log(event);
+  //   axios.post("/bybit/ticker", { name: event }).then((res) => {
+  //     console.log("bybitTickerData:", res.data);
+  //     const symbol = res.data[0].symbol;
+  //     const openContracts = res.data[2].size;
+  //     const trades = res.data[3];
+  //     const orders = res.data[4];
+  //     // const activeTab = this.state.markets.indexof(res.data[0].symbol);
+
+  //     // console.log(activeTab);
+
+  //     this.setState({
+  //       symbol: symbol,
+  //       openContracts: openContracts,
+  //       trades: trades,
+  //       orders: orders,
+  //       // activeTab: activeTab,
+  //     });
+  //   });
+  // };
 
   render() {
     const {
       markets,
+      marketNames,
       symbol,
       totalBTC,
       usedBTC,
@@ -98,69 +119,48 @@ class Bybit extends Component {
 
     console.log(markets);
 
+    // console.log(
+    //   Object.entries(markets).map((market) => {
+    //     return market[1].info.name;
+    //   })
+    // );
+
     return (
       <div>
         <Paper square>
           <Tabs
-            activeTab={activeTab}
+            activetab={activeTab}
             indicatorColor="primary"
             textColor="primary"
             onChange={this.handleChange}
             aria-label="disabled tabs example"
           >
-            {markets.length ? (
-              markets.map((market) => {
-                console.log(market);
-                {
-                  return (
-                    <Tab
-                      label={market}
-                      totalbtc={totalBTC}
-                      usedbtc={usedBTC}
-                      availablebtc={availableBTC}
-                      onClick={this.clickHandle("BTCUSD")}
-                    />
-                  );
-                }
-              })
-            ) : (
-              <></>
-            )}
+            {markets.length
+              ? markets.map((market) => {
+                  console.log(market);
+                  {
+                    return (
+                      <Tab
+                        label={market}
+                        totalbtc={totalBTC}
+                        usedbtc={usedBTC}
+                        availablebtc={availableBTC}
+                        // onClick={() =>
+                        //   this.clickHandle(
+                        //     Object.entries(markets).map((market) => {
+                        //       return market[1].info.name;
+                        //     })
+                        //   )
+                        // }
+                      >
+                        {/* <Instrument /> */}
+                      </Tab>
+                    );
+                  }
+                })
+              : 0}
           </Tabs>
         </Paper>
-        {/* <div>
-          <div>{symbol}</div>
-        </div>
-        <div>
-          <div>Total: {totalBTC}</div>
-          <div>Available: {availableBTC}</div>
-          <div>Used: {usedBTC}</div>
-        </div>
-        <div>
-          <div>Open Contracts: {openContracts}</div>
-        </div>
-        <div>
-          <div>Realised PNL: {realisedPnl}</div>
-          <div>Unrealised PNL: {unrealisedPnl}</div>
-        </div>
-        <div>
-          {trades.length ? (
-            trades.map((trade) => {
-              return <Trades trade={trade} />;
-            })
-          ) : (
-            <></>
-          )}
-        </div>
-        <div>
-          {orders.length ? (
-            orders.map((order) => {
-              return <Orders order={order} />;
-            })
-          ) : (
-            <></>
-          )}
-        </div> */}
       </div>
     );
   }

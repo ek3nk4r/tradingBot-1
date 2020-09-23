@@ -1,6 +1,7 @@
 import React from "react";
 
 const Instrument = (props) => {
+  console.log(props);
   return (
     <div>
       {" "}

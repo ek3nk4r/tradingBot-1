@@ -27,8 +27,9 @@ router.get("/tickers", (req, res) => {
 });
 
 router.post("/ticker", (req, res) => {
-  console.log("FronendTickerSymbolReceived:", req.body.text);
+  // const tickerSymbol = JSON.parse(JSON.stringify(req.body));
   const tickerSymbol = req.body.text;
+  // console.log("FronendTickerSymbolReceived:", Object.values(tickerSymbol));
   // res.json(tickerSymbol);
 
   (async function () {
