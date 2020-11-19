@@ -10,7 +10,7 @@ var bybit = new ccxt.bybit({
   // secret: process.env.BYBIT_API_SECRET,
 });
 
-// console.log(bybit.has);
+console.log(bybit.has);
 
 bybit.urls["api"] = bybit.urls["test"];
 
@@ -20,33 +20,51 @@ router.get("/tickers", (req, res) => {
     const markets = await bybit.load_markets();
     const tickers = await bybit.fetchTickers();
     const balance = await bybit.fetchBalance();
-    const bybitExchangeData = [exchangeData, markets, tickers, balance];
-    res.json(bybitExchangeData);
-    // console.log("Bybit Exchange Data:", bybitExchangeData);
-  })();
-});
-
-router.post("/ticker", (req, res) => {
-  // const tickerSymbol = JSON.parse(JSON.stringify(req.body));
-  const tickerSymbol = req.body.text;
-  // console.log("FronendTickerSymbolReceived:", Object.values(tickerSymbol));
-  // res.json(tickerSymbol);
-
-  (async function () {
-    // const ticker = await bybit.fetchTicker("BTC/USD");
-    const symbol = tickerSymbol;
     const since = undefined;
     const limit = 150;
-    const trades = await bybit.fetchMyTrades(symbol, since, limit);
-    const orders = await bybit.fetchClosedOrders(symbol, since, limit);
-    const positions = await bybit.privateGetPositionList({
-      symbol: tickerSymbol,
-    });
-    const bybitData = [positions.result, trades, orders];
-    res.json(bybitData);
-    console.log("node async bybit:", ticker);
+    const btcusdOrders = await bybit.fetchOrders("BTC/USD", since, limit);
+    const ethOrders = await bybit.fetchOrders("ETH/USD", since, limit);
+    const eosOrders = await bybit.fetchOrders("EOS/USD", since, limit);
+    const xrpOrders = await bybit.fetchOrders("XRP/USD", since, limit);
+    const btcusdtOrders = await bybit.fetchOrders("BTC/USDT", since, limit);
+    const bybitExchangeData = [
+      exchangeData,
+      markets,
+      tickers,
+      balance,
+      btcusdOrders,
+      ethOrders,
+      eosOrders,
+      xrpOrders,
+      btcusdtOrders,
+    ];
+    res.json(bybitExchangeData);
+    console.log("Bybit Exchange Data:", bybitExchangeData);
   })();
 });
+
+// router.post("/ticker", (req, res) => {
+//   console.log(req);
+//   // const tickerSymbol = JSON.parse(JSON.stringify(req.body));
+//   const tickerSymbol = req.body.text;
+//   // console.log("FronendTickerSymbolReceived:", Object.values(tickerSymbol));
+//   // res.json(tickerSymbol);
+
+//   (async function () {
+//     // const ticker = await bybit.fetchTicker("BTC/USD");
+//     const symbol = tickerSymbol;
+//     const since = undefined;
+//     const limit = 150;
+//     const trades = await bybit.fetchMyTrades(symbol, since, limit);
+//     const orders = await bybit.fetchClosedOrders(symbol, since, limit);
+//     const positions = await bybit.privateGetPositionList({
+//       symbol: tickerSymbol,
+//     });
+//     const bybitData = [positions.result, trades, orders];
+//     res.json(bybitData);
+//     console.log("node async bybit:", ticker);
+//   })();
+// });
 
 router.post("/webHookBybit", (req, res) => {
   console.log("WEBHOOK RECEIVED:", req.body.text);

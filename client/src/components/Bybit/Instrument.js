@@ -3,42 +3,46 @@ import React from "react";
 const Instrument = (props) => {
   console.log(props);
   return (
-    <div>
-      {/* {" "}
+    <>
+      {/* {" "} */}
       <div>
-        <div>{symbol}</div>
+        <div>{props.symbol}</div>
       </div>
       <div>
-        <div>Total: {totalBTC}</div>
-        <div>Available: {availableBTC}</div>
-        <div>Used: {usedBTC}</div>
+        <div>Total: {props.totalBTC}</div>
+        <div>Available: {props.availableBTC}</div>
+        <div>Used: {props.usedBTC}</div>
       </div>
       <div>
-        <div>Open Contracts: {openContracts}</div>
+        <div>Open Contracts: {props.openContracts}</div>
       </div>
       <div>
-        <div>Realised PNL: {realisedPnl}</div>
-        <div>Unrealised PNL: {unrealisedPnl}</div>
+        <div>Realised PNL: {props.realisedPnl}</div>
+        <div>Unrealised PNL: {props.unrealisedPnl}</div>
       </div>
       <div>
-        {trades.length ? (
-          trades.map((trade) => {
-            return <Trades trade={trade} />;
+        {props.trades.length ? (
+          props.trades.map((trade) => {
+            {
+              /* return <Trades trade={props.trade} />; */
+            }
           })
         ) : (
           <></>
         )}
       </div>
       <div>
-        {orders.length ? (
-          orders.map((order) => {
-            return <Orders order={order} />;
+        {props.orders.length ? (
+          props.orders.map((order) => {
+            {
+              /* return <Orders order={props.order} />; */
+            }
           })
         ) : (
           <></>
         )}
-      </div> */}
-    </div>
+      </div>
+    </>
   );
 };
 
