@@ -2,6 +2,7 @@ import React from "react";
 
 // components
 import Bybit from "./components/Bybit/Bybit";
+import BybitVertical from "./components/Bybit/BybitVertical";
 // import Kraken from "./components/Kraken";
 
 // material_ui
@@ -51,7 +52,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const App = (props) => {
-  console.log(props);
+  // console.log(props);
   const classes = useStyles();
   const [value, setValue] = React.useState(false);
 
@@ -74,7 +75,7 @@ const App = (props) => {
       </Tabs>
       <TabPanel value={value} index={0}></TabPanel>
       <TabPanel value={value} index={1}></TabPanel>
-      {value === 0 && <Bybit />}
+      {value === 0 && <BybitVertical />}
       {/* {value === 1 && <Kraken />} */}
     </div>
   );

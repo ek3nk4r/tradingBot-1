@@ -39,7 +39,7 @@ router.get("/tickers", (req, res) => {
       btcusdtOrders,
     ];
     res.json(bybitExchangeData);
-    console.log("Bybit Exchange Data:", bybitExchangeData);
+    console.log("Bybit Exchange Data:", tickers);
   })();
 });
 
