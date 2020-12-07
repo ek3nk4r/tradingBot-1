@@ -136,26 +136,22 @@ const BybitVertical = () => {
       >
         {marketNames.length
           ? marketNames.map((market, index) => {
-              return <Tab key={index} label={market} />;
+              return <Tab key={index} label={market} onClick={clickHandle} />;
             })
           : 0}
       </Tabs>
-      {/* requires mapping */}
-      <TabPanel value={value} index={0} onClick={clickHandle}>
-        {symbol.length ? (
-          <Instrument
-            totalbtc={totalBTC}
-            usedbtc={usedBTC}
-            availablebtc={availableBTC}
-            symbol={symbol}
-            opencontracts={openContracts}
-            realisedpnl={realisedPnl}
-            unrealisedpnl={unrealisedPnl}
-            orders={orders}
-          />
-        ) : null}
+      <TabPanel value={value} index={0}>
+        <Instrument
+          totalbtc={totalBTC}
+          usedbtc={usedBTC}
+          availablebtc={availableBTC}
+          symbol={symbol}
+          opencontracts={openContracts}
+          realisedpnl={realisedPnl}
+          unrealisedpnl={unrealisedPnl}
+          orders={orders}
+        />
       </TabPanel>
-      {/* requires mapping */}
     </div>
   );
 };

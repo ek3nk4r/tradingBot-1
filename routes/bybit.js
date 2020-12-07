@@ -23,20 +23,20 @@ router.get("/tickers", (req, res) => {
     const since = undefined;
     const limit = 150;
     const btcusdOrders = await bybit.fetchOrders("BTC/USD", since, limit);
-    const ethOrders = await bybit.fetchOrders("ETH/USD", since, limit);
-    const eosOrders = await bybit.fetchOrders("EOS/USD", since, limit);
-    const xrpOrders = await bybit.fetchOrders("XRP/USD", since, limit);
-    const btcusdtOrders = await bybit.fetchOrders("BTC/USDT", since, limit);
+    // const ethOrders = await bybit.fetchOrders("ETH/USD", since, limit);
+    // const eosOrders = await bybit.fetchOrders("EOS/USD", since, limit);
+    // const xrpOrders = await bybit.fetchOrders("XRP/USD", since, limit);
+    // const btcusdtOrders = await bybit.fetchOrders("BTC/USDT", since, limit);
     const bybitExchangeData = [
       exchangeData,
       markets,
       tickers,
       balance,
       btcusdOrders,
-      ethOrders,
-      eosOrders,
-      xrpOrders,
-      btcusdtOrders,
+      // ethOrders,
+      // eosOrders,
+      // xrpOrders,
+      // btcusdtOrders,
     ];
     res.json(bybitExchangeData);
     console.log("Bybit Exchange Data:", tickers);
