@@ -104,6 +104,24 @@ const BybitVertical = () => {
     });
   }, []);
 
+  const clickHandle = (event) => {
+    console.log(event);
+    axios.post("/bybit/ticker", { name: event }).then((res) => {
+      console.log("bybitTickerData:", res.data);
+      const symbol = res.data[0].symbol;
+      const openContracts = res.data[2].size;
+      const orders = res.data[4];
+      const value = markets.indexof(res.data[0].symbol);
+
+      // console.log(value);
+
+      setSymbol(symbol);
+      setOpenContracts(openContracts);
+      setOrders(orders);
+      setValue(value);
+    });
+  };
+
   console.log(marketNames);
 
   return (
@@ -123,8 +141,19 @@ const BybitVertical = () => {
           : 0}
       </Tabs>
       {/* requires mapping */}
-      <TabPanel value={value} index={0}>
-        Item One
+      <TabPanel value={value} index={0} onClick={clickHandle}>
+        {symbol.length ? (
+          <Instrument
+            totalbtc={totalBTC}
+            usedbtc={usedBTC}
+            availablebtc={availableBTC}
+            symbol={symbol}
+            opencontracts={openContracts}
+            realisedpnl={realisedPnl}
+            unrealisedpnl={unrealisedPnl}
+            orders={orders}
+          />
+        ) : null}
       </TabPanel>
       {/* requires mapping */}
     </div>
