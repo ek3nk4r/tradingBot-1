@@ -25,7 +25,7 @@ function TabPanel(props) {
     >
       {value === index && (
         <Box p={3}>
-          <Typography>{children}</Typography>
+          <Typography component={"span"}>{children}</Typography>
         </Box>
       )}
     </div>
@@ -116,9 +116,11 @@ const BybitVertical = () => {
         aria-label="Vertical tabs example"
         className={classes.tabs}
       >
-        {/* requires mapping */}
-        <Tab label="Item One" />
-        {/* requires mapping */}
+        {marketNames.length
+          ? marketNames.map((market, index) => {
+              return <Tab key={index} label={market} />;
+            })
+          : 0}
       </Tabs>
       {/* requires mapping */}
       <TabPanel value={value} index={0}>
