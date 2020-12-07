@@ -43,28 +43,28 @@ router.get("/tickers", (req, res) => {
   })();
 });
 
-// router.post("/ticker", (req, res) => {
-//   console.log(req);
-//   // const tickerSymbol = JSON.parse(JSON.stringify(req.body));
-//   const tickerSymbol = req.body.text;
-//   // console.log("FronendTickerSymbolReceived:", Object.values(tickerSymbol));
-//   // res.json(tickerSymbol);
+router.post("/ticker", (req, res) => {
+  console.log(req);
+  // const tickerSymbol = JSON.parse(JSON.stringify(req.body));
+  const tickerSymbol = req.body.text;
+  // console.log("FronendTickerSymbolReceived:", Object.values(tickerSymbol));
+  // res.json(tickerSymbol);
 
-//   (async function () {
-//     // const ticker = await bybit.fetchTicker("BTC/USD");
-//     const symbol = tickerSymbol;
-//     const since = undefined;
-//     const limit = 150;
-//     const trades = await bybit.fetchMyTrades(symbol, since, limit);
-//     const orders = await bybit.fetchClosedOrders(symbol, since, limit);
-//     const positions = await bybit.privateGetPositionList({
-//       symbol: tickerSymbol,
-//     });
-//     const bybitData = [positions.result, trades, orders];
-//     res.json(bybitData);
-//     console.log("node async bybit:", ticker);
-//   })();
-// });
+  (async function () {
+    // const ticker = await bybit.fetchTicker("BTC/USD");
+    const symbol = tickerSymbol;
+    const since = undefined;
+    const limit = 150;
+    const openOrders = await bybit.fetchOpenOrders(symbol, since, limit);
+    const orders = await bybit.fetchClosedOrders(symbol, since, limit);
+    const positions = await bybit.privateGetPositionList({
+      symbol: tickerSymbol,
+    });
+    const bybitData = [positions.result, openOrders, orders];
+    res.json(bybitData);
+    console.log("node async bybit:", symbol);
+  })();
+});
 
 router.post("/webHookBybit", (req, res) => {
   console.log("WEBHOOK RECEIVED:", req.body.text);

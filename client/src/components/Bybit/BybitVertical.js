@@ -38,6 +38,13 @@ TabPanel.propTypes = {
   value: PropTypes.any.isRequired,
 };
 
+const a11yProps = (index) => {
+  return {
+    id: `vertical-tab-${index}`,
+    "aria-controls": `vertical-tabpanel-${index}`,
+  };
+};
+
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -105,20 +112,20 @@ const BybitVertical = () => {
   }, []);
 
   const clickHandle = (event) => {
-    console.log(event);
+    // console.log(event);
     axios.post("/bybit/ticker", { name: event }).then((res) => {
       console.log("bybitTickerData:", res.data);
       const symbol = res.data[0].symbol;
       const openContracts = res.data[2].size;
       const orders = res.data[4];
-      const value = markets.indexof(res.data[0].symbol);
+      // const value = markets.indexof(res.data[0].symbol);
 
       // console.log(value);
 
       setSymbol(symbol);
       setOpenContracts(openContracts);
       setOrders(orders);
-      setValue(value);
+      // setValue(value);
     });
   };
 
@@ -136,7 +143,14 @@ const BybitVertical = () => {
       >
         {marketNames.length
           ? marketNames.map((market, index) => {
-              return <Tab key={index} label={market} onClick={clickHandle} />;
+              return (
+                <Tab
+                  key={index}
+                  label={market}
+                  onClick={clickHandle}
+                  {...a11yProps(index)}
+                />
+              );
             })
           : 0}
       </Tabs>
