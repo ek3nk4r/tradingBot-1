@@ -39,6 +39,7 @@ TabPanel.propTypes = {
 };
 
 const a11yProps = (index) => {
+  console.log(index);
   return {
     id: `vertical-tab-${index}`,
     "aria-controls": `vertical-tabpanel-${index}`,
@@ -80,9 +81,6 @@ const BybitVertical = () => {
   const [orders, setOrders] = useState([]);
 
   useEffect(() => {
-    // const _isMounted = true;
-    // console.log(_isMounted);
-
     console.log("FIRST RENDER");
 
     axios.get("/bybit/tickers").then((res) => {
@@ -112,20 +110,15 @@ const BybitVertical = () => {
   }, []);
 
   const clickHandle = (event) => {
-    // console.log(event);
     axios.post("/bybit/ticker", { name: event }).then((res) => {
       console.log("bybitTickerData:", res.data);
       const symbol = res.data[0].symbol;
       const openContracts = res.data[2].size;
       const orders = res.data[4];
-      // const value = markets.indexof(res.data[0].symbol);
-
-      // console.log(value);
 
       setSymbol(symbol);
       setOpenContracts(openContracts);
       setOrders(orders);
-      // setValue(value);
     });
   };
 
@@ -135,10 +128,10 @@ const BybitVertical = () => {
     <div className={classes.root}>
       <Tabs
         orientation="vertical"
-        variant="scrollable"
+        variant="fullHeight"
         value={value}
         onChange={handleChange}
-        aria-label="Vertical tabs example"
+        aria-label="Vertical tabs"
         className={classes.tabs}
       >
         {marketNames.length

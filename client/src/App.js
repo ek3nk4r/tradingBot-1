@@ -64,7 +64,7 @@ const App = (props) => {
     <div className={classes.root}>
       <Tabs
         orientation="vertical"
-        variant="scrollable"
+        variant="fullHeight"
         value={value}
         onChange={handleChange}
         aria-label="Vertical tabs example"
