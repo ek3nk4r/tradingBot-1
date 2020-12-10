@@ -10,7 +10,7 @@ var bybit = new ccxt.bybit({
   // secret: process.env.BYBIT_API_SECRET,
 });
 
-console.log(bybit.has);
+// console.log(bybit.has);
 
 bybit.urls["api"] = bybit.urls["test"];
 
@@ -39,12 +39,12 @@ router.get("/tickers", (req, res) => {
       // btcusdtOrders,
     ];
     res.json(bybitExchangeData);
-    console.log("Bybit Exchange Data:", tickers);
+    console.log("Bybit Exchange Data:", balance);
   })();
 });
 
 router.post("/ticker", (req, res) => {
-  console.log(req);
+  // console.log(req);
   // const tickerSymbol = JSON.parse(JSON.stringify(req.body));
   const tickerSymbol = req.body.text;
   // console.log("FronendTickerSymbolReceived:", Object.values(tickerSymbol));
@@ -55,14 +55,13 @@ router.post("/ticker", (req, res) => {
     const symbol = tickerSymbol;
     const since = undefined;
     const limit = 150;
-    const openOrders = await bybit.fetchOpenOrders(symbol, since, limit);
     const orders = await bybit.fetchClosedOrders(symbol, since, limit);
     const positions = await bybit.privateGetPositionList({
       symbol: tickerSymbol,
     });
-    const bybitData = [positions.result, openOrders, orders];
+    const bybitData = [positions.result, orders];
     res.json(bybitData);
-    console.log("node async bybit:", symbol);
+    // console.log("node async bybit:", orders);
   })();
 });
 

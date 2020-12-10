@@ -1,10 +1,12 @@
 import React from "react";
 
 const Orders = (props) => {
+  console.log(props);
   const { order } = props;
 
   return (
-    <div key={order.id}>
+    <div key={props.order.id}>
+      <div>-----------------------------------------------------</div>
       <div>
         <div>Side: {order.side}</div>
       </div>
@@ -23,6 +25,7 @@ const Orders = (props) => {
       <div>
         <div>Time: {order.datetime}</div>
       </div>
+      <div>-----------------------------------------------------</div>
     </div>
   );
 };

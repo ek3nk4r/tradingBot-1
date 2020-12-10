@@ -1,7 +1,7 @@
 import React from "react";
 
 // components
-import Bybit from "./components/Bybit/Bybit";
+// import Bybit from "./components/Bybit/Bybit";
 import BybitVertical from "./components/Bybit/BybitVertical";
 // import Kraken from "./components/Kraken";
 
@@ -44,7 +44,6 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
     backgroundColor: theme.palette.background.paper,
     display: "flex",
-    height: 224,
   },
   tabs: {
     borderRight: `1px solid ${theme.palette.divider}`,
@@ -64,7 +63,7 @@ const App = (props) => {
     <div className={classes.root}>
       <Tabs
         orientation="vertical"
-        variant="fullHeight"
+        variant="scrollable"
         value={value}
         onChange={handleChange}
         aria-label="Vertical tabs example"

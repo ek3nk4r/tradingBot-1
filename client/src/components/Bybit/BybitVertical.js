@@ -39,7 +39,6 @@ TabPanel.propTypes = {
 };
 
 const a11yProps = (index) => {
-  console.log(index);
   return {
     id: `vertical-tab-${index}`,
     "aria-controls": `vertical-tabpanel-${index}`,
@@ -51,7 +50,6 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
     backgroundColor: theme.palette.background.paper,
     display: "flex",
-    height: 224,
   },
   tabs: {
     borderRight: `1px solid ${theme.palette.divider}`,
@@ -77,7 +75,6 @@ const BybitVertical = () => {
   const [realisedPnl, setRealisedPnl] = useState(0);
   const [unrealisedPnl, setUnrealisedPnl] = useState(0);
   const [symbol, setSymbol] = useState("");
-  const [openContracts, setOpenContracts] = useState(0);
   const [orders, setOrders] = useState([]);
 
   useEffect(() => {
@@ -110,25 +107,25 @@ const BybitVertical = () => {
   }, []);
 
   const clickHandle = (event) => {
-    axios.post("/bybit/ticker", { name: event }).then((res) => {
+    const { name } = event.target;
+
+    axios.post("/bybit/ticker", { name: name }).then((res) => {
       console.log("bybitTickerData:", res.data);
       const symbol = res.data[0].symbol;
-      const openContracts = res.data[2].size;
-      const orders = res.data[4];
+      const orders = res.data[1];
 
       setSymbol(symbol);
-      setOpenContracts(openContracts);
       setOrders(orders);
     });
   };
 
-  console.log(marketNames);
+  console.log(orders);
 
   return (
     <div className={classes.root}>
       <Tabs
         orientation="vertical"
-        variant="fullHeight"
+        variant="scrollable"
         value={value}
         onChange={handleChange}
         aria-label="Vertical tabs"
@@ -147,13 +144,12 @@ const BybitVertical = () => {
             })
           : 0}
       </Tabs>
-      <TabPanel value={value} index={0}>
+      <TabPanel value={value} index={value}>
         <Instrument
           totalbtc={totalBTC}
           usedbtc={usedBTC}
           availablebtc={availableBTC}
           symbol={symbol}
-          opencontracts={openContracts}
           realisedpnl={realisedPnl}
           unrealisedpnl={unrealisedPnl}
           orders={orders}

@@ -1,49 +1,43 @@
 import React from "react";
+import Orders from "./Orders";
 
 const Instrument = (props) => {
   console.log(props);
   return (
-    <div></div>
-    // <>
-    //   {/* {" "} */}
-    //   <div>
-    //     <div>{props.symbol}</div>
-    //   </div>
-    //   <div>
-    //     <div>Total: {props.totalBTC}</div>
-    //     <div>Available: {props.availableBTC}</div>
-    //     <div>Used: {props.usedBTC}</div>
-    //   </div>
-    //   <div>
-    //     <div>Open Contracts: {props.openContracts}</div>
-    //   </div>
-    //   <div>
-    //     <div>Realised PNL: {props.realisedPnl}</div>
-    //     <div>Unrealised PNL: {props.unrealisedPnl}</div>
-    //   </div>
-    //   <div>
-    //     {props.trades.length ? (
-    //       props.trades.map((trade) => {
-    //         {
-    //           /* return <Trades trade={props.trade} />; */
-    //         }
-    //       })
-    //     ) : (
-    //       <></>
-    //     )}
-    //   </div>
-    //   <div>
-    //     {props.orders.length ? (
-    //       props.orders.map((order) => {
-    //         {
-    //           /* return <Orders order={props.order} />; */
-    //         }
-    //       })
-    //     ) : (
-    //       <></>
-    //     )}
-    //   </div>
-    // </>
+    // <div></div>
+    <>
+      <div>
+        <div>{props.symbol}</div>
+      </div>
+      <div>
+        <div>Total: {props.totalbtc}</div>
+        <div>Available: {props.availablebtc}</div>
+        <div>Used: {props.usedbtc}</div>
+      </div>
+      <div>
+        <div>Realised PNL: {props.realisedPnl}</div>
+        <div>Unrealised PNL: {props.unrealisedPnl}</div>
+      </div>
+      {/* <div>
+        {props.trades.length ? (
+          props.trades.map((trade) => {
+            return <Trades trade={props.trade} />;
+          })
+        ) : (
+          <></>
+        )}
+      </div> */}
+      <div>
+        {props.orders.length ? (
+          props.orders.map((order) => {
+            console.log(order);
+            return <Orders key={order.id} order={order} />;
+          })
+        ) : (
+          <></>
+        )}
+      </div>
+    </>
   );
 };
 
