@@ -1,28 +1,16 @@
 import React from "react";
 import Orders from "./Orders";
+import Balance from "./Balance";
 
-const Instrument = (props) => {
+const Instrument = React.memo((props) => {
   console.log(props);
   return (
-    // <div></div>
     <>
-      <div>
-        <div>{props.symbol}</div>
-      </div>
-      <div>
-        <div>Total: {props.totalbtc}</div>
-        <div>Available: {props.availablebtc}</div>
-        <div>Used: {props.usedbtc}</div>
-      </div>
-      {/* <div>
-        {props.trades.length ? (
-          props.trades.map((trade) => {
-            return <Trades trade={props.trade} />;
-          })
-        ) : (
-          <></>
-        )}
-      </div> */}
+      <Balance
+        availablebtc={props.availablebtc}
+        totalbtc={props.totalbtc}
+        usedbtc={props.usedbtc}
+      />
       <div>
         {props.orders.length ? (
           props.orders.map((order) => {
@@ -35,6 +23,6 @@ const Instrument = (props) => {
       </div>
     </>
   );
-};
+});
 
 export default Instrument;

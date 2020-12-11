@@ -1,6 +1,6 @@
 import React from "react";
 
-const Orders = (props) => {
+const Orders = React.memo((props) => {
   console.log(props);
   const { order } = props;
 
@@ -28,6 +28,6 @@ const Orders = (props) => {
       <div>-----------------------------------------------------</div>
     </div>
   );
-};
+});
 
 export default Orders;

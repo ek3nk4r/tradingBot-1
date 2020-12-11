@@ -26,6 +26,7 @@ const BybitVertical = () => {
   const classes = UseStyles();
   const [value, setValue] = React.useState(0);
   const handleChange = (event, newValue) => {
+    event.preventDefault();
     setValue(newValue);
   };
   // material_ui ******************************
@@ -65,6 +66,7 @@ const BybitVertical = () => {
   }, []);
 
   const clickHandle = (event) => {
+    event.preventDefault();
     const { name } = event.target;
 
     axios.post("/bybit/ticker", { name: name }).then((res) => {
@@ -76,8 +78,6 @@ const BybitVertical = () => {
       setOrders(orders);
     });
   };
-
-  console.log(orders);
 
   return (
     <div className={classes.root}>

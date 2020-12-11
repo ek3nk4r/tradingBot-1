@@ -18,11 +18,11 @@ TabPanel.propTypes = {
 };
 
 const App = (props) => {
-  // console.log(props);
   const classes = UseStyles();
   const [value, setValue] = React.useState(false);
 
   const handleChange = (event, newValue) => {
+    event.preventDefault();
     setValue(newValue);
   };
 
