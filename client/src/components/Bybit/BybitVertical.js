@@ -3,34 +3,14 @@ import axios from "axios";
 
 //  Components
 import Instrument from "./Instrument";
+import UseStyles from "./BybitUseStyles";
+import TabPanel from "./BybitTabPanel";
 
 // material-ui
 import PropTypes from "prop-types";
-import { makeStyles } from "@material-ui/core/styles";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
-import Typography from "@material-ui/core/Typography";
-import Box from "@material-ui/core/Box";
-
-function TabPanel(props) {
-  const { children, value, index, ...other } = props;
-
-  return (
-    <div
-      role="tabpanel"
-      hidden={value !== index}
-      id={`vertical-tabpanel-${index}`}
-      aria-labelledby={`vertical-tab-${index}`}
-      {...other}
-    >
-      {value === index && (
-        <Box p={3}>
-          <Typography component={"span"}>{children}</Typography>
-        </Box>
-      )}
-    </div>
-  );
-}
+import A11yProps from "./A11yProps";
 
 TabPanel.propTypes = {
   children: PropTypes.node,
@@ -38,28 +18,12 @@ TabPanel.propTypes = {
   value: PropTypes.any.isRequired,
 };
 
-const a11yProps = (index) => {
-  return {
-    id: `vertical-tab-${index}`,
-    "aria-controls": `vertical-tabpanel-${index}`,
-  };
-};
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    flexGrow: 1,
-    backgroundColor: theme.palette.background.paper,
-    display: "flex",
-  },
-  tabs: {
-    borderRight: `1px solid ${theme.palette.divider}`,
-  },
-}));
+A11yProps();
 
 const BybitVertical = () => {
   // ******************************************
   // material_ui ******************************
-  const classes = useStyles();
+  const classes = UseStyles();
   const [value, setValue] = React.useState(0);
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -138,7 +102,7 @@ const BybitVertical = () => {
                   key={index}
                   label={market}
                   onClick={clickHandle}
-                  {...a11yProps(index)}
+                  {...A11yProps(index)}
                 />
               );
             })
@@ -146,13 +110,13 @@ const BybitVertical = () => {
       </Tabs>
       <TabPanel value={value} index={value}>
         <Instrument
-          totalbtc={totalBTC}
-          usedbtc={usedBTC}
           availablebtc={availableBTC}
-          symbol={symbol}
-          realisedpnl={realisedPnl}
-          unrealisedpnl={unrealisedPnl}
           orders={orders}
+          realisedpnl={realisedPnl}
+          symbol={symbol}
+          totalbtc={totalBTC}
+          unrealisedpnl={unrealisedPnl}
+          usedbtc={usedBTC}
         />
       </TabPanel>
     </div>

@@ -1,37 +1,15 @@
 import React from "react";
 
 // components
-// import Bybit from "./components/Bybit/Bybit";
-import BybitVertical from "./components/Bybit/BybitVertical";
+import BybitVertical from "../components/Bybit/BybitVertical";
 // import Kraken from "./components/Kraken";
+import TabPanel from "./AppTabPanel";
+import UseStyles from "./AppUseStyles";
 
 // material_ui
 import PropTypes from "prop-types";
-import { makeStyles } from "@material-ui/core/styles";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
-import Typography from "@material-ui/core/Typography";
-import Box from "@material-ui/core/Box";
-
-function TabPanel(props) {
-  const { children, value, index, ...other } = props;
-
-  return (
-    <div
-      role="tabpanel"
-      hidden={value !== index}
-      id={`vertical-tabpanel-${index}`}
-      aria-labelledby={`vertical-tab-${index}`}
-      {...other}
-    >
-      {value === index && (
-        <Box p={3}>
-          <Typography component={"span"}>{children}</Typography>
-        </Box>
-      )}
-    </div>
-  );
-}
 
 TabPanel.propTypes = {
   children: PropTypes.node,
@@ -39,20 +17,9 @@ TabPanel.propTypes = {
   value: PropTypes.any.isRequired,
 };
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    flexGrow: 1,
-    backgroundColor: theme.palette.background.paper,
-    display: "flex",
-  },
-  tabs: {
-    borderRight: `1px solid ${theme.palette.divider}`,
-  },
-}));
-
 const App = (props) => {
   // console.log(props);
-  const classes = useStyles();
+  const classes = UseStyles();
   const [value, setValue] = React.useState(false);
 
   const handleChange = (event, newValue) => {
