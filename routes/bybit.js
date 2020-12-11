@@ -39,16 +39,12 @@ router.get("/tickers", (req, res) => {
       // btcusdtOrders,
     ];
     res.json(bybitExchangeData);
-    console.log("Bybit Exchange Data:", balance);
+    console.log("Bybit Exchange Data:", bybitExchangeData);
   })();
 });
 
 router.post("/ticker", (req, res) => {
-  // console.log(req);
-  // const tickerSymbol = JSON.parse(JSON.stringify(req.body));
   const tickerSymbol = req.body.text;
-  // console.log("FronendTickerSymbolReceived:", Object.values(tickerSymbol));
-  // res.json(tickerSymbol);
 
   (async function () {
     // const ticker = await bybit.fetchTicker("BTC/USD");

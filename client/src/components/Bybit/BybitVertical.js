@@ -36,8 +36,6 @@ const BybitVertical = () => {
   const [totalBTC, setTotalBTC] = useState(0);
   const [usedBTC, setUsedBTC] = useState(0);
   const [availableBTC, setAvailableBTC] = useState(0);
-  const [realisedPnl, setRealisedPnl] = useState(0);
-  const [unrealisedPnl, setUnrealisedPnl] = useState(0);
   const [symbol, setSymbol] = useState("");
   const [orders, setOrders] = useState([]);
 
@@ -57,16 +55,12 @@ const BybitVertical = () => {
       const totalBTC = res.data[3].total.BTC;
       const usedBTC = res.data[3].used.BTC;
       const availableBTC = res.data[3].free.BTC;
-      const realisedPnl = res.data[3].cum_realised_pnl;
-      const unrealisedPnl = res.data[3].unrealised_pnl;
 
       setMarkets(markets);
       setMarketNames(marketNames);
       setTotalBTC(totalBTC);
       setUsedBTC(usedBTC);
       setAvailableBTC(availableBTC);
-      setRealisedPnl(realisedPnl);
-      setUnrealisedPnl(unrealisedPnl);
     });
   }, []);
 
@@ -112,10 +106,8 @@ const BybitVertical = () => {
         <Instrument
           availablebtc={availableBTC}
           orders={orders}
-          realisedpnl={realisedPnl}
           symbol={symbol}
           totalbtc={totalBTC}
-          unrealisedpnl={unrealisedPnl}
           usedbtc={usedBTC}
         />
       </TabPanel>

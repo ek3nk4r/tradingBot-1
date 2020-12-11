@@ -14,10 +14,6 @@ const Instrument = (props) => {
         <div>Available: {props.availablebtc}</div>
         <div>Used: {props.usedbtc}</div>
       </div>
-      <div>
-        <div>Realised PNL: {props.realisedPnl}</div>
-        <div>Unrealised PNL: {props.unrealisedPnl}</div>
-      </div>
       {/* <div>
         {props.trades.length ? (
           props.trades.map((trade) => {
