@@ -12,14 +12,9 @@ const Instrument = React.memo((props) => {
         totalbtc={props.totalbtc}
         usedbtc={props.usedbtc}
       />
+      {/* <Orders orders={props.orders} /> */}
       <div>
-        {props.orders.length ? (
-          props.orders.map((order) => {
-            return <Orders key={order.id} order={order} />;
-          })
-        ) : (
-          <></>
-        )}
+        {props.orders.length ? <Orders orders={props.orders} /> : <></>}
       </div>
     </>
   );
