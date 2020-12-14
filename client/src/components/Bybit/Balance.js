@@ -1,6 +1,7 @@
 import React from "react";
 
 const Balance = React.memo((props) => {
+  console.log(props);
   return (
     <div>
       <div>

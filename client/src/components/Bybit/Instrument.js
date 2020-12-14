@@ -8,13 +8,13 @@ const Instrument = React.memo((props) => {
     <>
       <Balance
         availablebtc={props.availablebtc}
+        symbol={props.symbol}
         totalbtc={props.totalbtc}
         usedbtc={props.usedbtc}
       />
       <div>
         {props.orders.length ? (
           props.orders.map((order) => {
-            console.log(order);
             return <Orders key={order.id} order={order} />;
           })
         ) : (

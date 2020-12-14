@@ -25,9 +25,25 @@ const BybitVertical = () => {
   // material_ui ******************************
   const classes = UseStyles();
   const [value, setValue] = React.useState(0);
+  const [symbol, setSymbol] = useState("");
+  const [orders, setOrders] = useState([]);
+
   const handleChange = (event, newValue) => {
-    event.preventDefault();
+    console.log("*****NEW VALUE*****", typeof event.target.innerHTML);
     setValue(newValue);
+    const { name } = event.target;
+
+    axios
+      .post("/bybit/ticker", { name: event.target.innerHTML })
+      .then((res) => {
+        const symbol = res.data[0];
+        const orders = res.data[1];
+
+        console.log(res.data[0]);
+
+        setSymbol(symbol);
+        setOrders(orders);
+      });
   };
   // material_ui ******************************
   // ******************************************
@@ -37,8 +53,7 @@ const BybitVertical = () => {
   const [totalBTC, setTotalBTC] = useState(0);
   const [usedBTC, setUsedBTC] = useState(0);
   const [availableBTC, setAvailableBTC] = useState(0);
-  const [symbol, setSymbol] = useState("");
-  const [orders, setOrders] = useState([]);
+  const [balances, setBalances] = useState([]);
 
   useEffect(() => {
     console.log("FIRST RENDER");
@@ -51,33 +66,23 @@ const BybitVertical = () => {
           return markets[key];
         })
         .map((market) => {
-          return market.info.name;
+          return market.symbol;
         });
       const totalBTC = res.data[3].total.BTC;
       const usedBTC = res.data[3].used.BTC;
       const availableBTC = res.data[3].free.BTC;
+      const balances = res.data[3].info.result;
+
+      console.log(markets);
 
       setMarkets(markets);
       setMarketNames(marketNames);
       setTotalBTC(totalBTC);
       setUsedBTC(usedBTC);
       setAvailableBTC(availableBTC);
+      setBalances(balances);
     });
   }, []);
-
-  const clickHandle = (event) => {
-    event.preventDefault();
-    const { name } = event.target;
-
-    axios.post("/bybit/ticker", { name: name }).then((res) => {
-      console.log("bybitTickerData:", res.data);
-      const symbol = res.data[0].symbol;
-      const orders = res.data[1];
-
-      setSymbol(symbol);
-      setOrders(orders);
-    });
-  };
 
   return (
     <div className={classes.root}>
@@ -91,19 +96,13 @@ const BybitVertical = () => {
       >
         {marketNames.length
           ? marketNames.map((market, index) => {
-              return (
-                <Tab
-                  key={index}
-                  label={market}
-                  onClick={clickHandle}
-                  {...A11yProps(index)}
-                />
-              );
+              return <Tab key={index} label={market} {...A11yProps(index)} />;
             })
           : 0}
       </Tabs>
       <TabPanel value={value} index={value}>
         <Instrument
+          balances={balances}
           availablebtc={availableBTC}
           orders={orders}
           symbol={symbol}

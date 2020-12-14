@@ -20,44 +20,24 @@ router.get("/tickers", (req, res) => {
     const markets = await bybit.load_markets();
     const tickers = await bybit.fetchTickers();
     const balance = await bybit.fetchBalance();
-    const since = undefined;
-    const limit = 150;
-    const btcusdOrders = await bybit.fetchOrders("BTC/USD", since, limit);
-    // const ethOrders = await bybit.fetchOrders("ETH/USD", since, limit);
-    // const eosOrders = await bybit.fetchOrders("EOS/USD", since, limit);
-    // const xrpOrders = await bybit.fetchOrders("XRP/USD", since, limit);
-    // const btcusdtOrders = await bybit.fetchOrders("BTC/USDT", since, limit);
-    const bybitExchangeData = [
-      exchangeData,
-      markets,
-      tickers,
-      balance,
-      btcusdOrders,
-      // ethOrders,
-      // eosOrders,
-      // xrpOrders,
-      // btcusdtOrders,
-    ];
+    const bybitExchangeData = [exchangeData, markets, tickers, balance];
     res.json(bybitExchangeData);
-    console.log("Bybit Exchange Data:", bybitExchangeData);
+    // console.log("Bybit Exchange Data:", tickers);
   })();
 });
 
 router.post("/ticker", (req, res) => {
-  const tickerSymbol = req.body.text;
+  const tickerSymbol = req.body.name;
+  console.log("TICKER SYMBOL-------", tickerSymbol);
 
   (async function () {
-    // const ticker = await bybit.fetchTicker("BTC/USD");
     const symbol = tickerSymbol;
     const since = undefined;
     const limit = 150;
     const orders = await bybit.fetchClosedOrders(symbol, since, limit);
-    const positions = await bybit.privateGetPositionList({
-      symbol: tickerSymbol,
-    });
-    const bybitData = [positions.result, orders];
+    const bybitData = [symbol, orders];
     res.json(bybitData);
-    // console.log("node async bybit:", orders);
+    console.log("node async bybit:", symbol, orders);
   })();
 });
 
