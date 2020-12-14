@@ -30,21 +30,16 @@ const BybitVertical = () => {
 
   const handleChange = (event, newValue) => {
     event.preventDefault();
-    console.log("*****NEW VALUE*****", typeof event.target.innerHTML);
     setValue(newValue);
-    const { name } = event.target;
+    const { innerHTML } = event.target;
 
-    axios
-      .post("/bybit/ticker", { name: event.target.innerHTML })
-      .then((res) => {
-        const symbol = res.data[0];
-        const orders = res.data[1];
+    axios.post("/bybit/ticker", { name: innerHTML }).then((res) => {
+      const symbol = res.data[0];
+      const orders = res.data[1];
 
-        console.log(res.data[0]);
-
-        setSymbol(symbol);
-        setOrders(orders);
-      });
+      setSymbol(symbol);
+      setOrders(orders);
+    });
   };
   // material_ui ******************************
   // ******************************************

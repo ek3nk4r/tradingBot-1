@@ -28,7 +28,7 @@ router.get("/tickers", (req, res) => {
 
 router.post("/ticker", (req, res) => {
   const tickerSymbol = req.body.name;
-  console.log("TICKER SYMBOL-------", tickerSymbol);
+  // console.log("TICKER SYMBOL-------", tickerSymbol);
 
   (async function () {
     const symbol = tickerSymbol;
@@ -37,7 +37,7 @@ router.post("/ticker", (req, res) => {
     const orders = await bybit.fetchClosedOrders(symbol, since, limit);
     const bybitData = [symbol, orders];
     res.json(bybitData);
-    console.log("node async bybit:", symbol, orders);
+    // console.log("node async bybit:", symbol, orders);
   })();
 });
 
