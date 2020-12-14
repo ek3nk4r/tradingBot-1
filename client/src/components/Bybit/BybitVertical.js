@@ -29,6 +29,7 @@ const BybitVertical = () => {
   const [orders, setOrders] = useState([]);
 
   const handleChange = (event, newValue) => {
+    event.preventDefault();
     console.log("*****NEW VALUE*****", typeof event.target.innerHTML);
     setValue(newValue);
     const { name } = event.target;
