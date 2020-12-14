@@ -1,0 +1,19 @@
+.balance-container {
+  display: flex;
+  flex-direction: row;
+}
+
+.instrument-name {
+  margin: 0 35px 10px 38px;
+}
+
+.balance-data {
+  display: flex;
+  flex-direction: row;
+}
+
+.balance-data > div {
+  display: flex;
+  flex-direction: row;
+  margin: 0 25px 10px 5px;
+}

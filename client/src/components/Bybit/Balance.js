@@ -1,16 +1,17 @@
 import React from "react";
+import "../../Assets/stylesheets/balance.css";
 
 const Balance = React.memo((props) => {
   console.log(props);
   return (
-    <div>
+    <div className="balance-container">
       <div>
-        <div>{props.symbol}</div>
+        <div className="instrument-name">{props.symbol}</div>
       </div>
-      <div>
-        <div>Total: {props.totalbtc}</div>
-        <div>Available: {props.availablebtc}</div>
-        <div>Used: {props.usedbtc}</div>
+      <div className="balance-data">
+        <div> Total: {props.totalbtc} </div>
+        <div> Available: {props.availablebtc} </div>
+        <div> Used: {props.usedbtc} </div>
       </div>
     </div>
   );
