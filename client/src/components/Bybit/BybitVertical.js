@@ -20,7 +20,7 @@ TabPanel.propTypes = {
 
 A11yProps();
 
-const BybitVertical = () => {
+const BybitVertical = React.memo(() => {
   // ******************************************
   // material_ui ******************************
   const classes = UseStyles();
@@ -37,6 +37,8 @@ const BybitVertical = () => {
       const symbol = res.data[0];
       const orders = res.data[1];
 
+      console.log("*****POST REQUEST*****", orders);
+
       setSymbol(symbol);
       setOrders(orders);
     });
@@ -44,7 +46,8 @@ const BybitVertical = () => {
   // material_ui ******************************
   // ******************************************
 
-  const [markets, setMarkets] = useState([]);
+  console.log("*****BYBIT VERTICAL*****", orders);
+
   const [marketNames, setMarketNames] = useState([]);
   const [totalBTC, setTotalBTC] = useState(0);
   const [usedBTC, setUsedBTC] = useState(0);
@@ -52,7 +55,7 @@ const BybitVertical = () => {
   const [balances, setBalances] = useState([]);
 
   useEffect(() => {
-    console.log("FIRST RENDER");
+    console.log("*****FIRST RENDER*****");
 
     axios.get("/bybit/tickers").then((res) => {
       console.log(res);
@@ -71,7 +74,6 @@ const BybitVertical = () => {
 
       console.log(markets);
 
-      setMarkets(markets);
       setMarketNames(marketNames);
       setTotalBTC(totalBTC);
       setUsedBTC(usedBTC);
@@ -96,7 +98,8 @@ const BybitVertical = () => {
             })
           : 0}
       </Tabs>
-      <TabPanel value={value} index={value}>
+      <TabPanel value={value} index={value}></TabPanel>
+      {value === value && (
         <Instrument
           balances={balances}
           availablebtc={availableBTC}
@@ -105,9 +108,9 @@ const BybitVertical = () => {
           totalbtc={totalBTC}
           usedbtc={usedBTC}
         />
-      </TabPanel>
+      )}
     </div>
   );
-};
+});
 
 export default BybitVertical;

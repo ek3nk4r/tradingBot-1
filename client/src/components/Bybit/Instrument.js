@@ -3,20 +3,24 @@ import Orders from "./Orders";
 import Balance from "./Balance";
 
 const Instrument = React.memo((props) => {
-  console.log(props);
+  console.log("*****INSTRUMENT*****", props.orders);
+
   return (
-    <>
-      <Balance
-        availablebtc={props.availablebtc}
-        symbol={props.symbol}
-        totalbtc={props.totalbtc}
-        usedbtc={props.usedbtc}
-      />
-      {/* <Orders orders={props.orders} /> */}
+    <div>
+      {props.orders.length ? (
+        <Balance
+          availablebtc={props.availablebtc}
+          symbol={props.symbol}
+          totalbtc={props.totalbtc}
+          usedbtc={props.usedbtc}
+        />
+      ) : (
+        <></>
+      )}
       <div>
         {props.orders.length ? <Orders orders={props.orders} /> : <></>}
       </div>
-    </>
+    </div>
   );
 });
 

@@ -67,10 +67,26 @@ const columns = [
     minWidth: 100,
     align: "center",
   },
+  {
+    id: "id",
+    label: "ID",
+    minWidth: 100,
+    align: "center",
+  },
 ];
 
-const createData = (symbol, side, type, amount, cost, price, status, time) => {
-  return { symbol, side, type, amount, cost, price, status, time };
+const createData = (
+  symbol,
+  side,
+  type,
+  amount,
+  cost,
+  price,
+  status,
+  time,
+  id
+) => {
+  return { symbol, side, type, amount, cost, price, status, time, id };
 };
 
 const rows = [];
@@ -84,7 +100,8 @@ const useStyles = makeStyles({
   },
 });
 
-const Orders = (props) => {
+const Orders = React.memo((props) => {
+  console.log("*****ORDERS*****", props);
   //********************************/
   //**********Table Data************/
   props.orders.map((order) => {
@@ -97,7 +114,8 @@ const Orders = (props) => {
         order.cost,
         order.price,
         order.status,
-        order.datetime
+        order.datetime,
+        order.id
       )
     );
   });
@@ -109,10 +127,12 @@ const Orders = (props) => {
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
   const handleChangePage = (event, newPage) => {
+    event.preventDefault();
     setPage(newPage);
   };
 
   const handleChangeRowsPerPage = (event) => {
+    event.preventDefault();
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
@@ -167,6 +187,6 @@ const Orders = (props) => {
       />
     </Paper>
   );
-};
+});
 
 export default Orders;
