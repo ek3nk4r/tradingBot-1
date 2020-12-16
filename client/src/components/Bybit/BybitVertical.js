@@ -5,12 +5,12 @@ import axios from "axios";
 import Instrument from "./Instrument";
 import UseStyles from "./BybitUseStyles";
 import TabPanel from "./BybitTabPanel";
+import A11yProps from "./A11yProps";
 
 // material-ui
 import PropTypes from "prop-types";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
-import A11yProps from "./A11yProps";
 
 TabPanel.propTypes = {
   children: PropTypes.node,
@@ -20,45 +20,31 @@ TabPanel.propTypes = {
 
 A11yProps();
 
-const BybitVertical = React.memo(() => {
-  // ******************************************
-  // material_ui ******************************
-  const classes = UseStyles();
-  const [value, setValue] = React.useState(0);
-  const [symbol, setSymbol] = useState("");
-  const [orders, setOrders] = useState([]);
-
-  const handleChange = (event, newValue) => {
-    event.preventDefault();
-    setValue(newValue);
-    const { innerHTML } = event.target;
-
-    axios.post("/bybit/ticker", { name: innerHTML }).then((res) => {
-      const symbol = res.data[0];
-      const orders = res.data[1];
-
-      console.log("*****POST REQUEST*****", orders);
-
-      setSymbol(symbol);
-      setOrders(orders);
-    });
-  };
-  // material_ui ******************************
-  // ******************************************
-
-  console.log("*****BYBIT VERTICAL*****", orders);
-
+const BybitVertical = () => {
+  //  State ************************************************
+  // ************************************************************
   const [marketNames, setMarketNames] = useState([]);
   const [totalBTC, setTotalBTC] = useState(0);
   const [usedBTC, setUsedBTC] = useState(0);
   const [availableBTC, setAvailableBTC] = useState(0);
   const [balances, setBalances] = useState([]);
+  // ************************************************************
+  // ************************************************************
 
-  useEffect(() => {
-    console.log("*****FIRST RENDER*****");
+  //  API  calls ************************************************
+  // ************************************************************
+  const getTicker = (innerHTML) => {
+    axios.post("/bybit/ticker", { name: innerHTML }).then((res) => {
+      const symbol = res.data[0];
+      const orders = res.data[1];
 
+      setSymbol(symbol);
+      setOrders(orders);
+    });
+  };
+
+  const getTickers = () => {
     axios.get("/bybit/tickers").then((res) => {
-      console.log(res);
       const markets = res.data[1];
       const marketNames = Object.keys(markets)
         .map((key) => {
@@ -72,14 +58,36 @@ const BybitVertical = React.memo(() => {
       const availableBTC = res.data[3].free.BTC;
       const balances = res.data[3].info.result;
 
-      console.log(markets);
-
       setMarketNames(marketNames);
       setTotalBTC(totalBTC);
       setUsedBTC(usedBTC);
       setAvailableBTC(availableBTC);
       setBalances(balances);
     });
+  };
+  // ************************************************************
+  // ************************************************************
+
+  // material_ui ************************************************
+  // ************************************************************
+  const classes = UseStyles();
+  const [value, setValue] = React.useState(0);
+  const [symbol, setSymbol] = useState("");
+  const [orders, setOrders] = useState([]);
+
+  const handleChange = (event, newValue) => {
+    event.preventDefault();
+    setValue(newValue);
+    const { innerHTML } = event.target;
+
+    getTicker(innerHTML);
+  };
+  // ************************************************************
+  // ************************************************************
+
+  useEffect(() => {
+    console.log("*****FIRST RENDER*****");
+    getTickers();
   }, []);
 
   return (
@@ -98,8 +106,8 @@ const BybitVertical = React.memo(() => {
             })
           : 0}
       </Tabs>
-      <TabPanel value={value} index={value}></TabPanel>
-      {value === value && (
+      <TabPanel value={value} index={value}>
+        {" "}
         <Instrument
           balances={balances}
           availablebtc={availableBTC}
@@ -108,9 +116,9 @@ const BybitVertical = React.memo(() => {
           totalbtc={totalBTC}
           usedbtc={usedBTC}
         />
-      )}
+      </TabPanel>
     </div>
   );
-});
+};
 
 export default BybitVertical;

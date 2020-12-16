@@ -2,7 +2,6 @@ import React from "react";
 import "../../Assets/stylesheets/balance.css";
 
 const Balance = React.memo((props) => {
-  console.log(props);
   return (
     <div className="balance-container">
       <div>

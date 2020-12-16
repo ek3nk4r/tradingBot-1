@@ -3,8 +3,6 @@ import Orders from "./Orders";
 import Balance from "./Balance";
 
 const Instrument = React.memo((props) => {
-  console.log("*****INSTRUMENT*****", props.orders);
-
   return (
     <div>
       {props.orders.length ? (

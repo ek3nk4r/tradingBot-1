@@ -33,14 +33,14 @@ const App = (props) => {
         variant="scrollable"
         value={value}
         onChange={handleChange}
-        aria-label="Vertical tabs example"
+        aria-label="Vertical tabs"
         className={classes.tabs}
       >
         <Tab label="Bybit" />
-        <Tab label="Kraken" />
+        {/* <Tab label="Kraken" /> */}
       </Tabs>
       <TabPanel value={value} index={0}></TabPanel>
-      <TabPanel value={value} index={1}></TabPanel>
+      {/* <TabPanel value={value} index={1}></TabPanel> */}
       {value === 0 && <BybitVertical />}
       {/* {value === 1 && <Kraken />} */}
     </div>

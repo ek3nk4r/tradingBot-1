@@ -101,7 +101,6 @@ const useStyles = makeStyles({
 });
 
 const Orders = React.memo((props) => {
-  console.log("*****ORDERS*****", props);
   //********************************/
   //**********Table Data************/
   props.orders.map((order) => {
@@ -159,7 +158,7 @@ const Orders = React.memo((props) => {
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((row) => {
                 return (
-                  <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
+                  <TableRow hover role="checkbox" tabIndex={-1} key={row.id}>
                     {columns.map((column) => {
                       const value = row[column.id];
                       return (
