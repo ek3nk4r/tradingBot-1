@@ -19,8 +19,7 @@ router.get("/tickers", (req, res) => {
     const exchangeData = await bybit.has;
     const markets = await bybit.load_markets();
     const tickers = await bybit.fetchTickers();
-    const balance = await bybit.fetchBalance();
-    const bybitExchangeData = [exchangeData, markets, tickers, balance];
+    const bybitExchangeData = [exchangeData, markets, tickers];
     res.json(bybitExchangeData);
     // console.log("Bybit Exchange Data:", tickers);
   })();
@@ -35,7 +34,8 @@ router.post("/ticker", (req, res) => {
     const since = undefined;
     const limit = 150;
     const orders = await bybit.fetchClosedOrders(symbol, since, limit);
-    const bybitData = [symbol, orders];
+    const balance = await bybit.fetchBalance();
+    const bybitData = [symbol, orders, balance];
     res.json(bybitData);
     // console.log("node async bybit:", symbol, orders);
   })();

@@ -21,25 +21,58 @@ TabPanel.propTypes = {
 A11yProps();
 
 const BybitVertical = () => {
-  //  State ************************************************
+  // material_ui ************************************************
+  // ************************************************************
+  const classes = UseStyles();
+  const [value, setValue] = React.useState(0);
+
+  const handleChange = (event, newValue) => {
+    event.preventDefault();
+    setValue(newValue);
+    const { innerHTML } = event.target;
+    setSymbol(innerHTML);
+  };
+  // ************************************************************
+  // ************************************************************
+
+  // State ******************************************************
   // ************************************************************
   const [marketNames, setMarketNames] = useState([]);
   const [totalBTC, setTotalBTC] = useState(0);
   const [usedBTC, setUsedBTC] = useState(0);
   const [availableBTC, setAvailableBTC] = useState(0);
   const [balances, setBalances] = useState([]);
+  const [symbol, setSymbol] = useState("");
+  const [orders, setOrders] = useState([]);
   // ************************************************************
   // ************************************************************
 
   //  API  calls ************************************************
   // ************************************************************
-  const getTicker = (innerHTML) => {
-    axios.post("/bybit/ticker", { name: innerHTML }).then((res) => {
-      const symbol = res.data[0];
-      const orders = res.data[1];
+  const getTicker = (clickedSymbol) => {
+    axios.post("/bybit/ticker", { name: clickedSymbol }).then((res) => {
+      console.log(res);
+      const newSymbol = res.data[0];
+      const newOrders = [...res.data[1]];
+      const totalBTC = res.data[2].total.BTC;
+      const usedBTC = res.data[2].used.BTC;
+      const availableBTC = res.data[2].free.BTC;
+      const balances = res.data[2].info.result;
 
-      setSymbol(symbol);
-      setOrders(orders);
+      // console.log(newOrders);
+
+      setOrders(newOrders);
+      setTotalBTC(totalBTC);
+      setUsedBTC(usedBTC);
+      setAvailableBTC(availableBTC);
+      setBalances(balances);
+
+      if (symbol !== newSymbol) {
+        setSymbol(newSymbol);
+        // setOrders(newOrders);
+      } else if (symbol === newSymbol) {
+        return null;
+      }
     });
   };
 
@@ -53,40 +86,18 @@ const BybitVertical = () => {
         .map((market) => {
           return market.symbol;
         });
-      const totalBTC = res.data[3].total.BTC;
-      const usedBTC = res.data[3].used.BTC;
-      const availableBTC = res.data[3].free.BTC;
-      const balances = res.data[3].info.result;
 
       setMarketNames(marketNames);
-      setTotalBTC(totalBTC);
-      setUsedBTC(usedBTC);
-      setAvailableBTC(availableBTC);
-      setBalances(balances);
     });
   };
   // ************************************************************
   // ************************************************************
 
-  // material_ui ************************************************
-  // ************************************************************
-  const classes = UseStyles();
-  const [value, setValue] = React.useState(0);
-  const [symbol, setSymbol] = useState("");
-  const [orders, setOrders] = useState([]);
-
-  const handleChange = (event, newValue) => {
-    event.preventDefault();
-    setValue(newValue);
-    const { innerHTML } = event.target;
-
-    getTicker(innerHTML);
-  };
-  // ************************************************************
-  // ************************************************************
+  useEffect(() => {
+    getTicker(symbol);
+  }, [symbol]);
 
   useEffect(() => {
-    console.log("*****FIRST RENDER*****");
     getTickers();
   }, []);
 
