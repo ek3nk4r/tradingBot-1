@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useReducer } from "react";
 import axios from "axios";
 
 //  Components
@@ -20,7 +20,47 @@ TabPanel.propTypes = {
 
 A11yProps();
 
+// ************************************************************
+// useReducer *************************************************
+// const initialOrders = [];
+
+// const ordersReducer = (state, action) => {
+//   switch (action) {
+//     case "CALL_API":
+//       return state.map((todo) => {
+//         if (todo.id === action.id) {
+//           return { ...todo, complete: true };
+//         } else {
+//           return todo;
+//         }
+//       });
+//     case "DO_NOTHING":
+//       return state.map((todo) => {
+//         if (todo.id === action.id) {
+//           return { ...todo, complete: false };
+//         } else {
+//           return todo;
+//         }
+//       });
+//     default:
+//       return state;
+//   }
+// };
+// ************************************************************
+// ************************************************************
+
 const BybitVertical = () => {
+  // State ******************************************************
+  // ************************************************************
+  const [marketNames, setMarketNames] = useState([]);
+  const [totalBTC, setTotalBTC] = useState(0);
+  const [usedBTC, setUsedBTC] = useState(0);
+  const [availableBTC, setAvailableBTC] = useState(0);
+  const [balances, setBalances] = useState([]);
+  const [symbol, setSymbol] = useState("");
+  const [orders, setOrders] = useState([]);
+  // ************************************************************
+  // ************************************************************
   // material_ui ************************************************
   // ************************************************************
   const classes = UseStyles();
@@ -34,19 +74,6 @@ const BybitVertical = () => {
   };
   // ************************************************************
   // ************************************************************
-
-  // State ******************************************************
-  // ************************************************************
-  const [marketNames, setMarketNames] = useState([]);
-  const [totalBTC, setTotalBTC] = useState(0);
-  const [usedBTC, setUsedBTC] = useState(0);
-  const [availableBTC, setAvailableBTC] = useState(0);
-  const [balances, setBalances] = useState([]);
-  const [symbol, setSymbol] = useState("");
-  const [orders, setOrders] = useState([]);
-  // ************************************************************
-  // ************************************************************
-
   //  API  calls ************************************************
   // ************************************************************
   const getTicker = (clickedSymbol) => {
