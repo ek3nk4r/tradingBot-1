@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useReducer } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 //  Components
@@ -20,48 +20,23 @@ TabPanel.propTypes = {
 
 A11yProps();
 
-// ************************************************************
-// useReducer *************************************************
-// const initialOrders = [];
+const BybitVertical = (props) => {
+  const initialOrders = [];
 
-// const ordersReducer = (state, action) => {
-//   switch (action) {
-//     case "CALL_API":
-//       return state.map((todo) => {
-//         if (todo.id === action.id) {
-//           return { ...todo, complete: true };
-//         } else {
-//           return todo;
-//         }
-//       });
-//     case "DO_NOTHING":
-//       return state.map((todo) => {
-//         if (todo.id === action.id) {
-//           return { ...todo, complete: false };
-//         } else {
-//           return todo;
-//         }
-//       });
-//     default:
-//       return state;
-//   }
-// };
-// ************************************************************
-// ************************************************************
-
-const BybitVertical = () => {
-  // State ******************************************************
+  // **** STATE *************************************************
   // ************************************************************
-  const [marketNames, setMarketNames] = useState([]);
-  const [totalBTC, setTotalBTC] = useState(0);
-  const [usedBTC, setUsedBTC] = useState(0);
-  const [availableBTC, setAvailableBTC] = useState(0);
-  const [balances, setBalances] = useState([]);
+  const [btcBalance, setBtcBalance] = useState({
+    totalBTC: 0,
+    usedBTC: 0,
+    availableBTC: 0,
+  });
+  const [balances, setBalances] = useState(0);
   const [symbol, setSymbol] = useState("");
-  const [orders, setOrders] = useState([]);
+  const [orders, setOrders] = useState([...initialOrders]);
   // ************************************************************
   // ************************************************************
-  // material_ui ************************************************
+
+  // **** material_ui *******************************************
   // ************************************************************
   const classes = UseStyles();
   const [value, setValue] = React.useState(0);
@@ -70,52 +45,11 @@ const BybitVertical = () => {
     event.preventDefault();
     setValue(newValue);
     const { innerHTML } = event.target;
-    setSymbol(innerHTML);
-  };
-  // ************************************************************
-  // ************************************************************
-  //  API  calls ************************************************
-  // ************************************************************
-  const getTicker = (clickedSymbol) => {
-    axios.post("/bybit/ticker", { name: clickedSymbol }).then((res) => {
-      console.log(res);
-      const newSymbol = res.data[0];
-      const newOrders = [...res.data[1]];
-      const totalBTC = res.data[2].total.BTC;
-      const usedBTC = res.data[2].used.BTC;
-      const availableBTC = res.data[2].free.BTC;
-      const balances = res.data[2].info.result;
-
-      // console.log(newOrders);
-
-      setOrders(newOrders);
-      setTotalBTC(totalBTC);
-      setUsedBTC(usedBTC);
-      setAvailableBTC(availableBTC);
-      setBalances(balances);
-
-      if (symbol !== newSymbol) {
-        setSymbol(newSymbol);
-        // setOrders(newOrders);
-      } else if (symbol === newSymbol) {
-        return null;
-      }
-    });
-  };
-
-  const getTickers = () => {
-    axios.get("/bybit/tickers").then((res) => {
-      const markets = res.data[1];
-      const marketNames = Object.keys(markets)
-        .map((key) => {
-          return markets[key];
-        })
-        .map((market) => {
-          return market.symbol;
-        });
-
-      setMarketNames(marketNames);
-    });
+    if (innerHTML !== symbol) {
+      return setSymbol(innerHTML);
+    } else {
+      return null;
+    }
   };
   // ************************************************************
   // ************************************************************
@@ -124,9 +58,30 @@ const BybitVertical = () => {
     getTicker(symbol);
   }, [symbol]);
 
-  useEffect(() => {
-    getTickers();
-  }, []);
+  // **** API CALL *********************************************
+  // ************************************************************
+  const getTicker = (clickedSymbol) => {
+    axios.post("/bybit/ticker", { name: clickedSymbol }).then((res) => {
+      const newOrders = [...res.data[1]];
+      const totalBTC = res.data[2].total.BTC;
+      const usedBTC = res.data[2].used.BTC;
+      const availableBTC = res.data[2].free.BTC;
+      const balances = res.data[2].info.result;
+
+      console.log(balances);
+
+      setOrders(newOrders);
+      setBtcBalance({
+        ...btcBalance,
+        totalBTC: 0,
+        usedBTC: 0,
+        availableBTC: 0,
+      });
+      setBalances(balances);
+    });
+  };
+  // ************************************************************
+  // ************************************************************
 
   return (
     <div className={classes.root}>
@@ -138,8 +93,8 @@ const BybitVertical = () => {
         aria-label="Vertical tabs"
         className={classes.tabs}
       >
-        {marketNames.length
-          ? marketNames.map((market, index) => {
+        {props.marketNames.length
+          ? props.marketNames.map((market, index) => {
               return <Tab key={index} label={market} {...A11yProps(index)} />;
             })
           : 0}
@@ -147,12 +102,10 @@ const BybitVertical = () => {
       <TabPanel value={value} index={value}>
         {" "}
         <Instrument
-          balances={balances}
-          availablebtc={availableBTC}
+          btcBalance={btcBalance}
           orders={orders}
           symbol={symbol}
-          totalbtc={totalBTC}
-          usedbtc={usedBTC}
+          balances={balances}
         />
       </TabPanel>
     </div>

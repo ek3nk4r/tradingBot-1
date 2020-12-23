@@ -103,6 +103,7 @@ const useStyles = makeStyles({
 const Orders = React.memo((props) => {
   //********************************/
   //**********Table Data************/
+  rows.length = 0;
   props.orders.map((order) => {
     return rows.push(
       createData(

@@ -5,7 +5,13 @@ import Balance from "./Balance";
 const Instrument = React.memo((props) => {
   return (
     <div>
-      {props.orders.length ? (
+      {/* <Balance
+        availablebtc={props.availablebtc}
+        symbol={props.symbol}
+        totalbtc={props.totalbtc}
+        usedbtc={props.usedbtc}
+      /> */}
+      {props.symbol ? (
         <Balance
           availablebtc={props.availablebtc}
           symbol={props.symbol}
