@@ -59,7 +59,6 @@ router.post("/balances", (req, res) => {
       const balance = await bybit.fetchBalance();
       const balanceData = [balance];
       res.json(balanceData);
-      console.log("node async bybit:", balance);
     } catch (err) {
       console.error(err);
       return {};

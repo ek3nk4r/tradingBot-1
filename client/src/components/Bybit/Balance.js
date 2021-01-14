@@ -24,7 +24,21 @@ const Balance = React.memo((props) => {
         console.log(res);
         const balances = res.data[0];
 
-        setBalances(balances);
+        let coin;
+        if (symbol.includes("/")) {
+          coin = symbol.slice(0, symbol.indexOf("/"));
+        } else {
+          coin = symbol;
+        }
+
+        let balance;
+        if (balances.free.hasOwnProperty(coin) === true) {
+          balance = balances.free[coin];
+        } else {
+          balance = 0;
+        }
+
+        setBalances(balance);
       })
       .catch((err) => {
         console.log("Error is: ", err);
@@ -34,8 +48,6 @@ const Balance = React.memo((props) => {
   useEffect(() => {
     getBalance(symbol);
   }, [symbol]);
-
-  console.log(balances);
 
   return (
     <div className="balance-container">
