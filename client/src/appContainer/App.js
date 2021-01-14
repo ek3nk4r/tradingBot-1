@@ -30,20 +30,25 @@ const App = (props) => {
   const [marketNames, setMarketNames] = useState([]);
 
   const getTickers = () => {
-    axios.get("/bybit/tickers").then((res) => {
-      // console.log("***** TICKERS RESPONSE *****", res);
-      const markets = res.data[1];
-      const marketNames = Object.keys(markets)
-        .map((key) => {
-          return markets[key];
-        })
-        .map((market) => {
-          return market.symbol;
-        });
+    axios
+      .get("/bybit/tickers")
+      .then((res) => {
+        // console.log("***** TICKERS RESPONSE *****", res);
+        const markets = res.data[1];
+        const marketNames = Object.keys(markets)
+          .map((key) => {
+            return markets[key];
+          })
+          .map((market) => {
+            return market.symbol;
+          });
 
-      setMarketNames(marketNames);
-      // console.log("***** TICKERS MARKET NAMES *****", marketNames);
-    });
+        setMarketNames(marketNames);
+        // console.log("***** TICKERS MARKET NAMES *****", marketNames);
+      })
+      .catch((err) => {
+        console.log("Error is: ", err);
+      });
   };
 
   useEffect(() => {

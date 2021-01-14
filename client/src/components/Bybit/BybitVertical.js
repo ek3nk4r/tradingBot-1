@@ -25,12 +25,12 @@ const BybitVertical = (props) => {
 
   // **** STATE *************************************************
   // ************************************************************
-  const [btcBalance, setBtcBalance] = useState({
-    totalBTC: 0,
-    usedBTC: 0,
-    availableBTC: 0,
-  });
-  const [balances, setBalances] = useState(0);
+  // const [btcBalance, setBtcBalance] = useState({
+  //   totalBTC: 0,
+  //   usedBTC: 0,
+  //   availableBTC: 0,
+  // });
+  const [balances, setBalances] = useState([]);
   const [symbol, setSymbol] = useState("");
   const [orders, setOrders] = useState([...initialOrders]);
   // ************************************************************
@@ -54,34 +54,40 @@ const BybitVertical = (props) => {
   // ************************************************************
   // ************************************************************
 
-  useEffect(() => {
-    getTicker(symbol);
-  }, [symbol]);
-
   // **** API CALL *********************************************
   // ************************************************************
   const getTicker = (clickedSymbol) => {
-    axios.post("/bybit/ticker", { name: clickedSymbol }).then((res) => {
-      const newOrders = [...res.data[1]];
-      const totalBTC = res.data[2].total.BTC;
-      const usedBTC = res.data[2].used.BTC;
-      const availableBTC = res.data[2].free.BTC;
-      const balances = res.data[2].info.result;
+    axios
+      .post("/bybit/ticker", { name: clickedSymbol })
+      .then((res) => {
+        console.log(res);
+        const newOrders = [...res.data[1]];
+        // const totalBTC = res.data[2].total.BTC;
+        // const usedBTC = res.data[2].used.BTC;
+        // const availableBTC = res.data[2].free.BTC;
+        const balances = res.data[2].info.result;
 
-      console.log(balances);
+        console.log(typeof balances);
 
-      setOrders(newOrders);
-      setBtcBalance({
-        ...btcBalance,
-        totalBTC: 0,
-        usedBTC: 0,
-        availableBTC: 0,
+        setOrders(newOrders);
+        // setBtcBalance({
+        //   ...btcBalance,
+        //   totalBTC: 0,
+        //   usedBTC: 0,
+        //   availableBTC: 0,
+        // });
+        setBalances(balances);
+      })
+      .catch((err) => {
+        console.log("Error is: ", err);
       });
-      setBalances(balances);
-    });
   };
   // ************************************************************
   // ************************************************************
+
+  useEffect(() => {
+    getTicker(symbol);
+  }, [symbol]);
 
   return (
     <div className={classes.root}>
@@ -102,7 +108,7 @@ const BybitVertical = (props) => {
       <TabPanel value={value} index={value}>
         {" "}
         <Instrument
-          btcBalance={btcBalance}
+          // btcBalance={btcBalance}
           orders={orders}
           symbol={symbol}
           balances={balances}

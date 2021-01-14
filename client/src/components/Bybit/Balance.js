@@ -2,6 +2,16 @@ import React from "react";
 import "../../Assets/stylesheets/balance.css";
 
 const Balance = React.memo((props) => {
+  console.log(props);
+  // const {
+  //   wallet_balance,
+  //   available_balance,
+  //   used_margin,
+  //   cum_realised_pnl,
+  //   unrealised_pnl,
+  //   used_margin,
+  // } = props;
+
   return (
     <div className="balance-container">
       <div>

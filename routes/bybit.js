@@ -16,12 +16,17 @@ bybit.urls["api"] = bybit.urls["test"];
 
 router.get("/tickers", (req, res) => {
   (async function () {
-    const exchangeData = await bybit.has;
-    const markets = await bybit.load_markets();
-    const tickers = await bybit.fetchTickers();
-    const bybitExchangeData = [exchangeData, markets, tickers];
-    res.json(bybitExchangeData);
-    // console.log("Bybit Exchange Data:", tickers);
+    try {
+      const exchangeData = await bybit.has;
+      const markets = await bybit.load_markets();
+      const tickers = await bybit.fetchTickers();
+      const bybitExchangeData = [exchangeData, markets, tickers];
+      res.json(bybitExchangeData);
+      // console.log("Bybit Exchange Data:", tickers);
+    } catch (err) {
+      console.error(err);
+      return {};
+    }
   })();
 });
 
@@ -33,11 +38,16 @@ router.post("/ticker", (req, res) => {
     const symbol = tickerSymbol;
     const since = undefined;
     const limit = 150;
-    const orders = await bybit.fetchClosedOrders(symbol, since, limit);
-    const balance = await bybit.fetchBalance();
-    const bybitData = [symbol, orders, balance];
-    res.json(bybitData);
-    // console.log("node async bybit:", symbol, orders);
+    try {
+      const orders = await bybit.fetchClosedOrders(symbol, since, limit);
+      const balance = await bybit.fetchBalance();
+      const bybitData = [symbol, orders, balance];
+      res.json(bybitData);
+      // console.log("node async bybit:", symbol, orders);
+    } catch (err) {
+      console.error(err);
+      return {};
+    }
   })();
 });
 
@@ -49,45 +59,65 @@ router.post("/webHookBybit", (req, res) => {
 
   if (webHook === "buy") {
     (async function () {
-      const balance = await bybit.fetchBalance();
-      const ticker = await bybit.fetchTicker("BTC/USD");
-      const instrument = "BTC/USD";
-      const price = ticker.ask;
-      const amount = balance.free.BTC * 0.01 * price;
-      const order = await bybit.createMarketBuyOrder(instrument, amount);
+      try {
+        const balance = await bybit.fetchBalance();
+        const ticker = await bybit.fetchTicker("BTC/USD");
+        const instrument = "BTC/USD";
+        const price = ticker.ask;
+        const amount = balance.free.BTC * 0.01 * price;
+        const order = await bybit.createMarketBuyOrder(instrument, amount);
 
-      console.log("BYBIT:", "SUCCESSFUL LONG OPENED");
+        console.log("BYBIT:", "SUCCESSFUL LONG OPENED");
+      } catch (err) {
+        console.error(err);
+        return {};
+      }
     })();
   } else if (webHook === "sell") {
     (async function () {
-      const balance = await bybit.fetchBalance();
-      const ticker = await bybit.fetchTicker("BTC/USD");
-      const instrument = "BTC/USD";
-      const price = ticker.ask;
-      const amount = balance.free.BTC * 0.01 * price;
-      const order = await bybit.createMarketSellOrder(instrument, amount);
+      try {
+        const balance = await bybit.fetchBalance();
+        const ticker = await bybit.fetchTicker("BTC/USD");
+        const instrument = "BTC/USD";
+        const price = ticker.ask;
+        const amount = balance.free.BTC * 0.01 * price;
+        const order = await bybit.createMarketSellOrder(instrument, amount);
 
-      console.log("BYBIT:", "SUCCESSFUL SHORT OPENED");
+        console.log("BYBIT:", "SUCCESSFUL SHORT OPENED");
+      } catch (err) {
+        console.error(err);
+        return {};
+      }
     })();
   } else if (webHook === "close buy") {
     (async function () {
-      const executions = await bybit.privateGetPositionList({
-        symbol: "BTCUSD",
-      });
-      const instrument = "BTC/USD";
-      const amount = executions.result.size;
-      const order = await bybit.createMarketSellOrder(instrument, amount);
-      console.log("BYBIT:", "BUY ORDERS CLOSED SUCCESSFULLY");
+      try {
+        const executions = await bybit.privateGetPositionList({
+          symbol: "BTCUSD",
+        });
+        const instrument = "BTC/USD";
+        const amount = executions.result.size;
+        const order = await bybit.createMarketSellOrder(instrument, amount);
+        console.log("BYBIT:", "BUY ORDERS CLOSED SUCCESSFULLY");
+      } catch (err) {
+        console.error(err);
+        return {};
+      }
     })();
   } else if (webHook === "close sell") {
     (async function () {
-      const positions = await bybit.privateGetPositionList({
-        symbol: "BTCUSD",
-      });
-      const instrument = "BTC/USD";
-      const amount = positions.result.size;
-      const order = await bybit.createMarketBuyOrder(instrument, amount);
-      console.log("BYBIT:", "SELL ORDERS CLOSED SUCCESSFULLY");
+      try {
+        const positions = await bybit.privateGetPositionList({
+          symbol: "BTCUSD",
+        });
+        const instrument = "BTC/USD";
+        const amount = positions.result.size;
+        const order = await bybit.createMarketBuyOrder(instrument, amount);
+        console.log("BYBIT:", "SELL ORDERS CLOSED SUCCESSFULLY");
+      } catch (err) {
+        console.error(err);
+        return {};
+      }
     })();
   }
 });
