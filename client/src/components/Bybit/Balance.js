@@ -6,14 +6,6 @@ const Balance = React.memo((props) => {
   console.log(props);
 
   const { symbol } = props;
-  // const {
-  //   wallet_balance,
-  //   available_balance,
-  //   used_margin,
-  //   cum_realised_pnl,
-  //   unrealised_pnl,
-  //   used_margin,
-  // } = props;
 
   const [balance, setBalance] = useState([]);
   const [available, setAvailable] = useState([]);
@@ -23,10 +15,7 @@ const Balance = React.memo((props) => {
     axios
       .post("/bybit/balances", { name: symbol })
       .then((res) => {
-        console.log(res);
         const balances = res.data[0];
-
-        console.log(balances);
 
         let coin;
         if (symbol.includes("/")) {
@@ -60,10 +49,6 @@ const Balance = React.memo((props) => {
   useEffect(() => {
     getBalance(symbol);
   }, [symbol]);
-
-  console.log(balance);
-  console.log(available);
-  console.log(used);
 
   return (
     <div className="balance-container">
