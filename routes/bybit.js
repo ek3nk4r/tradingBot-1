@@ -72,67 +72,95 @@ router.post("/webHookBybit", (req, res) => {
   res.json(webHook);
   res.status(200).end();
 
+  const buy = async () => {
+    let count = 0;
+    try {
+      const balance = await bybit.fetchBalance();
+      const ticker = await bybit.fetchTicker("BTC/USD");
+      const instrument = "BTC/USD";
+      const price = ticker.ask;
+      const amount = balance.free.BTC * 0.01 * price;
+      const order = await bybit.createMarketBuyOrder(instrument, amount);
+
+      console.log("BYBIT:", "SUCCESSFUL LONG OPENED");
+    } catch (err) {
+      console.error(err);
+      if (count < 10) {
+        count++;
+        return await buy();
+      } else {
+        console.log("Max Order Attempts - Try again on he next one!");
+      }
+    }
+  };
+
+  const closeBuy = async () => {
+    try {
+      const executions = await bybit.privateGetPositionList({
+        symbol: "BTCUSD",
+      });
+      const instrument = "BTC/USD";
+      const amount = executions.result.size;
+      const order = await bybit.createMarketSellOrder(instrument, amount);
+      console.log("BYBIT:", "BUY ORDERS CLOSED SUCCESSFULLY");
+    } catch (err) {
+      console.error(err);
+      return await closeBuy();
+    }
+  };
+
+  const sell = async () => {
+    let count = 0;
+    try {
+      const balance = await bybit.fetchBalance();
+      const ticker = await bybit.fetchTicker("BTC/USD");
+      const instrument = "BTC/USD";
+      const price = ticker.ask;
+      const amount = balance.free.BTC * 0.01 * price;
+      const order = await bybit.createMarketSellOrder(instrument, amount);
+
+      console.log("BYBIT:", "SUCCESSFUL SHORT OPENED");
+    } catch (err) {
+      console.error(err);
+      if (count < 10) {
+        count++;
+        return await sell();
+      } else {
+        console.log("Max Order Attempts - Try again on he next one!");
+      }
+    }
+  };
+
+  const closeSell = async () => {
+    try {
+      const positions = await bybit.privateGetPositionList({
+        symbol: "BTCUSD",
+      });
+      const instrument = "BTC/USD";
+      const amount = positions.result.size;
+      const order = await bybit.createMarketBuyOrder(instrument, amount);
+      console.log("BYBIT:", "SELL ORDERS CLOSED SUCCESSFULLY");
+    } catch (err) {
+      console.error(err);
+      return await closeSell();
+    }
+  };
+
   if (webHook === "buy") {
     (async function () {
-      try {
-        const balance = await bybit.fetchBalance();
-        const ticker = await bybit.fetchTicker("BTC/USD");
-        const instrument = "BTC/USD";
-        const price = ticker.ask;
-        const amount = balance.free.BTC * 0.01 * price;
-        const order = await bybit.createMarketBuyOrder(instrument, amount);
-
-        console.log("BYBIT:", "SUCCESSFUL LONG OPENED");
-      } catch (err) {
-        console.error(err);
-        return {};
-      }
+      buy();
     })();
   } else if (webHook === "sell") {
     (async function () {
-      try {
-        const balance = await bybit.fetchBalance();
-        const ticker = await bybit.fetchTicker("BTC/USD");
-        const instrument = "BTC/USD";
-        const price = ticker.ask;
-        const amount = balance.free.BTC * 0.01 * price;
-        const order = await bybit.createMarketSellOrder(instrument, amount);
-
-        console.log("BYBIT:", "SUCCESSFUL SHORT OPENED");
-      } catch (err) {
-        console.error(err);
-        return {};
-      }
+      sell();
     })();
   } else if (webHook === "close buy") {
     (async function () {
-      try {
-        const executions = await bybit.privateGetPositionList({
-          symbol: "BTCUSD",
-        });
-        const instrument = "BTC/USD";
-        const amount = executions.result.size;
-        const order = await bybit.createMarketSellOrder(instrument, amount);
-        console.log("BYBIT:", "BUY ORDERS CLOSED SUCCESSFULLY");
-      } catch (err) {
-        console.error(err);
-        return {};
-      }
+      closeBuy();
     })();
   } else if (webHook === "close sell") {
     (async function () {
-      try {
-        const positions = await bybit.privateGetPositionList({
-          symbol: "BTCUSD",
-        });
-        const instrument = "BTC/USD";
-        const amount = positions.result.size;
-        const order = await bybit.createMarketBuyOrder(instrument, amount);
-        console.log("BYBIT:", "SELL ORDERS CLOSED SUCCESSFULLY");
-      } catch (err) {
-        // console.error(err);
-        return {};
-      }
+      closeSell();
     })();
   }
 });
