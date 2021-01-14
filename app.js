@@ -60,7 +60,7 @@ app.use("/", index);
 const bybitRoutes = require("./routes/bybit");
 app.use("/bybit", bybitRoutes);
 app.use("/webHookBybit", bybitRoutes);
-app.use("/marketBuy", bybitRoutes);
+// app.use("/marketBuy", bybitRoutes);
 
 // const krakenRoutes = require("./routes/kraken");
 // app.use("/kraken", krakenRoutes);

@@ -56,9 +56,9 @@ const BybitVertical = (props) => {
 
   // **** API CALL *********************************************
   // ************************************************************
-  const getTicker = (clickedSymbol) => {
+  const getClosedOrders = (clickedSymbol) => {
     axios
-      .post("/bybit/ticker", { name: clickedSymbol })
+      .post("/bybit/closedOrders", { name: clickedSymbol })
       .then((res) => {
         console.log(res);
         const newOrders = [...res.data[1]];
@@ -86,7 +86,7 @@ const BybitVertical = (props) => {
   // ************************************************************
 
   useEffect(() => {
-    getTicker(symbol);
+    getClosedOrders(symbol);
   }, [symbol]);
 
   return (

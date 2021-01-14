@@ -6,12 +6,12 @@ const Instrument = React.memo((props) => {
   console.log(props);
   return (
     <div>
-      {/* <Balance
+      <Balance
         availablebtc={props.availablebtc}
         symbol={props.symbol}
         totalbtc={props.totalbtc}
         usedbtc={props.usedbtc}
-      /> */}
+      />
       {/* {props.balances.length ? (
         props.balances.filter((el) => {
           console.log(el);

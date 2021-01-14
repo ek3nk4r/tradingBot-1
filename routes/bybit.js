@@ -30,7 +30,7 @@ router.get("/tickers", (req, res) => {
   })();
 });
 
-router.post("/ticker", (req, res) => {
+router.post("/closedOrders", (req, res) => {
   const tickerSymbol = req.body.name;
   // console.log("TICKER SYMBOL-------", tickerSymbol);
 
