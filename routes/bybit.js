@@ -40,10 +40,26 @@ router.post("/closedOrders", (req, res) => {
     const limit = 150;
     try {
       const orders = await bybit.fetchClosedOrders(symbol, since, limit);
+      const closedOrderData = [symbol, orders];
+      res.json(closedOrderData);
+      // console.log("node async bybit:", orders);
+    } catch (err) {
+      console.error(err);
+      return {};
+    }
+  })();
+});
+
+router.post("/balances", (req, res) => {
+  const tickerSymbol = req.body.name;
+  // console.log("TICKER SYMBOL-------", tickerSymbol);
+
+  (async function () {
+    try {
       const balance = await bybit.fetchBalance();
-      const bybitData = [symbol, orders, balance];
-      res.json(bybitData);
-      // console.log("node async bybit:", symbol, orders);
+      const balanceData = [balance];
+      res.json(balanceData);
+      console.log("node async bybit:", balance);
     } catch (err) {
       console.error(err);
       return {};

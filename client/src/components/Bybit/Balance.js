@@ -1,8 +1,11 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import "../../Assets/stylesheets/balance.css";
 
 const Balance = React.memo((props) => {
   console.log(props);
+
+  const { symbol } = props;
   // const {
   //   wallet_balance,
   //   available_balance,
@@ -11,6 +14,28 @@ const Balance = React.memo((props) => {
   //   unrealised_pnl,
   //   used_margin,
   // } = props;
+
+  const [balances, setBalances] = useState([]);
+
+  const getBalance = (symbol) => {
+    axios
+      .post("/bybit/balances", { name: symbol })
+      .then((res) => {
+        console.log(res);
+        const balances = res.data[0];
+
+        setBalances(balances);
+      })
+      .catch((err) => {
+        console.log("Error is: ", err);
+      });
+  };
+
+  useEffect(() => {
+    getBalance(symbol);
+  }, [symbol]);
+
+  console.log(balances);
 
   return (
     <div className="balance-container">

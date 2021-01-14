@@ -1,5 +1,3 @@
-import React from "react";
-
 const A11yProps = (index) => {
   return {
     id: `vertical-tab-${index}`,

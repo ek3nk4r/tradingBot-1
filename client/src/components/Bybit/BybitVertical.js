@@ -30,7 +30,7 @@ const BybitVertical = (props) => {
   //   usedBTC: 0,
   //   availableBTC: 0,
   // });
-  const [balances, setBalances] = useState([]);
+
   const [symbol, setSymbol] = useState("");
   const [orders, setOrders] = useState([...initialOrders]);
   // ************************************************************
@@ -62,21 +62,8 @@ const BybitVertical = (props) => {
       .then((res) => {
         console.log(res);
         const newOrders = [...res.data[1]];
-        // const totalBTC = res.data[2].total.BTC;
-        // const usedBTC = res.data[2].used.BTC;
-        // const availableBTC = res.data[2].free.BTC;
-        const balances = res.data[2].info.result;
-
-        console.log(typeof balances);
 
         setOrders(newOrders);
-        // setBtcBalance({
-        //   ...btcBalance,
-        //   totalBTC: 0,
-        //   usedBTC: 0,
-        //   availableBTC: 0,
-        // });
-        setBalances(balances);
       })
       .catch((err) => {
         console.log("Error is: ", err);
@@ -111,7 +98,6 @@ const BybitVertical = (props) => {
           // btcBalance={btcBalance}
           orders={orders}
           symbol={symbol}
-          balances={balances}
         />
       </TabPanel>
     </div>
