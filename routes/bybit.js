@@ -115,7 +115,7 @@ router.post("/webHookBybit", (req, res) => {
         const order = await bybit.createMarketBuyOrder(instrument, amount);
         console.log("BYBIT:", "SELL ORDERS CLOSED SUCCESSFULLY");
       } catch (err) {
-        console.error(err);
+        // console.error(err);
         return {};
       }
     })();
