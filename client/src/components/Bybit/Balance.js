@@ -15,7 +15,9 @@ const Balance = React.memo((props) => {
   //   used_margin,
   // } = props;
 
-  const [balances, setBalances] = useState([]);
+  const [balance, setBalance] = useState([]);
+  const [available, setAvailable] = useState([]);
+  const [used, setUsed] = useState([]);
 
   const getBalance = (symbol) => {
     axios
@@ -23,6 +25,8 @@ const Balance = React.memo((props) => {
       .then((res) => {
         console.log(res);
         const balances = res.data[0];
+
+        console.log(balances);
 
         let coin;
         if (symbol.includes("/")) {
@@ -32,13 +36,21 @@ const Balance = React.memo((props) => {
         }
 
         let balance;
+        let available;
+        let used;
         if (balances.free.hasOwnProperty(coin) === true) {
-          balance = balances.free[coin];
+          balance = balances.total[coin];
+          available = balances.free[coin];
+          used = balances.used[coin];
         } else {
           balance = 0;
+          available = 0;
+          used = 0;
         }
 
-        setBalances(balance);
+        setBalance(balance);
+        setAvailable(available);
+        setUsed(used);
       })
       .catch((err) => {
         console.log("Error is: ", err);
@@ -49,15 +61,19 @@ const Balance = React.memo((props) => {
     getBalance(symbol);
   }, [symbol]);
 
+  console.log(balance);
+  console.log(available);
+  console.log(used);
+
   return (
     <div className="balance-container">
       <div>
         <div className="instrument-name">{props.symbol}</div>
       </div>
       <div className="balance-data">
-        <div> Total: {props.totalbtc} </div>
-        <div> Available: {props.availablebtc} </div>
-        <div> Used: {props.usedbtc} </div>
+        <div> Total: {balance} </div>
+        <div> Available: {available} </div>
+        <div> Used: {used} </div>
       </div>
     </div>
   );
