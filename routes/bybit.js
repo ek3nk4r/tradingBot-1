@@ -10,8 +10,6 @@ var bybit = new ccxt.bybit({
   // secret: process.env.BYBIT_API_SECRET,
 });
 
-// console.log(bybit.has);
-
 bybit.urls["api"] = bybit.urls["test"];
 
 router.get("/tickers", (req, res) => {
@@ -32,17 +30,16 @@ router.get("/tickers", (req, res) => {
 
 router.post("/closedOrders", (req, res) => {
   const tickerSymbol = req.body.name;
-  // console.log("TICKER SYMBOL-------", tickerSymbol);
 
   (async function () {
     const symbol = tickerSymbol;
     const since = undefined;
     const limit = 150;
+    let count = 0;
     try {
       const orders = await bybit.fetchClosedOrders(symbol, since, limit);
       const closedOrderData = [symbol, orders];
       res.json(closedOrderData);
-      // console.log("node async bybit:", orders);
     } catch (err) {
       console.error(err);
       return {};
@@ -51,19 +48,24 @@ router.post("/closedOrders", (req, res) => {
 });
 
 router.post("/balances", (req, res) => {
-  const tickerSymbol = req.body.name;
-  // console.log("TICKER SYMBOL-------", tickerSymbol);
-
-  (async function () {
+  const balances = async () => {
+    let count = 0;
     try {
       const balance = await bybit.fetchBalance();
       const balanceData = [balance];
       res.json(balanceData);
     } catch (err) {
-      console.error(err);
-      return {};
+      if (count <= 10) {
+        count++;
+        return await balances();
+      } else {
+        console.log("Max Balance Requests Attempts - Try later!");
+        return;
+      }
     }
-  })();
+  };
+
+  balances();
 });
 
 router.post("/webHookBybit", (req, res) => {
@@ -85,7 +87,7 @@ router.post("/webHookBybit", (req, res) => {
       console.log("BYBIT:", "SUCCESSFUL LONG OPENED");
     } catch (err) {
       console.error(err);
-      if (count < 10) {
+      if (count <= 10) {
         count++;
         return await buy();
       } else {
@@ -122,7 +124,7 @@ router.post("/webHookBybit", (req, res) => {
       console.log("BYBIT:", "SUCCESSFUL SHORT OPENED");
     } catch (err) {
       console.error(err);
-      if (count < 10) {
+      if (count <= 10) {
         count++;
         return await sell();
       } else {
