@@ -33,7 +33,6 @@ const App = (props) => {
     axios
       .get("/bybit/tickers")
       .then((res) => {
-        // console.log("***** TICKERS RESPONSE *****", res);
         const markets = res.data[1];
         const marketNames = Object.keys(markets)
           .map((key) => {
@@ -44,7 +43,6 @@ const App = (props) => {
           });
 
         setMarketNames(marketNames);
-        // console.log("***** TICKERS MARKET NAMES *****", marketNames);
       })
       .catch((err) => {
         console.log("Error is: ", err);
@@ -53,7 +51,6 @@ const App = (props) => {
 
   useEffect(() => {
     getTickers();
-    // console.log("***** useEffect marketNames *****", marketNames);
   }, []);
 
   return (
