@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 // components
-import BybitVertical from "../components/Bybit/BybitVertical";
+import BybitVertical from "../components/Bybit/BybitVertical/BybitVertical";
 // import Kraken from "./components/Kraken";
 import TabPanel from "./AppTabPanel";
 import UseStyles from "./AppUseStyles";

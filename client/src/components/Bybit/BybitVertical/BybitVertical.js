@@ -2,9 +2,9 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 //  Components
-import Instrument from "./Instrument";
-import UseStyles from "./BybitUseStyles";
-import TabPanel from "./BybitTabPanel";
+import Instrument from "../Instrument";
+import UseStyles from "./UseStyles";
+import TabPanel from "./TabPanel";
 import A11yProps from "./A11yProps";
 
 // material-ui

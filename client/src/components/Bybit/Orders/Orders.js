@@ -1,7 +1,10 @@
 import React from "react";
+import UseStyles from "./UseStyles";
+import Columns from "./Columns";
+import CreateData from "./CreateData";
 
 // material-ui
-import { makeStyles } from "@material-ui/core/styles";
+// import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -11,94 +14,7 @@ import TableHead from "@material-ui/core/TableHead";
 import TablePagination from "@material-ui/core/TablePagination";
 import TableRow from "@material-ui/core/TableRow";
 
-const columns = [
-  {
-    id: "symbol",
-    label: "Symbol",
-    minWidth: 100,
-    align: "center",
-    format: (value) => value.toLocaleString("en-US"),
-  },
-  {
-    id: "side",
-    label: "Side",
-    minWidth: 100,
-    align: "center",
-    format: (value) => value.toLocaleString("en-US"),
-  },
-  {
-    id: "type",
-    label: "Type",
-    minWidth: 100,
-    align: "center",
-    format: (value) => value.toLocaleString("en-US"),
-  },
-  {
-    id: "amount",
-    label: "Amount",
-    minWidth: 100,
-    align: "center",
-    format: (value) => value.toFixed(2),
-  },
-  {
-    id: "cost",
-    label: "Cost",
-    minWidth: 100,
-    align: "center",
-    format: (value) => value.toFixed(2),
-  },
-  {
-    id: "price",
-    label: "Price",
-    minWidth: 100,
-    align: "center",
-    format: (value) => value.toFixed(2),
-  },
-  {
-    id: "status",
-    label: "Status",
-    minWidth: 100,
-    align: "center",
-    format: (value) => value.toFixed(2),
-  },
-  {
-    id: "time",
-    label: "Time",
-    minWidth: 100,
-    align: "center",
-  },
-  {
-    id: "id",
-    label: "ID",
-    minWidth: 100,
-    align: "center",
-  },
-];
-
-const createData = (
-  symbol,
-  side,
-  type,
-  amount,
-  cost,
-  price,
-  status,
-  time,
-  id
-) => {
-  return { symbol, side, type, amount, cost, price, status, time, id };
-};
-
 const rows = [];
-
-const useStyles = makeStyles({
-  root: {
-    width: "100%",
-  },
-  container: {
-    maxHeight: 1000,
-  },
-});
 
 const Orders = React.memo((props) => {
   //********************************/
@@ -106,7 +22,7 @@ const Orders = React.memo((props) => {
   rows.length = 0;
   props.orders.map((order) => {
     return rows.push(
-      createData(
+      CreateData(
         order.symbol,
         order.side,
         order.type,
@@ -122,7 +38,7 @@ const Orders = React.memo((props) => {
   //********************************/
   //********************************/
 
-  const classes = useStyles();
+  const classes = UseStyles();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
@@ -143,7 +59,7 @@ const Orders = React.memo((props) => {
         <Table stickyHeader aria-label="sticky table">
           <TableHead>
             <TableRow>
-              {columns.map((column) => (
+              {Columns.map((column) => (
                 <TableCell
                   key={column.id}
                   align={column.align}
@@ -160,7 +76,7 @@ const Orders = React.memo((props) => {
               .map((row) => {
                 return (
                   <TableRow hover role="checkbox" tabIndex={-1} key={row.id}>
-                    {columns.map((column) => {
+                    {Columns.map((column) => {
                       const value = row[column.id];
                       return (
                         <TableCell key={column.id} align={column.align}>
