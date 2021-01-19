@@ -25,11 +25,6 @@ const BybitVertical = (props) => {
 
   // **** STATE *************************************************
   // ************************************************************
-  // const [btcBalance, setBtcBalance] = useState({
-  //   totalBTC: 0,
-  //   usedBTC: 0,
-  //   availableBTC: 0,
-  // });
 
   const [symbol, setSymbol] = useState("");
   const [orders, setOrders] = useState([...initialOrders]);

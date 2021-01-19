@@ -55,10 +55,22 @@ const Balance = React.memo((props) => {
       <div>
         <div className="instrument-name">{props.symbol}</div>
       </div>
-      <div className="balance-data">
-        <div> Total: {balance} </div>
-        <div> Available: {available} </div>
-        <div> Used: {used} </div>
+      <div className="balances">
+        <div>
+          {" "}
+          <span className="balance-data-detail">Total: </span>{" "}
+          <span className="balance-data"> {balance} </span>
+        </div>
+        <div>
+          {" "}
+          <span className="balance-data-detail">Available: </span>
+          <span className="balance-data"> {available} </span>
+        </div>
+        <div>
+          {" "}
+          <span className="balance-data-detail">Used: </span>{" "}
+          <span className="balance-data"> {used} </span>
+        </div>
       </div>
     </div>
   );
