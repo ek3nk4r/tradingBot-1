@@ -8,9 +8,9 @@ const Instrument = React.memo((props) => {
   const { symbol } = props;
 
   const [state, setState] = React.useState({
-    balance: [],
-    available: [],
-    used: [],
+    balance: 0,
+    available: 0,
+    used: 0,
     orders: [],
   });
 

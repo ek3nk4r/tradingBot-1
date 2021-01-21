@@ -36,8 +36,8 @@ router.post("/coinData", (req, res) => {
     const since = undefined;
     const limit = 150;
     try {
-      const orders = await bybit.fetchClosedOrders(symbol, since, limit);
       const balance = await bybit.fetchBalance();
+      const orders = await bybit.fetchClosedOrders(symbol, since, limit);
       const coinData = [balance, orders, symbol];
       res.json(coinData);
     } catch (err) {
