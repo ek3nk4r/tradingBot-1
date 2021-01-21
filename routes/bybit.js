@@ -35,7 +35,6 @@ router.post("/coinData", (req, res) => {
     const symbol = tickerSymbol;
     const since = undefined;
     const limit = 150;
-    // let count = 0;
     try {
       const orders = await bybit.fetchClosedOrders(symbol, since, limit);
       const balance = await bybit.fetchBalance();
