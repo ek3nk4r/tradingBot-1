@@ -1,10 +1,11 @@
 import React from "react";
-import UseStyles from "./UseStyles";
-import Columns from "./Columns";
-import CreateData from "./CreateData";
+// import axios from "axios";
 
 // material-ui
 // import { makeStyles } from "@material-ui/core/styles";
+import UseStyles from "./UseStyles";
+import Columns from "./Columns";
+import CreateData from "./CreateData";
 import Paper from "@material-ui/core/Paper";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -17,10 +18,12 @@ import TableRow from "@material-ui/core/TableRow";
 const rows = [];
 
 const Orders = React.memo((props) => {
+  const { orders } = props;
+
   //********************************/
   //**********Table Data************/
   rows.length = 0;
-  props.orders.map((order) => {
+  orders.map((order) => {
     return rows.push(
       CreateData(
         order.symbol,
