@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import axios from "axios";
 
 // components
 import BybitVertical from "../components/Bybit/BybitVertical/BybitVertical";
 // import Kraken from "./components/Kraken";
-import TabPanel from "./AppTabPanel";
-import UseStyles from "./AppUseStyles";
+import TabPanel from "./TabPanel";
+import UseStyles from "./UseStyles";
 
 // material_ui
 import PropTypes from "prop-types";
@@ -21,13 +21,12 @@ TabPanel.propTypes = {
 const App = (props) => {
   const classes = UseStyles();
   const [value, setValue] = React.useState(false);
+  const [marketNames, setMarketNames] = React.useState([]);
 
   const handleChange = (event, newValue) => {
     event.preventDefault();
     setValue(newValue);
   };
-
-  const [marketNames, setMarketNames] = useState([]);
 
   const getTickers = () => {
     axios
@@ -49,7 +48,7 @@ const App = (props) => {
       });
   };
 
-  useEffect(() => {
+  React.useEffect(() => {
     getTickers();
   }, []);
 

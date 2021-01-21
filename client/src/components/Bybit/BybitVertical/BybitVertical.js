@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 
 //  Components
 import Instrument from "../Instrument";
@@ -22,8 +22,8 @@ A11yProps();
 const BybitVertical = React.memo((props) => {
   const classes = UseStyles();
 
-  const [state, setState] = useState({
-    value: 0,
+  const [state, setState] = React.useState({
+    value: false,
     symbol: "",
   });
 
@@ -58,10 +58,7 @@ const BybitVertical = React.memo((props) => {
       </Tabs>
       <TabPanel value={state.value} index={state.value}>
         {" "}
-        <Instrument
-          // orders={orders}
-          symbol={state.symbol}
-        />
+        {state.symbol ? <Instrument symbol={state.symbol} /> : <></>}
       </TabPanel>
     </div>
   );
