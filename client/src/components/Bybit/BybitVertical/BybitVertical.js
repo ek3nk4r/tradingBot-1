@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
+import React, { useState } from "react";
 
 //  Components
 import Instrument from "../Instrument";
@@ -20,63 +19,33 @@ TabPanel.propTypes = {
 
 A11yProps();
 
-const BybitVertical = (props) => {
-  const initialOrders = [];
-
-  // **** STATE *************************************************
-  // ************************************************************
-
-  const [symbol, setSymbol] = useState("");
-  const [orders, setOrders] = useState([...initialOrders]);
-  // ************************************************************
-  // ************************************************************
-
-  // **** material_ui *******************************************
-  // ************************************************************
+const BybitVertical = React.memo((props) => {
   const classes = UseStyles();
-  const [value, setValue] = React.useState(0);
+
+  const [state, setState] = useState({
+    value: 0,
+    symbol: "",
+  });
 
   const handleChange = (event, newValue) => {
     event.preventDefault();
-    setValue(newValue);
     const { innerHTML } = event.target;
-    if (innerHTML !== symbol) {
-      return setSymbol(innerHTML);
+    if (innerHTML !== state.symbol) {
+      return setState({
+        value: newValue,
+        symbol: innerHTML,
+      });
     } else {
       return null;
     }
   };
-  // ************************************************************
-  // ************************************************************
-
-  // **** API CALL *********************************************
-  // ************************************************************
-  const getClosedOrders = (clickedSymbol) => {
-    axios
-      .post("/bybit/closedOrders", { name: clickedSymbol })
-      .then((res) => {
-        console.log(res);
-        const newOrders = [...res.data[1]];
-
-        setOrders(newOrders);
-      })
-      .catch((err) => {
-        console.log("Error is: ", err);
-      });
-  };
-  // ************************************************************
-  // ************************************************************
-
-  useEffect(() => {
-    getClosedOrders(symbol);
-  }, [symbol]);
 
   return (
     <div className={classes.root}>
       <Tabs
         orientation="vertical"
         variant="scrollable"
-        value={value}
+        value={state.value}
         onChange={handleChange}
         aria-label="Vertical tabs"
         className={classes.tabs}
@@ -87,16 +56,15 @@ const BybitVertical = (props) => {
             })
           : 0}
       </Tabs>
-      <TabPanel value={value} index={value}>
+      <TabPanel value={state.value} index={state.value}>
         {" "}
         <Instrument
-          // btcBalance={btcBalance}
-          orders={orders}
-          symbol={symbol}
+          // orders={orders}
+          symbol={state.symbol}
         />
       </TabPanel>
     </div>
   );
-};
+});
 
 export default BybitVertical;

@@ -28,44 +28,24 @@ router.get("/tickers", (req, res) => {
   })();
 });
 
-router.post("/closedOrders", (req, res) => {
+router.post("/coinData", (req, res) => {
   const tickerSymbol = req.body.name;
 
   (async function () {
     const symbol = tickerSymbol;
     const since = undefined;
     const limit = 150;
-    let count = 0;
+    // let count = 0;
     try {
       const orders = await bybit.fetchClosedOrders(symbol, since, limit);
-      const closedOrderData = [symbol, orders];
-      res.json(closedOrderData);
+      const balance = await bybit.fetchBalance();
+      const coinData = [balance, orders, symbol];
+      res.json(coinData);
     } catch (err) {
       console.error(err);
       return {};
     }
   })();
-});
-
-router.post("/balances", (req, res) => {
-  const balances = async () => {
-    let count = 0;
-    try {
-      const balance = await bybit.fetchBalance();
-      const balanceData = [balance];
-      res.json(balanceData);
-    } catch (err) {
-      if (count <= 10) {
-        count++;
-        return await balances();
-      } else {
-        console.log("Max Balance Requests Attempts - Try later!");
-        return;
-      }
-    }
-  };
-
-  balances();
 });
 
 router.post("/webHookBybit", (req, res) => {
