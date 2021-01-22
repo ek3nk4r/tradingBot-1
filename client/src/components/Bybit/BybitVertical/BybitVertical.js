@@ -21,16 +21,18 @@ A11yProps();
 
 const BybitVertical = React.memo((props) => {
   const classes = UseStyles();
+  const { marketNames } = props;
 
   const [state, setState] = React.useState({
     value: false,
     symbol: "",
   });
+  const { symbol, value } = state;
 
   const handleChange = (event, newValue) => {
     event.preventDefault();
     const { innerHTML } = event.target;
-    if (innerHTML !== state.symbol) {
+    if (innerHTML !== symbol) {
       return setState({
         value: newValue,
         symbol: innerHTML,
@@ -45,20 +47,20 @@ const BybitVertical = React.memo((props) => {
       <Tabs
         orientation="vertical"
         variant="scrollable"
-        value={state.value}
+        value={value}
         onChange={handleChange}
         aria-label="Vertical tabs"
         className={classes.tabs}
       >
-        {props.marketNames.length
-          ? props.marketNames.map((market, index) => {
+        {marketNames.length
+          ? marketNames.map((market, index) => {
               return <Tab key={index} label={market} {...A11yProps(index)} />;
             })
           : 0}
       </Tabs>
-      <TabPanel value={state.value} index={state.value}>
+      <TabPanel value={value} index={value}>
         {" "}
-        {state.symbol ? <Instrument symbol={state.symbol} /> : <></>}
+        {symbol ? <Instrument symbol={symbol} /> : <></>}
       </TabPanel>
     </div>
   );
