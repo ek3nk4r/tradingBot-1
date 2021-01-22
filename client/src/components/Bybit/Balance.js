@@ -3,12 +3,13 @@ import "../../Assets/stylesheets/balance.css";
 
 const Balance = React.memo((props) => {
   console.log(props);
+  const { symbol } = props;
   const { balance, available, used } = props;
 
   return (
     <div className="balance-container">
       <div>
-        <div className="instrument-name">{props.symbol}</div>
+        <div className="instrument-name">{symbol}</div>
       </div>
       <div className="balances">
         <div>

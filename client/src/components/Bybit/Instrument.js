@@ -13,6 +13,7 @@ const Instrument = React.memo((props) => {
     used: 0,
     orders: [],
   });
+  const { balance, available, used, orders } = state;
 
   const getCoinData = (symbol) => {
     axios
@@ -63,16 +64,14 @@ const Instrument = React.memo((props) => {
       {symbol ? (
         <Balance
           symbol={symbol}
-          balance={state.balance}
-          available={state.available}
-          used={state.used}
+          balance={balance}
+          available={available}
+          used={used}
         />
       ) : (
         <></>
       )}
-      <div>
-        {state.orders.length ? <Orders orders={state.orders} /> : <></>}
-      </div>
+      <div>{orders.length ? <Orders orders={orders} /> : <></>}</div>
     </div>
   );
 });
