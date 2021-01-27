@@ -9,8 +9,16 @@ const mongoose = require("mongoose");
 const logger = require("morgan");
 const path = require("path");
 
+// authentication
+const passport = require("passport");
+const session = require("express-session");
+const MongoStore = require("connect-mongo")(session);
+// const LocalStrategy = require("passport-local").Strategy;
+require("./passport/index");
+const flash = require("connect-flash");
+
 mongoose
-  .connect("mongodb://localhost/bottrader", {
+  .connect(process.env.MONGODB_URI || "mongodb://localhost/botTrader", {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
@@ -52,10 +60,32 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use(favicon(path.join(__dirname, "public", "images", "favicon.ico")));
 
 // default value for title local
-app.locals.title = "Express - Generated with IronGenerator";
+app.locals.title = "botTrader";
+
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET,
+    resave: true,
+    cookie: { maxAge: 24 * 60 * 60 * 1000 },
+    saveUninitialized: true,
+    store: new MongoStore({ mongooseConnection: mongoose.connection }),
+  })
+);
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+app.use(flash());
+require("./passport")(app);
 
 const index = require("./routes/index");
 app.use("/", index);
+
+const auth = require("./routes/auth");
+app.use("/auth", auth);
+
+const authRoutes = require("./routes/authRoutes");
+app.use("/api", authRoutes);
 
 const bybitRoutes = require("./routes/bybit");
 app.use("/bybit", bybitRoutes);

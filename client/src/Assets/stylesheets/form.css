@@ -1,0 +1,57 @@
+.flex {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+}
+
+.flex-container {
+  height: 80vh;
+  padding: 0;
+  margin: 0;
+
+  align-items: center;
+  justify-content: center;
+}
+
+.center {
+  align-items: center;
+  justify-content: center;
+}
+
+.col {
+  flex-direction: column;
+}
+
+input {
+  border-radius: 5px;
+  border: 1px solid grey;
+  height: 30px;
+  width: 100%;
+  margin: 16px 0 0 0;
+}
+
+.box {
+  background-color: orange;
+  padding: 16px;
+  width: 30%;
+  /* height: 70%; */
+  border-radius: 16px;
+  box-shadow: black;
+  color: white;
+}
+
+#login {
+  background-color: orange;
+}
+
+#signup {
+  background-color: green;
+}
+
+#warning {
+  margin: 8px 8px 0 0;
+  color: red;
+  font-weight: 800;
+}

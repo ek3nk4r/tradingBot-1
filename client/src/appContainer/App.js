@@ -1,9 +1,14 @@
 import React from "react";
 import axios from "axios";
+import { Switch, Route } from "react-router-dom";
+import "./App.css";
 
 // components
 import BybitVertical from "../components/Bybit/BybitVertical/BybitVertical";
 // import Kraken from "./components/Kraken";
+import Navbar from "../components/Navbar";
+import SignUp from "../components/Auth/Signup";
+import Login from "../components/Auth/Login";
 import TabPanel from "./TabPanel";
 import UseStyles from "./UseStyles";
 
@@ -19,9 +24,11 @@ TabPanel.propTypes = {
 };
 
 const App = (props) => {
+  console.log(props);
   const classes = UseStyles();
   const [value, setValue] = React.useState(false);
   const [marketNames, setMarketNames] = React.useState([]);
+  const [user, setUser] = React.useState(props.loggedInUser);
 
   const handleChange = (event, newValue) => {
     event.preventDefault();
@@ -53,22 +60,44 @@ const App = (props) => {
   }, []);
 
   return (
-    <div className={classes.root}>
-      <Tabs
-        orientation="vertical"
-        variant="scrollable"
-        value={value}
-        onChange={handleChange}
-        aria-label="Vertical tabs"
-        className={classes.tabs}
-      >
-        <Tab label="Bybit" />
-        {/* <Tab label="Kraken" /> */}
-      </Tabs>
-      <TabPanel value={value} index={0}></TabPanel>
-      {/* <TabPanel value={value} index={1}></TabPanel> */}
-      {value === 0 && <BybitVertical marketNames={marketNames} />}
-      {/* {value === 1 && <Kraken />} */}
+    <div>
+      <Navbar updateUser={setUser} user={user} />
+      <Switch>
+        <Route
+          path="/auth"
+          render={(props) => (
+            <SignUp {...props} setUser={setUser} user={user} />
+          )}
+        />
+        <Route
+          path="/login"
+          render={(props) => <Login {...props} user={user} setUser={setUser} />}
+        />
+        <Route
+          path="/"
+          render={(props) => (
+            <div className={classes.root}>
+              <div className="tabs-container">
+                <Tabs
+                  orientation="vertical"
+                  variant="scrollable"
+                  value={value}
+                  onChange={handleChange}
+                  aria-label="Vertical tabs"
+                  className={classes.tabs}
+                >
+                  <Tab label="Bybit" />
+                  {/* <Tab label="Kraken" /> */}
+                </Tabs>
+              </div>
+              <TabPanel value={value} index={0}></TabPanel>
+              {/* <TabPanel value={value} index={1}></TabPanel> */}
+              {value === 0 && <BybitVertical marketNames={marketNames} />}
+              {/* {value === 1 && <Kraken />} */}
+            </div>
+          )}
+        />
+      </Switch>
     </div>
   );
 };
