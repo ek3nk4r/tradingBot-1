@@ -1,14 +1,10 @@
 import axios from "axios";
 
-const signup = (email, password) => {
+const signup = (username, password) => {
   return axios
     .post("/api/signup", {
-      firstName: "",
-      lastName: "",
-      email: email,
+      username: username,
       password: password,
-      exchangeAccount: [],
-      userType: "user",
     })
     .then((response) => {
       console.log(response);
@@ -20,13 +16,14 @@ const signup = (email, password) => {
     });
 };
 
-const login = (email, password) => {
+const login = (username, password) => {
   return axios
     .post("/api/login", {
-      email: email,
+      username: username,
       password: password,
     })
     .then((response) => {
+      console.log(response.data);
       return response.data;
     })
     .catch((err) => {

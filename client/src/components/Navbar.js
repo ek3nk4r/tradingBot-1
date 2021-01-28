@@ -5,15 +5,14 @@ import { logout } from "./Auth/AuthAxios";
 // import { logo } from "../assets/javascript/images";
 
 const Navbar = (props) => {
-  const { user } = props;
+  console.log(props);
+  const { user, updateUser } = props;
   // const [loggedInUser, setLoggedInUser] = useState(null);
 
   const handleLogout = () => {
     logout();
-    props.updateUser(null);
+    updateUser(null);
   };
-
-  console.log(props);
 
   return (
     <div>
@@ -37,7 +36,7 @@ const Navbar = (props) => {
               <NavLink to="/">Home</NavLink>
             </li>
             <li>
-              <NavLink to="/auth">Signup</NavLink>
+              <NavLink to="/signup">Signup</NavLink>
             </li>
             <li>
               <NavLink to="/login">Login</NavLink>

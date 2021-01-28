@@ -10,8 +10,8 @@ const logger = require("morgan");
 const path = require("path");
 
 // authentication
-const passport = require("passport");
 const session = require("express-session");
+const passport = require("passport");
 const MongoStore = require("connect-mongo")(session);
 // const LocalStrategy = require("passport-local").Strategy;
 require("./passport/index");

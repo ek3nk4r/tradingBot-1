@@ -5,26 +5,25 @@ import "../../Assets/stylesheets/form.css";
 
 const Login = (props) => {
   const [state, setState] = useState({
-    email: "",
+    username: "",
     password: "",
     isError: false,
     error: "",
   });
 
   const handleChange = (event) => {
-    setState(
-      {
-        [event.target.name]: event.target.value,
-      },
-      () => console.log(state)
-    );
+    event.persist();
+    setState((prevState) => ({
+      ...prevState,
+      [event.target.name]: event.target.value,
+    }));
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    login(state.email, state.password).then((data) => {
-      console.log(props);
+    login(state.username, state.password).then((data) => {
+      console.log(data);
       if (data.message) {
         // handle errors
         setState({
@@ -32,7 +31,6 @@ const Login = (props) => {
           isError: true,
         });
       } else {
-        console.log(props);
         // no error
         // lift the data up to the App state
         props.setUser(data);
@@ -50,7 +48,6 @@ const Login = (props) => {
   });
 
   const errorMessage = () => {
-    console.log(state.error);
     if (state.isError) {
       return <span id="warning">{state.error}</span>;
     }
@@ -61,22 +58,22 @@ const Login = (props) => {
       <div className="box" id="login">
         <h1>Login</h1>
         <form onSubmit={handleSubmit} className="flex center col">
-          {/* <label>email:</label> */}
           <input
             placeholder="Email"
             className="center"
             type="text"
-            name="email"
-            value={state.email}
-            onChange={(e) => handleChange(e)}
+            id="username"
+            name="username"
+            value={state.username}
+            onChange={handleChange}
           />
-          {/* <label>Password:</label> */}
           <input
             placeholder="Password"
+            id="password"
             type="password"
             name="password"
             value={state.password}
-            onChange={(e) => handleChange(e)}
+            onChange={handleChange}
           />
 
           {/* show error message */}

@@ -13,7 +13,7 @@ axios.get("/api/loggedin").then((response) => {
   ReactDOM.render(
     // <React.StrictMode>
     <Router>
-      <App loggedInUser={user} />
+      <App user={user} />
     </Router>,
     //</React.StrictMode>,
     document.getElementById("root")

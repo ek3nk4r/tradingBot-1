@@ -6,24 +6,23 @@ import "../../Assets/stylesheets/form.css";
 
 const Signup = (props) => {
   const [state, setState] = useState({
-    email: "",
+    username: "",
     password: "",
     error: "",
   });
 
   const handleChange = (event) => {
-    setState(
-      {
-        [event.target.name]: event.target.value,
-      },
-      () => console.log(state)
-    );
+    event.persist();
+    setState((prevState) => ({
+      ...prevState,
+      [event.target.name]: event.target.value,
+    }));
   };
 
   const handleSubmit = (event) => {
     event.preventDefault(event);
 
-    signup(state.email, state.password).then((data) => {
+    signup(state.username, state.password).then((data) => {
       if (data.message) {
         // handle errors
         setState({
@@ -54,9 +53,9 @@ const Signup = (props) => {
           <input
             placeholder="Email"
             type="text"
-            name="email"
-            value={state.email}
-            onChange={(e) => handleChange(e)}
+            name="username"
+            value={state.username}
+            onChange={handleChange}
           />
 
           <input
@@ -64,7 +63,7 @@ const Signup = (props) => {
             type="password"
             name="password"
             value={state.password}
-            onChange={(e) => handleChange(e)}
+            onChange={handleChange}
           />
 
           <input type="submit" value="Signup" />
