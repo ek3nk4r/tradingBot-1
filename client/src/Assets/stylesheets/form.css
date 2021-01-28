@@ -24,26 +24,13 @@
   flex-direction: column;
 }
 
-input {
-  border-radius: 5px;
-  border: 1px solid grey;
-  height: 30px;
-  width: 100%;
-  margin: 16px 0 0 0;
-}
-
 .box {
-  background-color: orange;
   padding: 16px;
   width: 30%;
-  /* height: 70%; */
+  height: 70%;
   border-radius: 16px;
   box-shadow: black;
-  color: white;
-}
-
-#login {
-  background-color: orange;
+  color: #5b9ca0;
 }
 
 #signup {

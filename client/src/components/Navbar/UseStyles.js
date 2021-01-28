@@ -11,6 +11,7 @@ const UseStyles = makeStyles((theme) => ({
   logout: {
     marginRight: 50,
     fontSize: "1.0rem",
+    color: "#5B9CA0",
   },
 }));
 

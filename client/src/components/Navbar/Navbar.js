@@ -26,7 +26,7 @@ const Navbar = (props) => {
       {user ? (
         <>
           <div className={classes.root}>
-            <AppBar position="static" color="trasparent">
+            <AppBar position="static" color="transparent">
               <Toolbar>
                 <Typography
                   variant="h6"
@@ -52,7 +52,7 @@ const Navbar = (props) => {
       ) : (
         <>
           <div className={classes.root}>
-            <AppBar position="static" color="trasparent">
+            <AppBar position="static" color="transparent">
               <Toolbar>
                 <Typography
                   variant="h6"

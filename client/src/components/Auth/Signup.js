@@ -71,7 +71,7 @@ const Signup = (props) => {
         {/* <GoogleButtonSignUp /> */}
         <p>
           Already have account?
-          <Link to={"/"}> Login</Link>
+          <Link to={"/login"}> Login</Link>
         </p>
       </div>
     </div>

@@ -3,7 +3,22 @@ import { Link } from "react-router-dom";
 import { login } from "./AuthAxios";
 import "../../Assets/stylesheets/form.css";
 
+// material-ui
+import TextField from "@material-ui/core/TextField";
+import { makeStyles } from "@material-ui/core/styles";
+import Button from "@material-ui/core/Button";
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    "& .MuiTextField-root": {
+      margin: theme.spacing(0),
+      width: "25ch",
+    },
+  },
+}));
+
 const Login = (props) => {
+  const classes = useStyles();
   const [state, setState] = useState({
     username: "",
     password: "",
@@ -55,31 +70,52 @@ const Login = (props) => {
 
   return (
     <div className="flex flex-container center col">
-      <div className="box" id="login">
+      <div className="box">
         <h1>Login</h1>
-        <form onSubmit={handleSubmit} className="flex center col">
-          <input
-            placeholder="Email"
-            className="center"
-            type="text"
+        <form
+          onSubmit={handleSubmit}
+          // className="flex center col "
+          className={classes.root}
+        >
+          <TextField
+            required
             id="username"
             name="username"
+            type="text"
+            label="Email"
+            variant="outlined"
             value={state.username}
             onChange={handleChange}
+            style={{ width: "30vw", marginBottom: "5px" }}
           />
-          <input
-            placeholder="Password"
+          <TextField
+            required
             id="password"
-            type="password"
             name="password"
+            type="password"
+            label="Password"
+            variant="outlined"
             value={state.password}
             onChange={handleChange}
+            style={{ width: "30vw", marginTop: "5px", marginBottom: "5px" }}
           />
 
           {/* show error message */}
           {errorMessage()}
 
-          <input type="submit" value="Login" />
+          {/* <input type="submit" value="Login" /> */}
+          <Button
+            variant="outlined"
+            type="submit"
+            style={{
+              width: "30vw",
+              height: "55px",
+              marginTop: "5px",
+              marginBottom: "10px",
+            }}
+          >
+            Login
+          </Button>
         </form>
         <p>
           Don't have account?
