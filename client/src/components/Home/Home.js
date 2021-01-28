@@ -1,13 +1,14 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Switch, Route } from "react-router-dom";
+import axios from "axios";
 
 // components
-import BybitVertical from "../components/Bybit/BybitVertical/BybitVertical";
-import SignUp from "../components/Auth/Signup";
-import Login from "../components/Auth/Login";
+import BybitVertical from "../Bybit/BybitVertical/BybitVertical";
+import SignUp from "../Auth/Signup";
+import Login from "../Auth/Login";
 import TabPanel from "./TabPanel";
 import UseStyles from "./UseStyles";
-// import Kraken from "./components/Kraken";
+// import Kraken from "../Kraken";
 
 // material_ui
 import PropTypes from "prop-types";
@@ -21,10 +22,41 @@ TabPanel.propTypes = {
 };
 
 const Home = (props) => {
-  console.log(props);
-
-  const { setUser, user, value, handleChange, marketNames } = props;
+  const { setUser, user } = props;
   const classes = UseStyles();
+
+  const [value, setValue] = useState(false);
+  const [marketNames, setMarketNames] = useState([]);
+
+  const handleChange = (event, newValue) => {
+    event.preventDefault();
+    setValue(newValue);
+  };
+
+  const getTickers = () => {
+    axios
+      .get("/bybit/tickers")
+      .then((res) => {
+        const markets = res.data[1];
+        const marketNames = Object.keys(markets)
+          .map((key) => {
+            return markets[key];
+          })
+          .map((market) => {
+            return market.symbol;
+          });
+
+        setMarketNames(marketNames);
+      })
+      .catch((err) => {
+        console.log("Error is: ", err);
+      });
+  };
+
+  useEffect(() => {
+    getTickers();
+  }, []);
+
   return (
     <Switch>
       <Route
@@ -55,6 +87,12 @@ const Home = (props) => {
             <TabPanel value={value} index={0}></TabPanel>
             {/* <TabPanel value={value} index={1}></TabPanel> */}
             {value === 0 && <BybitVertical marketNames={marketNames} />}
+            {/* {value === 0 && (
+              <Route
+                path="/bybit"
+                render={(props) => <BybitVertical marketNames={marketNames} />}
+              />
+            )} */}
             {/* {value === 1 && <Kraken />} */}
           </div>
         )}

@@ -1,5 +1,5 @@
 import React from "react";
-import axios from "axios";
+// import axios from "axios";
 import { Switch, Route } from "react-router-dom";
 import "./App.css";
 
@@ -7,42 +7,10 @@ import "./App.css";
 import Navbar from "../components/Navbar";
 import SignUp from "../components/Auth/Signup";
 import Login from "../components/Auth/Login";
-import Home from "./Home";
+import Home from "../components/Home/Home";
 
 const App = (props) => {
-  console.log(props);
-  const [value, setValue] = React.useState(false);
-  const [marketNames, setMarketNames] = React.useState([]);
   const [user, setUser] = React.useState(props.user);
-
-  const handleChange = (event, newValue) => {
-    event.preventDefault();
-    setValue(newValue);
-  };
-
-  const getTickers = () => {
-    axios
-      .get("/bybit/tickers")
-      .then((res) => {
-        const markets = res.data[1];
-        const marketNames = Object.keys(markets)
-          .map((key) => {
-            return markets[key];
-          })
-          .map((market) => {
-            return market.symbol;
-          });
-
-        setMarketNames(marketNames);
-      })
-      .catch((err) => {
-        console.log("Error is: ", err);
-      });
-  };
-
-  React.useEffect(() => {
-    getTickers();
-  }, []);
 
   return (
     <div>
@@ -65,14 +33,7 @@ const App = (props) => {
               />
             </Switch>
           </>
-          <Home
-            {...props}
-            setUser={setUser}
-            user={user}
-            value={value}
-            onChange={handleChange}
-            marketNames={marketNames}
-          />
+          <Home {...props} setUser={setUser} user={user} />
         </>
       ) : (
         <>
