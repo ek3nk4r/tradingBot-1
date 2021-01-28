@@ -1,4 +1,3 @@
-// material-ui
 import { makeStyles } from "@material-ui/core/styles";
 
 const BybitUseStyles = makeStyles((theme) => ({
