@@ -33,8 +33,9 @@ const Navbar = (props) => {
                   className={classes.title}
                   component={NavLink}
                   to="/"
+                  style={{ textDecoration: "none", color: "#5b9ca0" }}
                 >
-                  botTrader
+                  pineTrader
                 </Typography>
                 <Button
                   color="inherit"
@@ -42,6 +43,7 @@ const Navbar = (props) => {
                   onClick={handleLogout}
                   component={NavLink}
                   to="/login"
+                  style={{ textDecoration: "none", color: "#5b9ca0" }}
                 >
                   Logout
                 </Button>
@@ -59,10 +61,16 @@ const Navbar = (props) => {
                   className={classes.title}
                   component={NavLink}
                   to="/login"
+                  style={{ textDecoration: "none", color: "#5b9ca0" }}
                 >
-                  botTrader
+                  pineTrader
                 </Typography>
-                <Button color="inherit" component={NavLink} to="/signup">
+                <Button
+                  color="inherit"
+                  component={NavLink}
+                  to="/signup"
+                  style={{ textDecoration: "none", color: "#5b9ca0" }}
+                >
                   Signup
                 </Button>
               </Toolbar>
