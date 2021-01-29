@@ -2,14 +2,14 @@ const passport = require("passport");
 const User = require("../models/User");
 require("./localStrategy");
 require("./serializers");
-
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
+
 passport.use(
   new GoogleStrategy(
     {
       clientID: process.env.CLIENT_ID,
       clientSecret: process.env.CLIENT_SECRET,
-      callbackURL: `${process.env.GOOGLE_CALLBACK}/api/google/callback`,
+      callbackURL: "http://localhost:5555/google/google/callback",
       scope: ["profile"],
     },
     (accessToken, refreshToken, profile, done) => {

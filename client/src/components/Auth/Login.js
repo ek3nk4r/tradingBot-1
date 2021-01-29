@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { login } from "./AuthAxios";
+import GoogleButtonSignUp from "./GoogleButtonSignup";
 import "../../Assets/stylesheets/form.css";
 
 // material-ui
@@ -13,6 +14,7 @@ const useStyles = makeStyles((theme) => ({
     "& .MuiTextField-root": {
       margin: theme.spacing(0),
       width: "25ch",
+      justifyContent: "center",
     },
   },
 }));
@@ -53,7 +55,6 @@ const Login = (props) => {
         props.history.push("/");
       }
     });
-    console.log("ERROR", state.error, state.isError);
   };
 
   useEffect(() => {
@@ -72,11 +73,7 @@ const Login = (props) => {
     <div className="flex flex-container center col">
       <div className="box">
         <h1>Login</h1>
-        <form
-          onSubmit={handleSubmit}
-          // className="flex center col "
-          className={classes.root}
-        >
+        <form onSubmit={handleSubmit} className={classes.root}>
           <TextField
             required
             id="username"
@@ -103,7 +100,6 @@ const Login = (props) => {
           {/* show error message */}
           {errorMessage()}
 
-          {/* <input type="submit" value="Login" /> */}
           <Button
             variant="outlined"
             type="submit"
@@ -121,6 +117,7 @@ const Login = (props) => {
           Don't have account?
           <Link to={"/signup"}> Signup</Link>
         </p>
+        <GoogleButtonSignUp />
       </div>
     </div>
   );

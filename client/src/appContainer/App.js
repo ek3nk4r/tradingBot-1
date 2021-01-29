@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 // import axios from "axios";
 import { Switch, Route } from "react-router-dom";
 import "./App.css";
@@ -10,7 +10,7 @@ import Login from "../components/Auth/Login";
 import Home from "../components/Home/Home";
 
 const App = (props) => {
-  const [user, setUser] = React.useState(props.user);
+  const [user, setUser] = useState(props.user);
 
   return (
     <div>

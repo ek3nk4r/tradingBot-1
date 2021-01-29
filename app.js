@@ -87,6 +87,9 @@ app.use("/auth", auth);
 const authRoutes = require("./routes/authRoutes");
 app.use("/api", authRoutes);
 
+const googleRoutes = require("./routes/googleRoutes");
+app.use("/google", googleRoutes);
+
 const bybitRoutes = require("./routes/bybit");
 app.use("/bybit", bybitRoutes);
 app.use("/webHookBybit", bybitRoutes);

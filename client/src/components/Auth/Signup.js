@@ -1,13 +1,29 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { signup } from "./AuthAxios";
-// import GoogleButtonSignUp from "../GoogleButtonSignup";
+import GoogleButtonSignUp from "./GoogleButtonSignup";
 import "../../Assets/stylesheets/form.css";
 
+// material-ui
+import TextField from "@material-ui/core/TextField";
+import { makeStyles } from "@material-ui/core/styles";
+import Button from "@material-ui/core/Button";
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    "& .MuiTextField-root": {
+      margin: theme.spacing(0),
+      width: "25ch",
+    },
+  },
+}));
+
 const Signup = (props) => {
+  const classes = useStyles();
   const [state, setState] = useState({
     username: "",
     password: "",
+    isError: false,
     error: "",
   });
 
@@ -20,13 +36,14 @@ const Signup = (props) => {
   };
 
   const handleSubmit = (event) => {
-    event.preventDefault(event);
+    event.preventDefault();
 
     signup(state.username, state.password).then((data) => {
       if (data.message) {
         // handle errors
         setState({
           error: data.message,
+          isError: true,
         });
       } else {
         console.log("no error", data);
@@ -45,34 +62,61 @@ const Signup = (props) => {
     }
   });
 
+  const errorMessage = () => {
+    if (state.isError) {
+      return <span id="warning">{state.error}</span>;
+    }
+  };
+
   return (
     <div className="flex flex-container center col">
-      <div className="box" id="signup">
+      <div className="box">
         <h1>Signup</h1>
-        <form onSubmit={handleSubmit}>
-          <input
-            placeholder="Email"
-            type="text"
+        <form onSubmit={handleSubmit} className={classes.root}>
+          <TextField
+            required
+            id="username"
             name="username"
+            type="text"
+            label="Email"
+            variant="outlined"
             value={state.username}
             onChange={handleChange}
+            style={{ width: "30vw", marginBottom: "5px" }}
           />
-
-          <input
-            placeholder="Password"
-            type="password"
+          <TextField
+            required
+            id="password"
             name="password"
+            type="password"
+            label="Password"
+            variant="outlined"
             value={state.password}
             onChange={handleChange}
+            style={{ width: "30vw", marginTop: "5px", marginBottom: "5px" }}
           />
 
-          <input type="submit" value="Signup" />
+          {/* show error message */}
+          {errorMessage()}
+
+          <Button
+            variant="outlined"
+            type="submit"
+            style={{
+              width: "30vw",
+              height: "55px",
+              marginTop: "5px",
+              marginBottom: "10px",
+            }}
+          >
+            Signup
+          </Button>
         </form>
-        {/* <GoogleButtonSignUp /> */}
         <p>
           Already have account?
           <Link to={"/login"}> Login</Link>
         </p>
+        <GoogleButtonSignUp />
       </div>
     </div>
   );
