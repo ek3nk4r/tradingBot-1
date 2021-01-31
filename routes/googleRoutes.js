@@ -12,9 +12,9 @@ googleRoutes.get(
   })
 );
 googleRoutes.get(
-  "/auth/google/callback",
+  "/google/callback",
   passport.authenticate("google", {
-    successRedirect: "/",
+    successRedirect: process.env.SUCCESS_URL,
     failureRedirect: "/login", // here you would redirect to the login page using traditional login approach
   })
 );
