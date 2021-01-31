@@ -107,16 +107,26 @@ const Signup = (props) => {
               height: "55px",
               marginTop: "5px",
               marginBottom: "10px",
+              color: "#5b9ca0",
             }}
           >
             Signup
           </Button>
         </form>
-        <p>
-          Already have account?
-          <Link to={"/login"}> Login</Link>
-        </p>
         <GoogleButtonSignUp />
+        <div>
+          Already have account?
+          <Link
+            to={"/login"}
+            style={{
+              textDecoration: "none",
+              color: "#7D237C",
+            }}
+          >
+            {" "}
+            Login
+          </Link>
+        </div>
       </div>
     </div>
   );

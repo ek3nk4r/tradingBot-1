@@ -20,6 +20,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Login = (props) => {
+  console.log(props);
   const classes = useStyles();
   const [state, setState] = useState({
     username: "",
@@ -108,16 +109,28 @@ const Login = (props) => {
               height: "55px",
               marginTop: "5px",
               marginBottom: "10px",
+              color: "#5b9ca0",
             }}
           >
             Login
           </Button>
         </form>
-        <p>
-          Don't have account?
-          <Link to={"/signup"}> Signup</Link>
-        </p>
         <GoogleButtonSignUp />
+        <div>
+          <div>
+            Don't have account?
+            <Link
+              to={"/signup"}
+              style={{
+                textDecoration: "none",
+                color: "#7D237C",
+              }}
+            >
+              {" "}
+              Signup
+            </Link>
+          </div>
+        </div>
       </div>
     </div>
   );

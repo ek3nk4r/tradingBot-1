@@ -68,6 +68,15 @@ const Navbar = (props) => {
                 <Button
                   color="inherit"
                   component={NavLink}
+                  to="/login"
+                  style={{ textDecoration: "none", color: "#5b9ca0" }}
+                >
+                  Login
+                </Button>
+                <Typography>or</Typography>
+                <Button
+                  color="inherit"
+                  component={NavLink}
                   to="/signup"
                   style={{ textDecoration: "none", color: "#5b9ca0" }}
                 >
