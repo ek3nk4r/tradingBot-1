@@ -4,10 +4,11 @@ import axios from "axios";
 
 // components
 import BybitVertical from "../Bybit/BybitVertical/BybitVertical";
-import SignUp from "../Auth/Signup";
-import Login from "../Auth/Login";
 import TabPanel from "./TabPanel";
 import UseStyles from "./UseStyles";
+import Account from "../Account/Account";
+import SignUp from "../Auth/Signup";
+import Login from "../Auth/Login";
 // import Kraken from "../Kraken";
 
 // material_ui
@@ -66,6 +67,10 @@ const Home = (props) => {
       <Route
         path="/login"
         render={(props) => <Login {...props} user={user} setUser={setUser} />}
+      />
+      <Route
+        path="/account"
+        render={(props) => <Account {...props} user={user} setUser={setUser} />}
       />
       <Route
         path="/"
