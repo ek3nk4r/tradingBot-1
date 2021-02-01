@@ -21,9 +21,9 @@ const Navbar = (props) => {
     updateUser(null);
   };
 
-  return (
-    <div>
-      {user ? (
+  let loggedinUser;
+  user
+    ? (loggedinUser = (
         <>
           <div className={classes.root}>
             <AppBar position="static" color="transparent">
@@ -51,7 +51,8 @@ const Navbar = (props) => {
             </AppBar>
           </div>
         </>
-      ) : (
+      ))
+    : (loggedinUser = (
         <>
           <div className={classes.root}>
             <AppBar position="static" color="transparent">
@@ -86,9 +87,9 @@ const Navbar = (props) => {
             </AppBar>
           </div>
         </>
-      )}
-    </div>
-  );
+      ));
+
+  return <div>{loggedinUser}</div>;
 };
 
 export default Navbar;
