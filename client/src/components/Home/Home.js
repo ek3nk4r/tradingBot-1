@@ -3,12 +3,10 @@ import { Switch, Route } from "react-router-dom";
 import axios from "axios";
 
 // components
-import BybitVertical from "../Bybit/BybitVertical/BybitVertical";
+import BybitVertical from "../Bybit/BybitVertical";
 import TabPanel from "./TabPanel";
 import UseStyles from "./UseStyles";
-import Account from "../Account/Account";
-import SignUp from "../Auth/Signup";
-import Login from "../Auth/Login";
+import Account from "./Account/Account";
 // import Kraken from "../Kraken";
 
 // material_ui
@@ -59,50 +57,40 @@ const Home = (props) => {
   }, []);
 
   return (
-    <Switch>
-      <Route
-        path="/signup"
-        render={(props) => <SignUp {...props} setUser={setUser} user={user} />}
-      />
-      <Route
-        path="/login"
-        render={(props) => <Login {...props} user={user} setUser={setUser} />}
-      />
-      <Route
-        path="/account"
-        render={(props) => <Account {...props} user={user} setUser={setUser} />}
-      />
-      <Route
-        path="/"
-        render={(props) => (
-          <div className={classes.root}>
-            <div className="tabs-container">
-              <Tabs
-                orientation="vertical"
-                variant="scrollable"
-                value={value}
-                onChange={handleChange}
-                aria-label="Vertical tabs"
-                className={classes.tabs}
-              >
-                <Tab label="Bybit" />
-                {/* <Tab label="Kraken" /> */}
-              </Tabs>
+    <>
+      <Switch>
+        <Route
+          path="/account"
+          render={(props) => (
+            <Account {...props} setUser={setUser} user={user} />
+          )}
+        />
+        <Route
+          path="/home"
+          render={(props) => (
+            <div className={classes.root}>
+              <div className="tabs-container">
+                <Tabs
+                  orientation="vertical"
+                  variant="scrollable"
+                  value={value}
+                  onChange={handleChange}
+                  aria-label="Vertical tabs"
+                  className={classes.tabs}
+                >
+                  <Tab label="Bybit" style={{ color: "#5b9ca0" }} />
+                  {/* <Tab label="Kraken" style={{ color: "#5b9ca0" }}/> */}
+                </Tabs>
+              </div>
+              <TabPanel value={value} index={0}></TabPanel>
+              {/* <TabPanel value={value} index={1}></TabPanel> */}
+              {value === 0 && <BybitVertical marketNames={marketNames} />}
+              {/* {value === 1 && <Kraken marketNames={marketNames}/>} */}
             </div>
-            <TabPanel value={value} index={0}></TabPanel>
-            {/* <TabPanel value={value} index={1}></TabPanel> */}
-            {value === 0 && <BybitVertical marketNames={marketNames} />}
-            {/* {value === 0 && (
-              <Route
-                path="/bybit"
-                render={(props) => <BybitVertical marketNames={marketNames} />}
-              />
-            )} */}
-            {/* {value === 1 && <Kraken />} */}
-          </div>
-        )}
-      />
-    </Switch>
+          )}
+        />
+      </Switch>
+    </>
   );
 };
 

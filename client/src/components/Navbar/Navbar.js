@@ -44,7 +44,7 @@ const Navbar = (props) => {
                   variant="h6"
                   className={classes.title}
                   component={NavLink}
-                  to="/"
+                  to="/home"
                   style={{ textDecoration: "none", color: "#5b9ca0" }}
                 >
                   pineTrader

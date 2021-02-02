@@ -17,22 +17,6 @@ const App = (props) => {
       {user ? (
         <>
           <Navbar updateUser={setUser} user={user} />
-          <>
-            <Switch>
-              <Route
-                path="/signup"
-                render={(props) => (
-                  <SignUp {...props} setUser={setUser} user={user} />
-                )}
-              />
-              <Route
-                path="/login"
-                render={(props) => (
-                  <Login {...props} user={user} setUser={setUser} />
-                )}
-              />
-            </Switch>
-          </>
           <Home {...props} setUser={setUser} user={user} />
         </>
       ) : (
