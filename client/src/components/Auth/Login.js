@@ -53,7 +53,7 @@ const Login = (props) => {
         // lift the data up to the App state
         props.setUser(data);
         // redirect to "/"
-        props.history.push("/");
+        props.history.push("/home");
       }
     });
   };
@@ -79,7 +79,7 @@ const Login = (props) => {
             required
             id="username"
             name="username"
-            type="text"
+            type="email"
             label="Email"
             variant="outlined"
             value={state.username}

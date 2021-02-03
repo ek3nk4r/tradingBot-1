@@ -4,6 +4,9 @@ import React, { useState, useEffect } from "react";
 import TextField from "@material-ui/core/TextField";
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
+import InputLabel from "@material-ui/core/InputLabel";
+import FormControl from "@material-ui/core/FormControl";
+import Select from "@material-ui/core/Select";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -21,6 +24,7 @@ const AddApiKeys = (props) => {
   const [state, setState] = useState({
     key: "",
     secret: "",
+    exchange: "",
     isError: false,
     error: "",
   });
@@ -70,6 +74,26 @@ const AddApiKeys = (props) => {
     <div className="flex flex-container center col">
       <div className="box">
         <form onSubmit={handleSubmit} className={classes.root}>
+          <FormControl variant="outlined" className={classes.formControl}>
+            <InputLabel htmlFor="outlined-age-native-simple">
+              Exchange *
+            </InputLabel>
+            <Select
+              native
+              value={state.exchange}
+              onChange={handleChange}
+              label="Exchange"
+              inputProps={{
+                name: "exchange",
+                id: "outlined-age-native-simple",
+              }}
+              style={{ width: "30vw", marginTop: "5px", marginBottom: "5px" }}
+            >
+              <option aria-label="None" value="" />
+              <option value={"Bybit"}>Bybit</option>
+              {/* <option value={"Kraken"}>Kraken</option> */}
+            </Select>
+          </FormControl>
           <TextField
             required
             id="api key"
@@ -107,7 +131,7 @@ const AddApiKeys = (props) => {
               color: "#5b9ca0",
             }}
           >
-            Submit
+            Add Exchange Account
           </Button>
         </form>
       </div>

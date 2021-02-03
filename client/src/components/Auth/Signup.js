@@ -29,6 +29,7 @@ const Signup = (props) => {
 
   const handleChange = (event) => {
     event.persist();
+
     setState((prevState) => ({
       ...prevState,
       [event.target.name]: event.target.value,
@@ -67,7 +68,6 @@ const Signup = (props) => {
       return <span id="warning">{state.error}</span>;
     }
   };
-
   return (
     <div className="flex flex-container center col">
       <div className="box">
@@ -77,7 +77,7 @@ const Signup = (props) => {
             required
             id="username"
             name="username"
-            type="text"
+            type="email"
             label="Email"
             variant="outlined"
             value={state.username}

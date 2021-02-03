@@ -24,12 +24,25 @@ const ChangePassword = (props) => {
     error: "",
   });
 
+  const errorMessage = () => {
+    if (state.isError) {
+      return <span id="warning">{state.error}</span>;
+    }
+  };
+
   const handleChange = (event) => {
     event.persist();
-    setState((prevState) => ({
-      ...prevState,
-      [event.target.name]: event.target.value,
-    }));
+
+    let re = /^(([^<>()[\].,;:s@"]+(\.[^<>()[\].,;:s@"]+)*)|(".+"))@((\[[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}])|(([a-zA-Z-0-9]+.)+[a-zA-Z]{2,}))$/;
+
+    if (re.test(event.target.value)) {
+      setState((prevState) => ({
+        ...prevState,
+        [event.target.name]: event.target.value,
+      }));
+    } else {
+      errorMessage();
+    }
   };
 
   const handleSubmit = (event) => {
@@ -58,12 +71,6 @@ const ChangePassword = (props) => {
       props.history.push("/");
     }
   });
-
-  const errorMessage = () => {
-    if (state.isError) {
-      return <span id="warning">{state.error}</span>;
-    }
-  };
 
   return (
     <div className="flex flex-container center col">
@@ -117,7 +124,7 @@ const ChangePassword = (props) => {
               color: "#5b9ca0",
             }}
           >
-            Submit
+            Update Password
           </Button>
         </form>
       </div>

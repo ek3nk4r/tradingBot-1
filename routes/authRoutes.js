@@ -3,6 +3,7 @@ const authRoutes = express.Router();
 
 const passport = require("passport");
 const bcrypt = require("bcryptjs");
+const validator = require("email-validator");
 
 // require the user model !!!!
 const User = require("../models/User");
@@ -12,26 +13,35 @@ authRoutes.post("/signup", (req, res, next) => {
   const username = req.body.username;
   const password = req.body.password;
 
-  if (!username || !password) {
-    res.status(400).json({ message: "Provide username and password" });
+  if (!validator.validate(username)) {
+    res.status(400).json({ message: "Please provide a valid email address." });
     return;
   }
 
-  if (password.length < 7) {
+  if (!username || !password) {
+    res.status(400).json({ message: "Please provide username and password." });
+    return;
+  }
+
+  if (password.length < 8) {
     res.status(400).json({
-      message: "Please make your password at least 8 characters long.",
+      message: "Passwords must be at least 8 characters long.",
     });
     return;
   }
 
   User.findOne({ username }, (err, foundUser) => {
     if (err) {
-      res.status(500).json({ message: "Username check went bad." });
+      res
+        .status(500)
+        .json({ message: "Username check went failed.  Please try again." });
       return;
     }
 
     if (foundUser) {
-      res.status(400).json({ message: "Username taken. Choose another one." });
+      res
+        .status(400)
+        .json({ message: "Username is taken. Please choose another one." });
       return;
     }
 
