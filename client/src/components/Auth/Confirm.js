@@ -9,7 +9,6 @@ const Confirm = (props) => {
   const emailConfirmed = () => {
     axios
       .get(`/api/email/confirm/${id}`)
-      // .then((res) => console.log(res))
       .then((data) => {
         console.log(data);
         setConfirming(false);
@@ -24,7 +23,9 @@ const Confirm = (props) => {
     emailConfirmed();
   });
 
-  return <div>{confirming ? <p>Confirming</p> : <Link to="/">HOME</Link>}</div>;
+  return (
+    <div>{confirming ? <p>Confirming</p> : <Link to="/home">HOME</Link>}</div>
+  );
 };
 
 export default Confirm;

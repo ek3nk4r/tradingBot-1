@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
+import { Route, Switch, Redirect } from "react-router-dom";
 import "./App.css";
 
 // components
@@ -12,12 +12,17 @@ import Confirm from "../components/Auth/Confirm";
 const App = (props) => {
   const [user, setUser] = useState(props.user);
 
-  const content = () => {
-    return (
-      <>
-        <Navbar updateUser={setUser} user={user} />
+  return (
+    <div>
+      {user ? (
         <>
-          <BrowserRouter>
+          <Navbar updateUser={setUser} user={user} />
+          <Home {...props} setUser={setUser} user={user} />
+        </>
+      ) : (
+        <>
+          <Navbar updateUser={setUser} user={user} />
+          <>
             <Switch>
               <Route
                 path="/signup"
@@ -39,22 +44,7 @@ const App = (props) => {
               />
               <Redirect from="*" to="/" />
             </Switch>
-          </BrowserRouter>
-        </>
-      </>
-    );
-  };
-
-  return (
-    <div>
-      {user ? (
-        <>
-          <Navbar updateUser={setUser} user={user} />
-          <Home {...props} setUser={setUser} user={user} />
-        </>
-      ) : (
-        <>
-          <div>{content()}</div>
+          </>
         </>
       )}
     </div>
