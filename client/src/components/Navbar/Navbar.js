@@ -86,16 +86,6 @@ const Navbar = (props) => {
                     </MenuItem>
                   </Menu>
                 </div>
-                {/* <Button
-                  color="inherit"
-                  className={classes.logout}
-                  onClick={handleLogout}
-                  component={NavLink}
-                  to="/login"
-                  style={{ textDecoration: "none", color: "#5b9ca0" }}
-                >
-                  Logout
-                </Button> */}
               </Toolbar>
             </AppBar>
           </div>
@@ -151,23 +141,6 @@ const Navbar = (props) => {
                     </MenuItem>
                   </Menu>
                 </div>
-                {/* <Button
-                  color="inherit"
-                  component={NavLink}
-                  to="/login"
-                  style={{ textDecoration: "none", color: "#5b9ca0" }}
-                >
-                  Login
-                </Button>
-                <Typography>or</Typography>
-                <Button
-                  color="inherit"
-                  component={NavLink}
-                  to="/signup"
-                  style={{ textDecoration: "none", color: "#5b9ca0" }}
-                >
-                  Signup
-                </Button> */}
               </Toolbar>
             </AppBar>
           </div>

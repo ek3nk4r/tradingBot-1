@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-// import axios from "axios";
-import { Switch, Route } from "react-router-dom";
+import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 import "./App.css";
 
 // components
@@ -8,21 +7,17 @@ import Navbar from "../components/Navbar/Navbar";
 import SignUp from "../components/Auth/Signup";
 import Login from "../components/Auth/Login";
 import Home from "../components/Home/Home";
+import Confirm from "../components/Auth/Confirm";
 
 const App = (props) => {
   const [user, setUser] = useState(props.user);
 
-  return (
-    <div>
-      {user ? (
+  const content = () => {
+    return (
+      <>
+        <Navbar />
         <>
-          <Navbar updateUser={setUser} user={user} />
-          <Home {...props} setUser={setUser} user={user} />
-        </>
-      ) : (
-        <>
-          <Navbar />
-          <>
+          <BrowserRouter>
             <Switch>
               <Route
                 path="/signup"
@@ -36,8 +31,30 @@ const App = (props) => {
                   <Login {...props} user={user} setUser={setUser} />
                 )}
               />
+              <Route
+                path="/confirm/:id"
+                render={(props) => (
+                  <Confirm {...props} setUser={setUser} user={user} />
+                )}
+              />
+              <Redirect from="*" to="/" />
             </Switch>
-          </>
+          </BrowserRouter>
+        </>
+      </>
+    );
+  };
+
+  return (
+    <div>
+      {user ? (
+        <>
+          <Navbar updateUser={setUser} user={user} />
+          <Home {...props} setUser={setUser} user={user} />
+        </>
+      ) : (
+        <>
+          <div>{content()}</div>
         </>
       )}
     </div>

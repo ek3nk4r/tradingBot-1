@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, Route } from "react-router-dom";
 import { signup } from "./AuthAxios";
 import GoogleButtonSignUp from "./GoogleButtonSignup";
 import "../../Assets/stylesheets/form.css";
@@ -51,7 +51,7 @@ const Signup = (props) => {
         // no error
         // lift the data up to the App state
         props.setUser(data);
-        // redirect to "/projects"
+
         props.history.push("/");
       }
     });
@@ -69,66 +69,77 @@ const Signup = (props) => {
     }
   };
   return (
-    <div className="flex flex-container center col">
-      <div className="box">
-        <h1>Signup</h1>
-        <form onSubmit={handleSubmit} className={classes.root}>
-          <TextField
-            required
-            id="username"
-            name="username"
-            type="email"
-            label="Email"
-            variant="outlined"
-            value={state.username}
-            onChange={handleChange}
-            style={{ width: "30vw", marginBottom: "5px" }}
-          />
-          <TextField
-            required
-            id="password"
-            name="password"
-            type="password"
-            label="Password"
-            variant="outlined"
-            value={state.password}
-            onChange={handleChange}
-            style={{ width: "30vw", marginTop: "5px", marginBottom: "5px" }}
-          />
+    <>
+      <Route
+        path="/account"
+        render={(props) => (
+          <div className="flex flex-container center col">
+            <div className="box">
+              <h1>Signup</h1>
+              <form onSubmit={handleSubmit} className={classes.root}>
+                <TextField
+                  required
+                  id="username"
+                  name="username"
+                  type="email"
+                  label="Email"
+                  variant="outlined"
+                  value={state.username}
+                  onChange={handleChange}
+                  style={{ width: "30vw", marginBottom: "5px" }}
+                />
+                <TextField
+                  required
+                  id="password"
+                  name="password"
+                  type="password"
+                  label="Password"
+                  variant="outlined"
+                  value={state.password}
+                  onChange={handleChange}
+                  style={{
+                    width: "30vw",
+                    marginTop: "5px",
+                    marginBottom: "5px",
+                  }}
+                />
 
-          {/* show error message */}
-          {errorMessage()}
+                {/* show error message */}
+                {errorMessage()}
 
-          <Button
-            variant="outlined"
-            type="submit"
-            style={{
-              width: "30vw",
-              height: "55px",
-              marginTop: "5px",
-              marginBottom: "10px",
-              color: "#5b9ca0",
-            }}
-          >
-            Signup
-          </Button>
-        </form>
-        <GoogleButtonSignUp />
-        <div>
-          Already have account?
-          <Link
-            to={"/login"}
-            style={{
-              textDecoration: "none",
-              color: "#7D237C",
-            }}
-          >
-            {" "}
-            Login
-          </Link>
-        </div>
-      </div>
-    </div>
+                <Button
+                  variant="outlined"
+                  type="submit"
+                  style={{
+                    width: "30vw",
+                    height: "55px",
+                    marginTop: "5px",
+                    marginBottom: "10px",
+                    color: "#5b9ca0",
+                  }}
+                >
+                  Signup
+                </Button>
+              </form>
+              <GoogleButtonSignUp />
+              <div>
+                Already have account?
+                <Link
+                  to={"/login"}
+                  style={{
+                    textDecoration: "none",
+                    color: "#7D237C",
+                  }}
+                >
+                  {" "}
+                  Login
+                </Link>
+              </div>
+            </div>
+          </div>
+        )}
+      />
+    </>
   );
 };
 

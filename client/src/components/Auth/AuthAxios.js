@@ -5,6 +5,7 @@ const signup = (username, password) => {
     .post("/api/signup", {
       username: username,
       password: password,
+      userType: "user",
     })
     .then((response) => {
       console.log(response);

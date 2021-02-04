@@ -7,6 +7,16 @@ const validator = require("email-validator");
 
 // require the user model !!!!
 const User = require("../models/User");
+const sendEmail = require("../emailLogic/send");
+const templates = require("../emailLogic/templates");
+
+const msgs = {
+  confirm: "Email sent, please check your inbox to confirm",
+  confirmed: "Your email is confirmed!",
+  resend: "Confirmation email resent, maybe check your spam?",
+  couldNotFind: "Could not find you!",
+  alreadyConfirmed: "Your email was already confirmed",
+};
 
 // SIGNUP
 authRoutes.post("/signup", (req, res, next) => {
@@ -48,12 +58,13 @@ authRoutes.post("/signup", (req, res, next) => {
     const salt = bcrypt.genSaltSync(10);
     const hashPass = bcrypt.hashSync(password, salt);
 
-    const aNewUser = new User({
+    const newUser = new User({
       username: username,
       password: hashPass,
     });
 
-    aNewUser.save((err) => {
+    newUser.save((err) => {
+      console.log(err);
       if (err) {
         res
           .status(400)
@@ -61,18 +72,20 @@ authRoutes.post("/signup", (req, res, next) => {
         return;
       }
 
+      sendEmail(newUser.username, templates.confirm(newUser._id));
+
       // Automatically log in user after sign up
       // .login() here is actually predefined passport method
-      req.login(aNewUser, (err) => {
-        if (err) {
-          res.status(500).json({ message: "Login after signup went bad." });
-          return;
-        }
+      // req.login(newUser, (err) => {
+      //   if (err) {
+      //     res.status(500).json({ message: "Login after signup went bad." });
+      //     return;
+      //   }
 
-        // Send the user's information to the frontend
-        // We can use also: res.status(200).json(req.user);
-        res.status(200).json(aNewUser);
-      });
+      //   // Send the user's information to the frontend
+      //   // We can use also: res.status(200).json(req.user);
+      // res.status(200).json(newUser);
+      // });
     });
   });
 });
@@ -117,6 +130,48 @@ authRoutes.delete("/logout", (req, res, next) => {
 // LOGGEDIN -???-
 authRoutes.get("/loggedin", (req, res, next) => {
   res.json(req.user);
+});
+
+authRoutes.get("/email/confirm/:id", (req, res, next) => {
+  const { id } = req.params;
+  console.log("ID: ", id);
+
+  User.findById(id)
+    .then((user) => {
+      console.log(user);
+      // A user with that id does not exist in the DB. Perhaps some tricky
+      // user tried to go to a different url than the one provided in the
+      // confirmation email.
+      if (!user) {
+        res.json({ msg: msgs.couldNotFind });
+      }
+
+      // The user exists but has not been confirmed. We need to confirm this
+      // user and let them know their email address has been confirmed.
+      else if (user && !user.emailConfirmed) {
+        User.findByIdAndUpdate(id, { emailConfirmed: true })
+          .then(
+            () =>
+              req.login(user, (err) => {
+                if (err) {
+                  res
+                    .status(500)
+                    .json({ message: "Login after signup went bad." });
+                  return;
+                }
+                res.status(200).json(user);
+              })
+            // res.json({ msg: msgs.confirmed })
+          )
+          .catch((err) => console.log(err));
+      }
+
+      // The user has already confirmed this email address.
+      else {
+        res.json({ msg: msgs.alreadyConfirmed });
+      }
+    })
+    .catch((err) => console.log(err));
 });
 
 module.exports = authRoutes;

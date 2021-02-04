@@ -21,6 +21,7 @@ mongoose
   .connect(process.env.MONGODB_URI || "mongodb://localhost/botTrader", {
     useNewUrlParser: true,
     useUnifiedTopology: true,
+    useFindAndModify: false,
   })
   .then((x) => {
     console.log(
@@ -94,6 +95,10 @@ const bybitRoutes = require("./routes/bybit");
 app.use("/bybit", bybitRoutes);
 app.use("/webHookBybit", bybitRoutes);
 // app.use("/marketBuy", bybitRoutes);
+
+app.use("*", (req, res) => {
+  res.status(404).json({ msg: "Not Found" });
+});
 
 // const krakenRoutes = require("./routes/kraken");
 // app.use("/kraken", krakenRoutes);
