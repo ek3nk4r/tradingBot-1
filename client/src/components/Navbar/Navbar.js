@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { logout } from "../Auth/AuthAxios";
 
 // components
@@ -43,7 +43,7 @@ const Navbar = (props) => {
                 <Typography
                   variant="h6"
                   className={classes.title}
-                  component={NavLink}
+                  component={Link}
                   to="/home"
                   style={{ textDecoration: "none", color: "#5b9ca0" }}
                 >
@@ -68,7 +68,7 @@ const Navbar = (props) => {
                     <MenuItem
                       onClick={handleClose}
                       color="inherit"
-                      component={NavLink}
+                      component={Link}
                       to="/account"
                       style={{ color: "#5b9ca0" }}
                     >
@@ -78,7 +78,7 @@ const Navbar = (props) => {
                       onClick={(handleClose, handleLogout)}
                       color="inherit"
                       className={classes.logout}
-                      component={NavLink}
+                      component={Link}
                       to="/login"
                       style={{ color: "#5b9ca0" }}
                     >
@@ -99,7 +99,7 @@ const Navbar = (props) => {
                 <Typography
                   variant="h6"
                   className={classes.title}
-                  component={NavLink}
+                  component={Link}
                   to="/login"
                   style={{ textDecoration: "none", color: "#5b9ca0" }}
                 >
@@ -124,7 +124,7 @@ const Navbar = (props) => {
                     <MenuItem
                       onClick={handleClose}
                       color="inherit"
-                      component={NavLink}
+                      component={Link}
                       to="/login"
                       style={{ color: "#5b9ca0" }}
                     >
@@ -133,7 +133,7 @@ const Navbar = (props) => {
                     <MenuItem
                       onClick={handleClose}
                       color="inherit"
-                      component={NavLink}
+                      component={Link}
                       to="/signup"
                       style={{ color: "#5b9ca0" }}
                     >

@@ -71,7 +71,7 @@ const Signup = (props) => {
   return (
     <>
       <Route
-        path="/account"
+        path="/signup"
         render={(props) => (
           <div className="flex flex-container center col">
             <div className="box">

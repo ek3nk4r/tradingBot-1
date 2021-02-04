@@ -15,7 +15,7 @@ const App = (props) => {
   const content = () => {
     return (
       <>
-        <Navbar />
+        <Navbar updateUser={setUser} user={user} />
         <>
           <BrowserRouter>
             <Switch>
