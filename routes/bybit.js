@@ -4,10 +4,10 @@ const axios = require("axios");
 const ccxt = require("ccxt");
 
 var bybit = new ccxt.bybit({
-  apiKey: process.env.BYBIT_TESTNET_API_KEY,
-  secret: process.env.BYBIT_TESTNET_API_SECRET,
-  // apiKey: process.env.BYBIT_API_KEY,
-  // secret: process.env.BYBIT_API_SECRET,
+  // apiKey: process.env.BYBIT_TESTNET_API_KEY,
+  // secret: process.env.BYBIT_TESTNET_API_SECRET,
+  apiKey: process.env.BYBIT_API_KEY,
+  secret: process.env.BYBIT_API_SECRET,
 });
 
 bybit.urls["api"] = bybit.urls["test"];
