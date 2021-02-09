@@ -10,7 +10,7 @@ var bybit = new ccxt.bybit({
   secret: process.env.BYBIT_API_SECRET,
 });
 
-bybit.urls["api"] = bybit.urls["test"];
+bybit.urls["api"] = bybit.urls["api"];
 
 router.get("/tickers", (req, res) => {
   (async function () {
