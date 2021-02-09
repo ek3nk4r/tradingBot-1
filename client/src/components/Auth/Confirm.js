@@ -14,13 +14,13 @@ const Confirm = (props) => {
         setConfirming(false);
       })
       .catch((err) => {
-        console.log("ERRRRROOOOOOORRRRRRR", err);
         return err.response.data;
       });
   };
 
   useEffect(() => {
     emailConfirmed();
+    window.location.replace(`${process.env.SUCCESS_URL}`);
   });
 
   return (
