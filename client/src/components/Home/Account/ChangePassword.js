@@ -19,10 +19,14 @@ const ChangePassword = (props) => {
   const classes = useStyles();
 
   const [state, setState] = useState({
-    password: "",
+    currentPassword: "",
+    newPassword: "",
+    newPasswordAgain: "",
     isError: false,
     error: "",
   });
+
+  const { currentPassword, newPassword, newPasswordAgain } = state;
 
   const errorMessage = () => {
     if (state.isError) {
@@ -33,20 +37,17 @@ const ChangePassword = (props) => {
   const handleChange = (event) => {
     event.persist();
 
-    let re = /^(([^<>()[\].,;:s@"]+(\.[^<>()[\].,;:s@"]+)*)|(".+"))@((\[[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}])|(([a-zA-Z-0-9]+.)+[a-zA-Z]{2,}))$/;
-
-    if (re.test(event.target.value)) {
-      setState((prevState) => ({
-        ...prevState,
-        [event.target.name]: event.target.value,
-      }));
-    } else {
-      errorMessage();
-    }
+    setState((prevState) => ({
+      ...prevState,
+      [event.target.name]: event.target.value,
+    }));
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
+
+    if (newPasswordAgain == newPassword) {
+    }
 
     // changePassword(state.password).then((data) => {
     //   console.log(data);
@@ -90,22 +91,22 @@ const ChangePassword = (props) => {
           <TextField
             required
             id="password"
-            name="password"
+            name="newPassword"
             type="password"
             label="New Password"
             variant="outlined"
-            value={state.password}
+            value={state.newPassword}
             onChange={handleChange}
             style={{ width: "30vw", marginTop: "5px", marginBottom: "5px" }}
           />
           <TextField
             required
             id="password"
-            name="password"
+            name="newPasswordAgain"
             type="password"
             label="Please Re-Type Your New Password"
             variant="outlined"
-            value={state.password}
+            value={state.newPasswordAgain}
             onChange={handleChange}
             style={{ width: "30vw", marginTop: "5px", marginBottom: "5px" }}
           />

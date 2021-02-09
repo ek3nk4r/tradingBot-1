@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
 import axios from "axios";
 
 const Confirm = (props) => {
@@ -23,9 +22,7 @@ const Confirm = (props) => {
     window.location.replace(`${process.env.SUCCESS_URL}`);
   });
 
-  return (
-    <div>{confirming ? <p>Confirming</p> : <Link to="/home">HOME</Link>}</div>
-  );
+  return <div>{confirming ? <p>Confirming</p> : <></>} </div>;
 };
 
 export default Confirm;
