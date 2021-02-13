@@ -4,14 +4,31 @@ import React, { useState, useEffect } from "react";
 import TextField from "@material-ui/core/TextField";
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
+import clsx from "clsx";
+import IconButton from "@material-ui/core/IconButton";
+import OutlinedInput from "@material-ui/core/OutlinedInput";
+import InputLabel from "@material-ui/core/InputLabel";
+import InputAdornment from "@material-ui/core/InputAdornment";
+import FormControl from "@material-ui/core/FormControl";
+import Visibility from "@material-ui/icons/Visibility";
+import VisibilityOff from "@material-ui/icons/VisibilityOff";
 
 const useStyles = makeStyles((theme) => ({
   root: {
+    display: "flex",
+    flexWrap: "wrap",
     "& .MuiTextField-root": {
-      margin: theme.spacing(0),
-      width: "25ch",
       justifyContent: "center",
     },
+  },
+  margin: {
+    margin: theme.spacing(0),
+  },
+  withoutLabel: {
+    marginTop: theme.spacing(3),
+  },
+  textField: {
+    width: "25ch",
   },
 }));
 
@@ -24,6 +41,7 @@ const ChangePassword = (props) => {
     newPasswordAgain: "",
     isError: false,
     error: "",
+    showPassword: false,
   });
 
   const { currentPassword, newPassword, newPasswordAgain } = state;
@@ -41,6 +59,14 @@ const ChangePassword = (props) => {
       ...prevState,
       [event.target.name]: event.target.value,
     }));
+  };
+
+  const handleClickShowPassword = () => {
+    setState({ ...state, showPassword: !state.showPassword });
+  };
+
+  const handleMouseDownPassword = (event) => {
+    event.preventDefault();
   };
 
   const handleSubmit = (event) => {
@@ -76,23 +102,39 @@ const ChangePassword = (props) => {
   return (
     <div className="flex flex-container center col">
       <div className="box">
-        <form onSubmit={handleSubmit} className={classes.root}>
-          <TextField
-            required
-            id="password"
-            name="password"
-            type="password"
-            label="Current Password"
-            variant="outlined"
+        <FormControl
+          className={clsx(classes.margin, classes.textField)}
+          variant="outlined"
+          onSubmit={handleSubmit}
+          className={classes.root}
+        >
+          <InputLabel htmlFor="outlined-adornment-password">
+            Password *
+          </InputLabel>
+          <OutlinedInput
+            id="outlined-adornment-password"
+            type={state.showPassword ? "text" : "password"}
             value={state.password}
             onChange={handleChange}
-            style={{ width: "30vw", marginTop: "5px", marginBottom: "5px" }}
+            endAdornment={
+              <InputAdornment position="end">
+                <IconButton
+                  aria-label="toggle password visibility"
+                  onClick={handleClickShowPassword}
+                  onMouseDown={handleMouseDownPassword}
+                  edge="end"
+                >
+                  {state.showPassword ? <Visibility /> : <VisibilityOff />}
+                </IconButton>
+              </InputAdornment>
+            }
+            labelWidth={70}
           />
           <TextField
             required
             id="password"
             name="newPassword"
-            type="password"
+            type="text"
             label="New Password"
             variant="outlined"
             value={state.newPassword}
@@ -103,8 +145,8 @@ const ChangePassword = (props) => {
             required
             id="password"
             name="newPasswordAgain"
-            type="password"
-            label="Please Re-Type Your New Password"
+            type="text"
+            label="Re-Type New Password"
             variant="outlined"
             value={state.newPasswordAgain}
             onChange={handleChange}
@@ -127,10 +169,38 @@ const ChangePassword = (props) => {
           >
             Update Password
           </Button>
-        </form>
+        </FormControl>
       </div>
     </div>
   );
 };
 
 export default ChangePassword;
+
+{
+  /* <FormControl
+  className={clsx(classes.margin, classes.textField)}
+  variant="outlined"
+>
+  <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
+  <OutlinedInput
+    id="outlined-adornment-password"
+    type={state.showPassword ? "text" : "password"}
+    value={state.password}
+    onChange={handleChange("password")}
+    endAdornment={
+      <InputAdornment position="end">
+        <IconButton
+          aria-label="toggle password visibility"
+          onClick={handleClickShowPassword}
+          onMouseDown={handleMouseDownPassword}
+          edge="end"
+        >
+          {state.showPassword ? <Visibility /> : <VisibilityOff />}
+        </IconButton>
+      </InputAdornment>
+    }
+    labelWidth={70}
+  />
+</FormControl>; */
+}
