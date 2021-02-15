@@ -1,17 +1,11 @@
 import React, { useState, useEffect } from "react";
+import { sendPass } from "./NewPassAxios";
+import { logout } from "../../Auth/AuthAxios";
 
 // material-ui
 import TextField from "@material-ui/core/TextField";
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
-import clsx from "clsx";
-import IconButton from "@material-ui/core/IconButton";
-import OutlinedInput from "@material-ui/core/OutlinedInput";
-import InputLabel from "@material-ui/core/InputLabel";
-import InputAdornment from "@material-ui/core/InputAdornment";
-import FormControl from "@material-ui/core/FormControl";
-import Visibility from "@material-ui/icons/Visibility";
-import VisibilityOff from "@material-ui/icons/VisibilityOff";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -33,6 +27,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const ChangePassword = (props) => {
+  console.log(props.user);
+  const { _id } = props.user;
   const classes = useStyles();
 
   const [state, setState] = useState({
@@ -61,54 +57,45 @@ const ChangePassword = (props) => {
     }));
   };
 
-  const handleClickShowPassword = () => {
-    setState({ ...state, showPassword: !state.showPassword });
-  };
-
-  const handleMouseDownPassword = (event) => {
-    event.preventDefault();
-  };
-
   const handleSubmit = (event) => {
+    console.log("CLIENT: CHANGE PASSWORD", newPasswordAgain, newPassword);
     event.preventDefault();
 
-    if (newPasswordAgain == newPassword) {
+    if (newPasswordAgain === newPassword) {
+      sendPass(_id, currentPassword, newPassword).then((data) => {
+        console.log("CLIENT RESPONSE", data);
+        if (data.message) {
+          // handle errors
+          setState({
+            error: data.message,
+            isError: true,
+          });
+        } else {
+          // no error
+          // logs the user out so that they login with the new password
+          // logout();
+          // props.history.push("/login")
+        }
+      });
     }
-
-    // changePassword(state.password).then((data) => {
-    //   console.log(data);
-    //   if (data.message) {
-    //     // handle errors
-    //     setState({
-    //       error: data.message,
-    //       isError: true,
-    //     });
-    //   } else {
-    //     // no error
-    //     // lift the data up to the App state
-    //     props.setUser(data);
-    //     // redirect to "/"
-    //     props.history.push("/");
-    //   }
-    // });
   };
 
-  useEffect(() => {
-    if (props.user) {
-      props.history.push("/");
-    }
-  });
+  // useEffect(() => {
+  //   if (props.user) {
+  //     props.history.push("/");
+  //   }
+  // });
 
   return (
     <div className="flex flex-container center col">
       <div className="box">
-        <FormControl
-          className={clsx(classes.margin, classes.textField)}
+        <form
+          // className={clsx(classes.margin, classes.textField)}
           variant="outlined"
           onSubmit={handleSubmit}
           className={classes.root}
         >
-          <InputLabel htmlFor="outlined-adornment-password">
+          {/* <InputLabel htmlFor="outlined-adornment-password">
             Password *
           </InputLabel>
           <OutlinedInput
@@ -129,6 +116,17 @@ const ChangePassword = (props) => {
               </InputAdornment>
             }
             labelWidth={70}
+          /> */}
+          <TextField
+            required
+            id="password"
+            name="currentPassword"
+            type="text"
+            label="Current Password"
+            variant="outlined"
+            value={state.currentPassword}
+            onChange={handleChange}
+            style={{ width: "30vw", marginTop: "5px", marginBottom: "5px" }}
           />
           <TextField
             required
@@ -169,38 +167,10 @@ const ChangePassword = (props) => {
           >
             Update Password
           </Button>
-        </FormControl>
+        </form>
       </div>
     </div>
   );
 };
 
 export default ChangePassword;
-
-{
-  /* <FormControl
-  className={clsx(classes.margin, classes.textField)}
-  variant="outlined"
->
-  <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
-  <OutlinedInput
-    id="outlined-adornment-password"
-    type={state.showPassword ? "text" : "password"}
-    value={state.password}
-    onChange={handleChange("password")}
-    endAdornment={
-      <InputAdornment position="end">
-        <IconButton
-          aria-label="toggle password visibility"
-          onClick={handleClickShowPassword}
-          onMouseDown={handleMouseDownPassword}
-          edge="end"
-        >
-          {state.showPassword ? <Visibility /> : <VisibilityOff />}
-        </IconButton>
-      </InputAdornment>
-    }
-    labelWidth={70}
-  />
-</FormControl>; */
-}

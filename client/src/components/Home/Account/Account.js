@@ -22,6 +22,8 @@ TabPanel.propTypes = {
 A11yProps();
 
 const Account = (props) => {
+  const { user } = props;
+  console.log(props);
   const classes = UseStyles();
   const [value, setValue] = useState(false);
 
@@ -51,7 +53,7 @@ const Account = (props) => {
             </div>
             <TabPanel value={value} index={0}></TabPanel>
             {/* <TabPanel value={value} index={1}></TabPanel> */}
-            {value === 0 && <ChangePassword {...props} />}
+            {value === 0 && <ChangePassword {...props} user={user} />}
             {value === 1 && <AddApiKeys {...props} />}
           </div>
         )}

@@ -18,6 +18,9 @@ const msgs = {
   alreadyConfirmed: "Your email was already confirmed",
 };
 
+// password SALT
+var salt = bcrypt.genSaltSync(10);
+
 // SIGNUP
 authRoutes.post("/signup", (req, res, next) => {
   const username = req.body.username;
@@ -55,8 +58,8 @@ authRoutes.post("/signup", (req, res, next) => {
       return;
     }
 
-    const salt = bcrypt.genSaltSync(10);
-    const hashPass = bcrypt.hashSync(password, salt);
+    // var salt = bcrypt.genSaltSync(10);
+    var hashPass = bcrypt.hashSync(password, salt);
 
     const newUser = new User({
       username: username,
@@ -169,6 +172,42 @@ authRoutes.get("/email/confirm/:id", (req, res, next) => {
       // The user has already confirmed this email address.
       else {
         res.json({ msg: msgs.alreadyConfirmed });
+      }
+    })
+    .catch((err) => console.log(err));
+});
+
+// CHANGE PASSWORD
+authRoutes.post("/passwordChange", (req, res, next) => {
+  console.log("XXXXXXXXXXXXXX:", req.body.id);
+  const id = req.body.id;
+  const newPassword = req.body.newPassword;
+  const currentPassword = req.body.currentPassword;
+  const newHashPass = bcrypt.hashSync(newPassword, salt);
+  const toUpdate = { password: newHashPass };
+
+  User.findById(id)
+    .then((user) => {
+      console.log(user);
+      if (!bcrypt.compare(currentPassword, user.password)) {
+        return res.status(401).json({ msg: "Invalid credentials" });
+      } else if (bcrypt.compare(currentPassword, user.password)) {
+        User.findByIdAndUpdate(id, toUpdate)
+          .then(
+            console.log("SUCCESS!  We have changes the password")
+            // () =>
+            //   req.login(user, (err) => {
+            //     if (err) {
+            //       res
+            //         .status(500)
+            //         .json({ message: "Login after password change went bad." });
+            //       return;
+            //     }
+            //     res.status(200).json(user);
+            //   })
+            // res.json({ msg: msgs.confirmed })
+          )
+          .catch((err) => console.log(err));
       }
     })
     .catch((err) => console.log(err));
