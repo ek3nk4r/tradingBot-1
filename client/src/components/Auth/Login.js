@@ -45,6 +45,8 @@ const Login = (props) => {
       if (data.message) {
         // handle errors
         setState({
+          username: "",
+          password: "",
           error: data.message,
           isError: true,
         });
