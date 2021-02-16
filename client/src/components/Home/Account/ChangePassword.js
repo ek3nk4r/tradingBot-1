@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { sendPass } from "./NewPassAxios";
-import { logout } from "../../Auth/AuthAxios";
 
 // material-ui
 import TextField from "@material-ui/core/TextField";
@@ -14,15 +13,6 @@ const useStyles = makeStyles((theme) => ({
     "& .MuiTextField-root": {
       justifyContent: "center",
     },
-  },
-  margin: {
-    margin: theme.spacing(0),
-  },
-  withoutLabel: {
-    marginTop: theme.spacing(3),
-  },
-  textField: {
-    width: "25ch",
   },
 }));
 
@@ -62,66 +52,34 @@ const ChangePassword = (props) => {
     event.preventDefault();
 
     if (newPasswordAgain === newPassword) {
-      sendPass(_id, currentPassword, newPassword).then((data) => {
-        console.log("CLIENT RESPONSE", data);
-        if (data.message) {
+      sendPass(_id, currentPassword, newPassword).then((res) => {
+        console.log("CLIENT RESPONSE", res);
+        if (res.status === 401) {
           // handle errors
           setState({
-            error: data.message,
+            error: res.message,
             isError: true,
           });
-        } else {
-          // no error
-          // logs the user out so that they login with the new password
-          // logout();
-          // props.history.push("/login")
+        } else if (res.status === 200) {
+          props.history.push("/home");
         }
       });
     }
   };
 
-  // useEffect(() => {
-  //   if (props.user) {
-  //     props.history.push("/");
-  //   }
-  // });
-
   return (
     <div className="flex flex-container center col">
       <div className="box">
         <form
-          // className={clsx(classes.margin, classes.textField)}
           variant="outlined"
           onSubmit={handleSubmit}
           className={classes.root}
         >
-          {/* <InputLabel htmlFor="outlined-adornment-password">
-            Password *
-          </InputLabel>
-          <OutlinedInput
-            id="outlined-adornment-password"
-            type={state.showPassword ? "text" : "password"}
-            value={state.password}
-            onChange={handleChange}
-            endAdornment={
-              <InputAdornment position="end">
-                <IconButton
-                  aria-label="toggle password visibility"
-                  onClick={handleClickShowPassword}
-                  onMouseDown={handleMouseDownPassword}
-                  edge="end"
-                >
-                  {state.showPassword ? <Visibility /> : <VisibilityOff />}
-                </IconButton>
-              </InputAdornment>
-            }
-            labelWidth={70}
-          /> */}
           <TextField
             required
             id="password"
             name="currentPassword"
-            type="text"
+            type="password"
             label="Current Password"
             variant="outlined"
             value={state.currentPassword}
@@ -132,7 +90,7 @@ const ChangePassword = (props) => {
             required
             id="password"
             name="newPassword"
-            type="text"
+            type="password"
             label="New Password"
             variant="outlined"
             value={state.newPassword}
@@ -143,7 +101,7 @@ const ChangePassword = (props) => {
             required
             id="password"
             name="newPasswordAgain"
-            type="text"
+            type="password"
             label="Re-Type New Password"
             variant="outlined"
             value={state.newPasswordAgain}
@@ -168,6 +126,7 @@ const ChangePassword = (props) => {
             Update Password
           </Button>
         </form>
+        <div>You will be redirected on a successful password update.</div>
       </div>
     </div>
   );

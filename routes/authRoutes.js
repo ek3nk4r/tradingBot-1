@@ -1,11 +1,8 @@
 const express = require("express");
 const authRoutes = express.Router();
-
 const passport = require("passport");
 const bcrypt = require("bcryptjs");
 const validator = require("email-validator");
-
-// require the user model !!!!
 const User = require("../models/User");
 const sendEmail = require("../emailLogic/send");
 const templates = require("../emailLogic/templates");
@@ -17,9 +14,6 @@ const msgs = {
   couldNotFind: "Could not find you!",
   alreadyConfirmed: "Your email was already confirmed",
 };
-
-// password SALT
-var salt = bcrypt.genSaltSync(10);
 
 // SIGNUP
 authRoutes.post("/signup", (req, res, next) => {
@@ -58,7 +52,7 @@ authRoutes.post("/signup", (req, res, next) => {
       return;
     }
 
-    // var salt = bcrypt.genSaltSync(10);
+    var salt = bcrypt.genSaltSync(10);
     var hashPass = bcrypt.hashSync(password, salt);
 
     const newUser = new User({
@@ -135,6 +129,7 @@ authRoutes.get("/loggedin", (req, res, next) => {
   res.json(req.user);
 });
 
+// EMAIL CONFIRMATION
 authRoutes.get("/email/confirm/:id", (req, res, next) => {
   const { id } = req.params;
   console.log("ID: ", id);
@@ -172,42 +167,6 @@ authRoutes.get("/email/confirm/:id", (req, res, next) => {
       // The user has already confirmed this email address.
       else {
         res.json({ msg: msgs.alreadyConfirmed });
-      }
-    })
-    .catch((err) => console.log(err));
-});
-
-// CHANGE PASSWORD
-authRoutes.post("/passwordChange", (req, res, next) => {
-  console.log("XXXXXXXXXXXXXX:", req.body.id);
-  const id = req.body.id;
-  const newPassword = req.body.newPassword;
-  const currentPassword = req.body.currentPassword;
-  const newHashPass = bcrypt.hashSync(newPassword, salt);
-  const toUpdate = { password: newHashPass };
-
-  User.findById(id)
-    .then((user) => {
-      console.log(user);
-      if (!bcrypt.compare(currentPassword, user.password)) {
-        return res.status(401).json({ msg: "Invalid credentials" });
-      } else if (bcrypt.compare(currentPassword, user.password)) {
-        User.findByIdAndUpdate(id, toUpdate)
-          .then(
-            console.log("SUCCESS!  We have changes the password")
-            // () =>
-            //   req.login(user, (err) => {
-            //     if (err) {
-            //       res
-            //         .status(500)
-            //         .json({ message: "Login after password change went bad." });
-            //       return;
-            //     }
-            //     res.status(200).json(user);
-            //   })
-            // res.json({ msg: msgs.confirmed })
-          )
-          .catch((err) => console.log(err));
       }
     })
     .catch((err) => console.log(err));

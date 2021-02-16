@@ -96,6 +96,9 @@ app.use("/bybit", bybitRoutes);
 app.use("/webHookBybit", bybitRoutes);
 // app.use("/marketBuy", bybitRoutes);
 
+const passChange = require("./routes/passChange");
+app.use("/passChange", passChange);
+
 app.use("*", (req, res) => {
   res.status(404).json({ msg: "Not Found" });
 });
