@@ -12,7 +12,8 @@ const UserSchema = new Schema({
     type: Boolean,
     default: true,
   },
-  exchangeAccount: [
+  googleId: String,
+  exchangeAccounts: [
     {
       type: Schema.Types.ObjectId,
       ref: "ExchangeAccount",
@@ -22,7 +23,7 @@ const UserSchema = new Schema({
     type: String,
     enum: ["user", "admin"],
   },
-  createdAt: {
+  timestamps: {
     type: Date,
     default: Date.now,
   },

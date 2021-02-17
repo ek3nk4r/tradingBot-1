@@ -54,7 +54,7 @@ const Account = (props) => {
             <TabPanel value={value} index={0}></TabPanel>
             {/* <TabPanel value={value} index={1}></TabPanel> */}
             {value === 0 && <ChangePassword {...props} user={user} />}
-            {value === 1 && <AddApiKeys {...props} />}
+            {value === 1 && <AddApiKeys {...props} user={user} />}
           </div>
         )}
       />

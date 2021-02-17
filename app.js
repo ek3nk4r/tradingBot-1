@@ -99,6 +99,9 @@ app.use("/webHookBybit", bybitRoutes);
 const passChange = require("./routes/passChange");
 app.use("/passChange", passChange);
 
+const addKeysRoutes = require("./routes/addKeysRoutes");
+app.use("/addKeysRoutes", addKeysRoutes);
+
 app.use("*", (req, res) => {
   res.status(404).json({ msg: "Not Found" });
 });

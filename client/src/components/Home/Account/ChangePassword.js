@@ -17,7 +17,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const ChangePassword = (props) => {
-  console.log(props.user);
   const { _id } = props.user;
   const classes = useStyles();
 
@@ -27,7 +26,6 @@ const ChangePassword = (props) => {
     newPasswordAgain: "",
     isError: false,
     error: "",
-    showPassword: false,
   });
 
   const { currentPassword, newPassword, newPasswordAgain } = state;
@@ -48,12 +46,10 @@ const ChangePassword = (props) => {
   };
 
   const handleSubmit = (event) => {
-    console.log("CLIENT: CHANGE PASSWORD", newPasswordAgain, newPassword);
     event.preventDefault();
 
     if (newPasswordAgain === newPassword) {
       sendPass(_id, currentPassword, newPassword).then((res) => {
-        console.log("CLIENT RESPONSE", res);
         if (res.status === 401) {
           // handle errors
           setState({
