@@ -13,7 +13,7 @@ const UserSchema = new Schema({
     default: true,
   },
   googleId: String,
-  exchangeAccounts: [
+  exchangeAccount: [
     {
       type: Schema.Types.ObjectId,
       ref: "ExchangeAccount",

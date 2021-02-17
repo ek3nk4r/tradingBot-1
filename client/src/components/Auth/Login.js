@@ -40,24 +40,28 @@ const Login = (props) => {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    login(state.username, state.password).then((data) => {
-      console.log(data);
-      if (data.message) {
-        // handle errors
-        setState({
-          username: "",
-          password: "",
-          error: data.message,
-          isError: true,
-        });
-      } else {
-        // no error
-        // lift the data up to the App state
-        props.setUser(data);
-        // redirect to "/"
-        props.history.push("/home");
-      }
-    });
+    login(state.username, state.password)
+      .then((data) => {
+        console.log(data);
+        if (data.message) {
+          // handle errors
+          setState({
+            username: "",
+            password: "",
+            error: data.message,
+            isError: true,
+          });
+        } else {
+          // no error
+          // lift the data up to the App state
+          props.setUser(data);
+          // redirect to "/"
+          props.history.push("/home");
+        }
+      })
+      .catch((err) => {
+        return err.response.data;
+      });
   };
 
   useEffect(() => {

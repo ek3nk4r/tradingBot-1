@@ -11,7 +11,7 @@ const sendPass = (id, currentPassword, newPassword) => {
       return response;
     })
     .catch((err) => {
-      return err.response.data;
+      console.log("Error is: ", err);
     });
 };
 

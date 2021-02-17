@@ -28,13 +28,13 @@ addKeysRoutes.post("/addApiKeys", (req, res, next) => {
       // ADD PRODUCT TO FAVORITES LIST OF USER
       // $PUSH ADDS TO MONGO ARRAY
       User.findByIdAndUpdate(req.user._id, {
-        $push: { exchangeAccounts: exchangeAccountId },
+        $push: { exchangeAccount: exchangeAccountId },
       })
         .then((res) => {
           console.log(res);
-          // console.log(res.exchangeAccounts[res.exchangeAccounts.length - 1]);
+          // console.log(res.exchangeAccount[res.exchangeAccount.length - 1]);
           // console.log("all good");
-          res.json({ message: "Exchange Account successfully added." });
+          // res.json({ message: "Exchange Account successfully added." });
         })
         .catch((err) => console.log(err));
     })

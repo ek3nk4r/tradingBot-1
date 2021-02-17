@@ -53,24 +53,28 @@ const AddKeys = (props) => {
     event.preventDefault();
 
     if (key && secret && exchange && identifier) {
-      sendKeys(_id, exchange, identifier, key, secret).then((res) => {
-        if (res.status === 401) {
-          // handle errors
-          setState({
-            exchange: "",
-            identifier: "",
-            key: "",
-            secret: "",
-            error: res.message,
-            isError: true,
-          });
-        } else if (res.status === 200) {
-          setState({
-            error: res.message,
-            isError: true,
-          });
-        }
-      });
+      sendKeys(_id, exchange, identifier, key, secret)
+        .then((res) => {
+          if (res.status === 401) {
+            // handle errors
+            setState({
+              exchange: "",
+              identifier: "",
+              key: "",
+              secret: "",
+              error: res.message,
+              isError: true,
+            });
+          } else if (res.status === 200) {
+            setState({
+              error: res.message,
+              isError: true,
+            });
+          }
+        })
+        .catch((err) => {
+          console.log("Error is: ", err);
+        });
     }
   };
 

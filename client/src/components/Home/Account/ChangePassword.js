@@ -49,17 +49,21 @@ const ChangePassword = (props) => {
     event.preventDefault();
 
     if (newPasswordAgain === newPassword) {
-      sendPass(_id, currentPassword, newPassword).then((res) => {
-        if (res.status === 401) {
-          // handle errors
-          setState({
-            error: res.message,
-            isError: true,
-          });
-        } else if (res.status === 200) {
-          props.history.push("/home");
-        }
-      });
+      sendPass(_id, currentPassword, newPassword)
+        .then((res) => {
+          if (res.status === 401) {
+            // handle errors
+            setState({
+              error: res.message,
+              isError: true,
+            });
+          } else if (res.status === 200) {
+            props.history.push("/home");
+          }
+        })
+        .catch((err) => {
+          console.log("Error is: ", err);
+        });
     }
   };
 
@@ -73,7 +77,7 @@ const ChangePassword = (props) => {
         >
           <TextField
             required
-            id="password"
+            id="currentPassword"
             name="currentPassword"
             type="password"
             label="Current Password"
@@ -84,7 +88,7 @@ const ChangePassword = (props) => {
           />
           <TextField
             required
-            id="password"
+            id="newPassword"
             name="newPassword"
             type="password"
             label="New Password"
@@ -95,7 +99,7 @@ const ChangePassword = (props) => {
           />
           <TextField
             required
-            id="password"
+            id="newPasswordRepeat"
             name="newPasswordAgain"
             type="password"
             label="Re-Type New Password"

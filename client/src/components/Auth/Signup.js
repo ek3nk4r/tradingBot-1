@@ -39,22 +39,26 @@ const Signup = (props) => {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    signup(state.username, state.password).then((data) => {
-      if (data.message) {
-        // handle errors
-        setState({
-          error: data.message,
-          isError: true,
-        });
-      } else {
-        console.log("no error", data);
-        // no error
-        // lift the data up to the App state
-        props.setUser(data);
+    signup(state.username, state.password)
+      .then((data) => {
+        if (data.message) {
+          // handle errors
+          setState({
+            error: data.message,
+            isError: true,
+          });
+        } else {
+          console.log("no error", data);
+          // no error
+          // lift the data up to the App state
+          props.setUser(data);
 
-        props.history.push("/");
-      }
-    });
+          props.history.push("/");
+        }
+      })
+      .catch((err) => {
+        return err.response.data;
+      });
   };
 
   useEffect(() => {
