@@ -136,7 +136,7 @@ authRoutes.get("/email/confirm/:id", (req, res, next) => {
 
   User.findById(id)
     .then((user) => {
-      console.log(user);
+      // console.log(user);
       // A user with that id does not exist in the DB. Perhaps some tricky
       // user tried to go to a different url than the one provided in the
       // confirmation email.

@@ -14,7 +14,7 @@ var bybit = new ccxt.bybit({
 bybit.urls["api"] = bybit.urls["test"];
 
 router.get("/tickers", (req, res) => {
-  console.log(req);
+  // console.log(req);
   (async function () {
     try {
       const exchangeData = await bybit.has;
