@@ -1,7 +1,6 @@
 import axios from "axios";
 
 const sendKeys = (id, exchange, identifier, key, secret) => {
-  console.log(typeof id);
   return axios
     .post("/addKeysRoutes/addApiKeys", {
       id: id,
@@ -10,12 +9,29 @@ const sendKeys = (id, exchange, identifier, key, secret) => {
       key: key,
       secret: secret,
     })
-    .then((response) => {
-      return response;
+    .then((res) => {
+      return res;
     })
     .catch((err) => {
       console.log("Error is: ", err);
     });
 };
 
-export { sendKeys };
+const getKeys = () => {
+  axios
+    .get("/addKeysRoutes/retrieveKeys")
+    .then((res) => {
+      console.log("FFFFFFFFFFFFFF", res);
+      return res;
+      // this.props.setUser(res.data);
+      // console.log(res.data);
+      // this.setState({ favorites: res.data.products }, () => {
+      //   // console.log("LOOOOOOK ", this.state);
+      // });
+    })
+    .catch((err) => {
+      console.log("Error is: ", err);
+    });
+};
+
+export { sendKeys, getKeys };

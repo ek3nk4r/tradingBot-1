@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { sendKeys } from "./ApiKeyAxios";
+import { getKeys, sendKeys } from "./ApiKeyAxios";
+import ApiKeyList from "./ApiKeyList";
 
 // material-ui
 import TextField from "@material-ui/core/TextField";
@@ -20,7 +21,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const AddKeys = (props) => {
-  console.log(props.user);
   const { _id } = props.user;
   const classes = useStyles();
 
@@ -66,10 +66,22 @@ const AddKeys = (props) => {
               isError: true,
             });
           } else if (res.status === 200) {
-            setState({
-              error: res.message,
-              isError: true,
-            });
+            // setState({
+            //   exchange: "",
+            //   identifier: "",
+            //   key: "",
+            //   secret: "",
+            //   error: res.data.msg,
+            //   isError: true,
+            // });
+
+            getKeys()
+              .then((response) => {
+                console.log("XXXXXXXXXXXXXXX", response);
+              })
+              .catch((err) => {
+                console.log("Error is: ", err);
+              });
           }
         })
         .catch((err) => {
@@ -80,6 +92,17 @@ const AddKeys = (props) => {
 
   return (
     <form onSubmit={handleSubmit} className={classes.root}>
+      <TextField
+        required
+        id="identifier"
+        name="identifier"
+        type="text"
+        label="Account Identifier"
+        variant="outlined"
+        value={state.identifier}
+        onChange={handleChange}
+        style={{ width: "30vw", marginTop: "5px", marginBottom: "5px" }}
+      />
       <FormControl variant="outlined" className={classes.formControl}>
         <InputLabel htmlFor="outlined-age-native-simple">Exchange *</InputLabel>
         <Select
@@ -98,17 +121,6 @@ const AddKeys = (props) => {
           {/* <option value={"Kraken"}>Kraken</option> */}
         </Select>
       </FormControl>
-      <TextField
-        required
-        id="identifier"
-        name="identifier"
-        type="text"
-        label="Unique Account Identifier"
-        variant="outlined"
-        value={state.identifier}
-        onChange={handleChange}
-        style={{ width: "30vw", marginTop: "5px", marginBottom: "5px" }}
-      />
       <TextField
         required
         id="key"
@@ -148,6 +160,7 @@ const AddKeys = (props) => {
       >
         Add Exchange Account
       </Button>
+      <ApiKeyList></ApiKeyList>
     </form>
   );
 };

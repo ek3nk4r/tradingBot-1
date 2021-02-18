@@ -23,7 +23,6 @@ A11yProps();
 
 const Account = (props) => {
   const { user } = props;
-  console.log(props);
   const classes = UseStyles();
   const [value, setValue] = useState(false);
 

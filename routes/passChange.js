@@ -22,7 +22,7 @@ passChange.post("/passwordChange", (req, res, next) => {
       } else if (bcrypt.compare(currentPassword, user.password)) {
         User.findByIdAndUpdate(id, toUpdate)
           .then(() => {
-            res.status(200).json({ message: "Password updated successfully!" });
+            res.status(200).json({ msg: "Password updated successfully!" });
           })
           .catch((err) => console.log(err));
       }
