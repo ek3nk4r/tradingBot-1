@@ -56,7 +56,9 @@ const Home = (props) => {
   };
 
   useEffect(() => {
-    getTickers(exchangeName);
+    if (exchangeName) {
+      getTickers(exchangeName);
+    }
   }, [exchangeName]);
 
   return (
@@ -82,7 +84,7 @@ const Home = (props) => {
                   className={classes.tabs}
                 >
                   <Tab label="Bybit" style={{ color: "#5b9ca0" }} />
-                  {/* <Tab label="Kraken" style={{ color: "#5b9ca0" }}/> */}
+                  <Tab label="Bitmex" style={{ color: "#5b9ca0" }} />
                 </Tabs>
               </div>
               <TabPanel value={value} index={0}></TabPanel>

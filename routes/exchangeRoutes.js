@@ -3,63 +3,43 @@ const router = express.Router();
 const axios = require("axios");
 const ccxt = require("ccxt");
 
-// var bybit = new ccxt.bybit({
-//   apiKey: process.env.BYBIT_TESTNET_API_KEY,
-//   secret: process.env.BYBIT_TESTNET_API_SECRET,
-//   // apiKey: process.env.BYBIT_API_KEY,
-//   // secret: process.env.BYBIT_API_SECRET,
-//   enableRateLimit: true,
-// });
+var bybit = new ccxt.bybit({
+  apiKey: process.env.BYBIT_TESTNET_API_KEY,
+  secret: process.env.BYBIT_TESTNET_API_SECRET,
+  // apiKey: process.env.BYBIT_API_KEY,
+  // secret: process.env.BYBIT_API_SECRET,
+  enableRateLimit: true,
+});
 
-// var bitmex = new ccxt.bitmex({
-//   apiKey: process.env.BITMEX_TESTNET_API_KEY,
-//   secret: process.env.BITMEX_TESTNET_API_SECRET,
-//   // apiKey: process.env.BYBIT_API_KEY,
-//   // secret: process.env.BYBIT_API_SECRET,
-//   enableRateLimit: true,
-// });
-
-// ****************************************
-// ****************************************
-const exchanges = [
-  {
-    apiKey: process.env.BYBIT_TESTNET_API_KEY,
-    secret: process.env.BYBIT_TESTNET_API_SECRET,
-    // apiKey: process.env.BYBIT_API_KEY,
-    // secret: process.env.BYBIT_API_SECRET,
-    enableRateLimit: true,
-  },
-  {
-    //   apiKey: process.env.BITMEX_TESTNET_API_KEY,
-    //   secret: process.env.BITMEX_TESTNET_API_SECRET,
-    //   // apiKey: process.env.BYBIT_API_KEY,
-    //   // secret: process.env.BYBIT_API_SECRET,
-    //   enableRateLimit: true,
-  },
-];
-
-const exchangeNameCaps = exchangeName.toUpperCase();
-var exchange = new ccxt.exchangeName({});
-
-// const exchangeFilter = exchanges.filter((exchange) => {
-
-// })
-// ****************************************
-// ****************************************
+var bitmex = new ccxt.bitmex({
+  apiKey: process.env.BITMEX_TESTNET_API_KEY,
+  secret: process.env.BITMEX_TESTNET_API_SECRET,
+  // apiKey: process.env.BYBIT_API_KEY,
+  // secret: process.env.BYBIT_API_SECRET,
+  enableRateLimit: true,
+});
 
 bybit.urls["api"] = bybit.urls["test"];
+bitmex.urls["api"] = bitmex.urls["test"];
+
+const exchanges = [bybit, bitmex];
+let exchangeObject;
 
 router.get("/tickers/:exchangeName", (req, res) => {
   const exchangeName = req.params.exchangeName;
-  console.log("******************", exchangeName);
+
+  const exchangeFilter = exchanges.filter((exchange) => {
+    if (exchange.constructor.name == exchangeName) {
+      exchangeObject = exchange;
+    }
+  });
   (async function () {
     try {
-      const exchangeData = await bybit.has;
-      const markets = await bybit.load_markets();
-      const tickers = await bybit.fetchTickers();
-      const bybitExchangeData = [exchangeData, markets, tickers];
-      res.json(bybitExchangeData);
-      // console.log("Bybit Exchange Data:", tickers);
+      const exchangeInfo = await exchangeObject.has;
+      const markets = await exchangeObject.load_markets();
+      const tickers = await exchangeObject.fetchTickers();
+      const exchangeData = [exchangeInfo, markets, tickers];
+      res.json(exchangeData);
     } catch (err) {
       console.error(err);
       return {};
@@ -76,8 +56,12 @@ router.post("/coinData", (req, res) => {
     const limit = 150;
     // let count = 0;
     try {
-      const orders = await bybit.fetchClosedOrders(symbol, since, limit);
-      const balance = await bybit.fetchBalance();
+      const orders = await exchangeObject.fetchClosedOrders(
+        symbol,
+        since,
+        limit
+      );
+      const balance = await exchangeObject.fetchBalance();
       const coinData = [balance, orders, symbol];
       res.json(coinData);
     } catch (err) {
