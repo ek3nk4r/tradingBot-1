@@ -3,18 +3,55 @@ const router = express.Router();
 const axios = require("axios");
 const ccxt = require("ccxt");
 
-var bybit = new ccxt.bybit({
-  apiKey: process.env.BYBIT_TESTNET_API_KEY,
-  secret: process.env.BYBIT_TESTNET_API_SECRET,
-  // apiKey: process.env.BYBIT_API_KEY,
-  // secret: process.env.BYBIT_API_SECRET,
-  enableRateLimit: true,
-});
+// var bybit = new ccxt.bybit({
+//   apiKey: process.env.BYBIT_TESTNET_API_KEY,
+//   secret: process.env.BYBIT_TESTNET_API_SECRET,
+//   // apiKey: process.env.BYBIT_API_KEY,
+//   // secret: process.env.BYBIT_API_SECRET,
+//   enableRateLimit: true,
+// });
+
+// var bitmex = new ccxt.bitmex({
+//   apiKey: process.env.BITMEX_TESTNET_API_KEY,
+//   secret: process.env.BITMEX_TESTNET_API_SECRET,
+//   // apiKey: process.env.BYBIT_API_KEY,
+//   // secret: process.env.BYBIT_API_SECRET,
+//   enableRateLimit: true,
+// });
+
+// ****************************************
+// ****************************************
+const exchanges = [
+  {
+    apiKey: process.env.BYBIT_TESTNET_API_KEY,
+    secret: process.env.BYBIT_TESTNET_API_SECRET,
+    // apiKey: process.env.BYBIT_API_KEY,
+    // secret: process.env.BYBIT_API_SECRET,
+    enableRateLimit: true,
+  },
+  {
+    //   apiKey: process.env.BITMEX_TESTNET_API_KEY,
+    //   secret: process.env.BITMEX_TESTNET_API_SECRET,
+    //   // apiKey: process.env.BYBIT_API_KEY,
+    //   // secret: process.env.BYBIT_API_SECRET,
+    //   enableRateLimit: true,
+  },
+];
+
+const exchangeNameCaps = exchangeName.toUpperCase();
+var exchange = new ccxt.exchangeName({});
+
+// const exchangeFilter = exchanges.filter((exchange) => {
+
+// })
+// ****************************************
+// ****************************************
 
 bybit.urls["api"] = bybit.urls["test"];
 
-router.get("/tickers", (req, res) => {
-  // console.log(req);
+router.get("/tickers/:exchangeName", (req, res) => {
+  const exchangeName = req.params.exchangeName;
+  console.log("******************", exchangeName);
   (async function () {
     try {
       const exchangeData = await bybit.has;

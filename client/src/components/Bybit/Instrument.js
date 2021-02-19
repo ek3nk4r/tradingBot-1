@@ -17,7 +17,7 @@ const Instrument = React.memo((props) => {
 
   const getCoinData = (symbol) => {
     axios
-      .post("/bybit/coinData", { name: symbol })
+      .post("/exchangeRoutes/coinData", { name: symbol })
       .then((res) => {
         console.log(res);
         const balances = res.data[0];

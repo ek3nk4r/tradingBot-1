@@ -26,15 +26,18 @@ const Home = (props) => {
 
   const [value, setValue] = useState(false);
   const [marketNames, setMarketNames] = useState([]);
+  const [exchangeName, setExchangeName] = useState("");
 
   const handleChange = (event, newValue) => {
     event.preventDefault();
+    const exchange = event.target.innerHTML.toLowerCase();
+    setExchangeName(exchange);
     setValue(newValue);
   };
 
-  const getTickers = () => {
+  const getTickers = (exchangeName) => {
     axios
-      .get("/bybit/tickers")
+      .get(`/exchangeRoutes/tickers/${exchangeName}`)
       .then((res) => {
         const markets = res.data[1];
         const marketNames = Object.keys(markets)
@@ -53,8 +56,8 @@ const Home = (props) => {
   };
 
   useEffect(() => {
-    getTickers();
-  }, []);
+    getTickers(exchangeName);
+  }, [exchangeName]);
 
   return (
     <>

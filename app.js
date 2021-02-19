@@ -91,9 +91,9 @@ app.use("/api", authRoutes);
 const googleRoutes = require("./routes/googleRoutes");
 app.use("/google", googleRoutes);
 
-const bybitRoutes = require("./routes/bybit");
-app.use("/bybit", bybitRoutes);
-app.use("/webHookBybit", bybitRoutes);
+const exchangeRoutes = require("./routes/exchangeRoutes");
+app.use("/exchangeRoutes", exchangeRoutes);
+app.use("/webHookBybit", exchangeRoutes);
 // app.use("/marketBuy", bybitRoutes);
 
 const passChange = require("./routes/passChange");
