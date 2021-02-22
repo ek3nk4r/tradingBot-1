@@ -42,6 +42,7 @@ const Home = (props) => {
         const markets = res.data[1];
         const marketNames = Object.keys(markets)
           .map((key) => {
+            console.log(key);
             return markets[key];
           })
           .map((market) => {
@@ -54,6 +55,7 @@ const Home = (props) => {
         console.log("Error is: ", err);
       });
   };
+  console.log(marketNames);
 
   useEffect(() => {
     if (exchangeName) {
@@ -90,7 +92,7 @@ const Home = (props) => {
               <TabPanel value={value} index={0}></TabPanel>
               {/* <TabPanel value={value} index={1}></TabPanel> */}
               {value === 0 && <BybitVertical marketNames={marketNames} />}
-              {/* {value === 1 && <Kraken marketNames={marketNames}/>} */}
+              {value === 1 && <BybitVertical marketNames={marketNames} />}
             </div>
           )}
         />

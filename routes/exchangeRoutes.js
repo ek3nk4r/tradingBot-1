@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const axios = require("axios");
 const ccxt = require("ccxt");
+// const exchanges = require("../exchangeObjects/exchangeObjects");
 
 var bybit = new ccxt.bybit({
   apiKey: process.env.BYBIT_TESTNET_API_KEY,
@@ -23,6 +24,7 @@ bybit.urls["api"] = bybit.urls["test"];
 bitmex.urls["api"] = bitmex.urls["test"];
 
 const exchanges = [bybit, bitmex];
+
 let exchangeObject;
 
 router.get("/tickers/:exchangeName", (req, res) => {
@@ -33,12 +35,14 @@ router.get("/tickers/:exchangeName", (req, res) => {
       exchangeObject = exchange;
     }
   });
+
   (async function () {
     try {
       const exchangeInfo = await exchangeObject.has;
       const markets = await exchangeObject.load_markets();
       const tickers = await exchangeObject.fetchTickers();
       const exchangeData = [exchangeInfo, markets, tickers];
+      // console.log(markets);
       res.json(exchangeData);
     } catch (err) {
       console.error(err);
