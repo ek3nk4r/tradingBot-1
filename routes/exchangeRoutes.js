@@ -131,14 +131,11 @@ router.post("/webHookBybit", (req, res) => {
       const instrument = webHook.instrument;
 
       let executions;
-      let exchange;
       if (exchangeName == "bybit") {
-        exchange = "bybit";
         executions = await exchangeObject.v2PrivateGetPositionList({
           symbol: webHook.instrument.replace("/", ""),
         });
       } else if (exchangeName == "bitmex") {
-        exchange = "bitmex";
         executions = await exchangeObject.privateGetPosition({
           symbol: webHook.instrument.replace("/", ""),
         });
