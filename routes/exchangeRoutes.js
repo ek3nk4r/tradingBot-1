@@ -42,7 +42,6 @@ router.get("/tickers/:exchangeName", (req, res) => {
       const markets = await exchangeObject.load_markets();
       const tickers = await exchangeObject.fetchTickers();
       const exchangeData = [exchangeInfo, markets, tickers];
-      // console.log(markets);
       res.json(exchangeData);
     } catch (err) {
       console.error(err);
@@ -76,7 +75,16 @@ router.post("/coinData", (req, res) => {
 });
 
 router.post("/webHookBybit", (req, res) => {
-  console.log("WEBHOOK RECEIVED:", req.body.text);
+  // console.log("WEBHOOK RECEIVED:", req.body.text);
+
+  const exchangeName = req.body.text.exchange;
+
+  const exchangeFilter = exchanges.filter((exchange) => {
+    if (exchange.constructor.name == exchangeName) {
+      exchangeObject = exchange;
+    }
+  });
+
   const webHook = req.body.text;
   res.json(webHook);
   res.status(200).end();
@@ -84,14 +92,28 @@ router.post("/webHookBybit", (req, res) => {
   const buy = async () => {
     let count = 0;
     try {
-      const balance = await bybit.fetchBalance();
-      const ticker = await bybit.fetchTicker("BTC/USD");
-      const instrument = "BTC/USD";
+      const balance = await exchangeObject.fetchBalance();
+      const ticker = await exchangeObject.fetchTicker(webHook.instrument);
+      const instrument = webHook.instrument;
       const price = ticker.ask;
-      const amount = balance.free.BTC * 0.01 * price;
-      const order = await bybit.createMarketBuyOrder(instrument, amount);
 
-      console.log("BYBIT:", "SUCCESSFUL LONG OPENED");
+      let amount;
+      if (webHook.amount.includes("%")) {
+        amount =
+          ((balance.free.BTC *
+            Number(webHook.amount.substring(0, webHook.amount.length - 1))) /
+            100) *
+          price;
+      } else {
+        amount = Number(webHook.amount);
+      }
+
+      const order = await exchangeObject.createMarketBuyOrder(
+        instrument,
+        amount
+      );
+
+      console.log(`${exchangeName}`, "SUCCESSFUL LONG OPENED", amount);
     } catch (err) {
       console.error(err);
       if (count <= 10) {
@@ -104,31 +126,72 @@ router.post("/webHookBybit", (req, res) => {
   };
 
   const closeBuy = async () => {
+    let count = 0;
     try {
-      const executions = await bybit.privateGetPositionList({
-        symbol: "BTCUSD",
-      });
-      const instrument = "BTC/USD";
-      const amount = executions.result.size;
-      const order = await bybit.createMarketSellOrder(instrument, amount);
-      console.log("BYBIT:", "BUY ORDERS CLOSED SUCCESSFULLY");
+      const instrument = webHook.instrument;
+
+      let executions;
+      let exchange;
+      if (exchangeName == "bybit") {
+        exchange = "bybit";
+        executions = await exchangeObject.v2PrivateGetPositionList({
+          symbol: webHook.instrument.replace("/", ""),
+        });
+      } else if (exchangeName == "bitmex") {
+        exchange = "bitmex";
+        executions = await exchangeObject.privateGetPosition({
+          symbol: webHook.instrument.replace("/", ""),
+        });
+      }
+
+      let amount;
+      if (exchangeName == "bybit") {
+        amount = executions.result.size;
+      } else if (exchangeName == "bitmex") {
+        amount = executions[0].currentQty;
+      }
+
+      const order = await exchangeObject.createMarketSellOrder(
+        instrument,
+        amount
+      );
+      console.log(`${exchangeName}`, "BUY ORDERS CLOSED SUCCESSFULLY");
     } catch (err) {
       console.error(err);
-      return await closeBuy();
+      if (count <= 10) {
+        count++;
+        return await closeBuy();
+      } else {
+        console.log("Max Order Attempts - Try again on he next one!");
+      }
     }
   };
 
   const sell = async () => {
     let count = 0;
     try {
-      const balance = await bybit.fetchBalance();
-      const ticker = await bybit.fetchTicker("BTC/USD");
-      const instrument = "BTC/USD";
+      const balance = await exchangeObject.fetchBalance();
+      const ticker = await exchangeObject.fetchTicker(webHook.instrument);
+      const instrument = webHook.instrument;
       const price = ticker.ask;
-      const amount = balance.free.BTC * 0.01 * price;
-      const order = await bybit.createMarketSellOrder(instrument, amount);
 
-      console.log("BYBIT:", "SUCCESSFUL SHORT OPENED");
+      let amount;
+      if (webHook.amount.includes("%")) {
+        amount =
+          ((balance.free.BTC *
+            Number(webHook.amount.substring(0, webHook.amount.length - 1))) /
+            100) *
+          price;
+      } else {
+        amount = Number(webHook.amount);
+      }
+
+      const order = await exchangeObject.createMarketSellOrder(
+        instrument,
+        amount
+      );
+
+      console.log(`${exchangeName}`, "SUCCESSFUL SHORT OPENED");
     } catch (err) {
       console.error(err);
       if (count <= 10) {
@@ -141,33 +204,42 @@ router.post("/webHookBybit", (req, res) => {
   };
 
   const closeSell = async () => {
+    let count = 0;
     try {
-      const positions = await bybit.privateGetPositionList({
-        symbol: "BTCUSD",
+      const positions = await exchangeObject.v2PrivateGetPositionList({
+        symbol: webHook.instrument.replace("/", ""),
       });
-      const instrument = "BTC/USD";
+      const instrument = webHook.instrument;
       const amount = positions.result.size;
-      const order = await bybit.createMarketBuyOrder(instrument, amount);
-      console.log("BYBIT:", "SELL ORDERS CLOSED SUCCESSFULLY");
+      const order = await exchangeObject.createMarketBuyOrder(
+        instrument,
+        amount
+      );
+      console.log(`${exchangeName}`, "SELL ORDERS CLOSED SUCCESSFULLY");
     } catch (err) {
       console.error(err);
-      return await closeSell();
+      if (count <= 10) {
+        count++;
+        return await closeBuy();
+      } else {
+        console.log("Max Order Attempts - Try again on he next one!");
+      }
     }
   };
 
-  if (webHook === "buy") {
+  if (webHook.signal === "buy") {
     (async function () {
       buy();
     })();
-  } else if (webHook === "sell") {
+  } else if (webHook.signal === "sell") {
     (async function () {
       sell();
     })();
-  } else if (webHook === "close buy") {
+  } else if (webHook.signal === "close buy") {
     (async function () {
       closeBuy();
     })();
-  } else if (webHook === "close sell") {
+  } else if (webHook.signal === "close sell") {
     (async function () {
       closeSell();
     })();
