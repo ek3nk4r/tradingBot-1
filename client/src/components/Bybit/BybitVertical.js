@@ -22,7 +22,6 @@ A11yProps();
 const BybitVertical = React.memo((props) => {
   const classes = UseStyles();
   const { marketNames } = props;
-  console.log(marketNames);
 
   const [state, setState] = React.useState({
     value: false,

@@ -42,7 +42,6 @@ const Home = (props) => {
         const markets = res.data[1];
         const marketNames = Object.keys(markets)
           .map((key) => {
-            console.log(key);
             return markets[key];
           })
           .map((market) => {
@@ -55,7 +54,6 @@ const Home = (props) => {
         console.log("Error is: ", err);
       });
   };
-  console.log(marketNames);
 
   useEffect(() => {
     if (exchangeName) {
