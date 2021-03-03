@@ -166,24 +166,22 @@ router.post("/webHookBybit", (req, res) => {
         });
       } else if (exchangeName == "phemex") {
         executions = await exchangeObject.privateGetAccountsPositions({
-          symbol: instrument.replace("/", ""),
+          currency: instrument.split("/")[0],
         });
       }
-      console.log("***EXECUTIONS***", executions);
 
-      // let amount;
-      // if (exchangeName == "bybit") {
-      //   amount = executions.result.size;
-      // } else if (exchangeName == "bitmex") {
-      //   amount = executions[0].currentQty;
-      // } else if (exchangeName == "phemex") {
-      //   amount = executions[0].currentQty;
-      // }
-
-      // const order = await exchangeObject.createMarketSellOrder(
-      //   instrument,
-      //   amount
-      // );
+      let amount;
+      if (exchangeName == "bybit") {
+        amount = executions.result.size;
+      } else if (exchangeName == "bitmex") {
+        amount = executions[0].currentQty;
+      } else if (exchangeName == "phemex") {
+        amount = executions.data.positions[0].size;
+      }
+      const order = await exchangeObject.createMarketSellOrder(
+        instrument,
+        amount
+      );
       console.log(`${exchangeName}`, "BUY ORDERS CLOSED SUCCESSFULLY");
     } catch (err) {
       console.error(err);
@@ -253,6 +251,10 @@ router.post("/webHookBybit", (req, res) => {
         executions = await exchangeObject.privateGetPosition({
           symbol: webHook.instrument.replace("/", ""),
         });
+      } else if (exchangeName == "phemex") {
+        executions = await exchangeObject.privateGetAccountsPositions({
+          currency: instrument.split("/")[0],
+        });
       }
 
       let amount;
@@ -260,6 +262,8 @@ router.post("/webHookBybit", (req, res) => {
         amount = executions.result.size;
       } else if (exchangeName == "bitmex") {
         amount = executions[0].currentQty;
+      } else if (exchangeName == "phemex") {
+        amount = executions.data.positions[0].size;
       }
       const order = await exchangeObject.createMarketBuyOrder(
         instrument,
