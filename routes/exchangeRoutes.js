@@ -20,15 +20,27 @@ var bitmex = new ccxt.bitmex({
   enableRateLimit: true,
 });
 
+var phemex = new ccxt.phemex({
+  apiKey: process.env.PHEMEX_TESTNET_API_KEY,
+  secret: process.env.PHEMEX_TESTNET_API_SECRET,
+  // apiKey: process.env.BYBIT_API_KEY,
+  // secret: process.env.BYBIT_API_SECRET,
+  enableRateLimit: true,
+});
+
 bybit.urls["api"] = bybit.urls["test"];
 bitmex.urls["api"] = bitmex.urls["test"];
+phemex.urls["api"] = phemex.urls["test"];
 
-const exchanges = [bybit, bitmex];
+console.log(phemex);
+
+const exchanges = [bybit, bitmex, phemex];
 
 let exchangeObject;
 
 router.get("/tickers/:exchangeName", (req, res) => {
   const exchangeName = req.params.exchangeName;
+  console.log("***EXCHANGE NAME***", exchangeName);
 
   const exchangeFilter = exchanges.filter((exchange) => {
     if (exchange.constructor.name == exchangeName) {
@@ -40,7 +52,13 @@ router.get("/tickers/:exchangeName", (req, res) => {
     try {
       const exchangeInfo = await exchangeObject.has;
       const markets = await exchangeObject.load_markets();
-      const tickers = await exchangeObject.fetchTickers();
+      let tickers;
+      console.log("***EXCHANGE NAME***", exchangeName);
+      if (exchangeName == "phemex") {
+        tickers = await exchangeObject.publicGetCfgV2Products();
+      } else {
+        tickers = await exchangeObject.fetchTickers();
+      }
       const exchangeData = [exchangeInfo, markets, tickers];
       res.json(exchangeData);
     } catch (err) {
@@ -203,11 +221,25 @@ router.post("/webHookBybit", (req, res) => {
   const closeSell = async () => {
     let count = 0;
     try {
-      const positions = await exchangeObject.v2PrivateGetPositionList({
-        symbol: webHook.instrument.replace("/", ""),
-      });
       const instrument = webHook.instrument;
-      const amount = positions.result.size;
+
+      let executions;
+      if (exchangeName == "bybit") {
+        executions = await exchangeObject.v2PrivateGetPositionList({
+          symbol: webHook.instrument.replace("/", ""),
+        });
+      } else if (exchangeName == "bitmex") {
+        executions = await exchangeObject.privateGetPosition({
+          symbol: webHook.instrument.replace("/", ""),
+        });
+      }
+
+      let amount;
+      if (exchangeName == "bybit") {
+        amount = executions.result.size;
+      } else if (exchangeName == "bitmex") {
+        amount = executions[0].currentQty;
+      }
       const order = await exchangeObject.createMarketBuyOrder(
         instrument,
         amount

@@ -85,12 +85,13 @@ const Home = (props) => {
                 >
                   <Tab label="Bybit" style={{ color: "#5b9ca0" }} />
                   <Tab label="Bitmex" style={{ color: "#5b9ca0" }} />
+                  <Tab label="Phemex" style={{ color: "#5b9ca0" }} />
                 </Tabs>
               </div>
               <TabPanel value={value} index={0}></TabPanel>
-              {/* <TabPanel value={value} index={1}></TabPanel> */}
               {value === 0 && <BybitVertical marketNames={marketNames} />}
               {value === 1 && <BybitVertical marketNames={marketNames} />}
+              {value === 2 && <BybitVertical marketNames={marketNames} />}
             </div>
           )}
         />
