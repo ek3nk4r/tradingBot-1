@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-// import axios from "axios";
+import React, { useState, useEffect } from "react";
+import { getKeys } from "../ApiKeyAxios";
 
 // material-ui
 // import { makeStyles } from "@material-ui/core/styles";
@@ -17,30 +17,29 @@ import TableRow from "@material-ui/core/TableRow";
 
 const rows = [];
 
-const Orders = React.memo((props) => {
-  const { orders } = props;
+const ApiKeyList = () => {
+  const [state, setState] = useState({
+    exchangeAccounts: [],
+    newExchangeAccount: false,
+  });
+  const { exchangeAccounts, newExchangeAccount } = state;
+  console.log(exchangeAccounts);
 
   //********************************/
   //**********Table Data************/
   rows.length = 0;
-  orders.map((order) => {
+  exchangeAccounts.map((account) => {
     return rows.push(
       CreateData(
-        order.symbol,
-        order.side,
-        order.type,
-        order.amount,
-        order.cost,
-        order.price,
-        order.status,
-        order.datetime,
-        order.id
+        account.exchangeName,
+        account.identifier,
+        account.key,
+        account.secret
       )
     );
   });
   //********************************/
   //********************************/
-
   const classes = UseStyles();
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -55,6 +54,25 @@ const Orders = React.memo((props) => {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
+
+  useEffect(() => {
+    getKeys()
+      .then((res) => {
+        console.log("XXXXXXXXXXXXXXX", res);
+        const accounts = res.data.exchangeAccount;
+        console.log(accounts);
+        // if (newExchangeAccount === true) {
+        setState({
+          exchangeAccounts: accounts,
+          newExchangeAccount: false,
+        });
+        console.log(exchangeAccounts);
+        // }
+      })
+      .catch((err) => {
+        console.log("Error is: ", err);
+      });
+  }, [newExchangeAccount]);
 
   return (
     <Paper className={classes.root}>
@@ -106,6 +124,6 @@ const Orders = React.memo((props) => {
       />
     </Paper>
   );
-});
+};
 
-export default Orders;
+export default ApiKeyList;

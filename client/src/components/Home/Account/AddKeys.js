@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { sendKeys } from "./ApiKeyAxios";
-import ApiKeyList from "./ApiKeyList";
+// import ApiKeyList from "./ApiKeyList/ApiKeyList";
 
 // material-ui
 import TextField from "@material-ui/core/TextField";
@@ -84,79 +84,82 @@ const AddKeys = (props) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className={classes.root}>
-      <TextField
-        required
-        id="identifier"
-        name="identifier"
-        type="text"
-        label="Account Identifier"
-        variant="outlined"
-        value={state.identifier}
-        onChange={handleChange}
-        style={{ width: "30vw", marginTop: "5px", marginBottom: "5px" }}
-      />
-      <FormControl variant="outlined" className={classes.formControl}>
-        <InputLabel htmlFor="outlined-age-native-simple">Exchange *</InputLabel>
-        <Select
-          native
-          value={state.exchange}
+    <>
+      <form onSubmit={handleSubmit} className={classes.root}>
+        <TextField
+          required
+          id="identifier"
+          name="identifier"
+          type="text"
+          label="Account Identifier"
+          variant="outlined"
+          value={state.identifier}
           onChange={handleChange}
-          label="Exchange"
-          inputProps={{
-            name: "exchange",
-            id: "outlined-age-native-simple",
-          }}
           style={{ width: "30vw", marginTop: "5px", marginBottom: "5px" }}
+        />
+        <FormControl variant="outlined" className={classes.formControl}>
+          <InputLabel htmlFor="outlined-age-native-simple">
+            Exchange *
+          </InputLabel>
+          <Select
+            native
+            value={state.exchange}
+            onChange={handleChange}
+            label="Exchange"
+            inputProps={{
+              name: "exchange",
+              id: "outlined-age-native-simple",
+            }}
+            style={{ width: "30vw", marginTop: "5px", marginBottom: "5px" }}
+          >
+            <option aria-label="None" value="" />
+            <option value={"Bybit"}>Bybit</option>
+            <option value={"Bitmex"}>Bitmex</option>
+            <option value={"Phemex"}>Phemex</option>
+            {/* <option value={"Kraken"}>Kraken</option> */}
+          </Select>
+        </FormControl>
+        <TextField
+          required
+          id="key"
+          name="key"
+          type="text"
+          label="API Key"
+          variant="outlined"
+          value={state.key}
+          onChange={handleChange}
+          style={{ width: "30vw", marginTop: "5px", marginBottom: "5px" }}
+        />
+        <TextField
+          required
+          id="secret"
+          name="secret"
+          type="password"
+          label="Secret"
+          variant="outlined"
+          value={state.secret}
+          onChange={handleChange}
+          style={{ width: "30vw", marginTop: "5px", marginBottom: "5px" }}
+        />
+
+        {/* show error message */}
+        {errorMessage()}
+
+        <Button
+          variant="outlined"
+          type="submit"
+          style={{
+            width: "30vw",
+            height: "55px",
+            marginTop: "5px",
+            marginBottom: "10px",
+            color: "#5b9ca0",
+          }}
         >
-          <option aria-label="None" value="" />
-          <option value={"Bybit"}>Bybit</option>
-          <option value={"Bitmex"}>Bitmex</option>
-          <option value={"Phemex"}>Phemex</option>
-          {/* <option value={"Kraken"}>Kraken</option> */}
-        </Select>
-      </FormControl>
-      <TextField
-        required
-        id="key"
-        name="key"
-        type="text"
-        label="API Key"
-        variant="outlined"
-        value={state.key}
-        onChange={handleChange}
-        style={{ width: "30vw", marginTop: "5px", marginBottom: "5px" }}
-      />
-      <TextField
-        required
-        id="secret"
-        name="secret"
-        type="password"
-        label="Secret"
-        variant="outlined"
-        value={state.secret}
-        onChange={handleChange}
-        style={{ width: "30vw", marginTop: "5px", marginBottom: "5px" }}
-      />
-
-      {/* show error message */}
-      {errorMessage()}
-
-      <Button
-        variant="outlined"
-        type="submit"
-        style={{
-          width: "30vw",
-          height: "55px",
-          marginTop: "5px",
-          marginBottom: "10px",
-          color: "#5b9ca0",
-        }}
-      >
-        Add Exchange Account
-      </Button>
-      <ApiKeyList />
-    </form>
+          Add Exchange Account
+        </Button>
+      </form>
+    </>
   );
 };
 

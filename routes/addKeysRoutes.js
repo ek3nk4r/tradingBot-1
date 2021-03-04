@@ -44,7 +44,6 @@ addKeysRoutes.get("/retrieveKeys", (req, res) => {
   User.findById(req.user._id)
     .populate("exchangeAccount")
     .then((response) => {
-      console.log("BBBBBBBBBBBBBB", response);
       res.json(response);
     });
 });
