@@ -1,5 +1,5 @@
-const CreateData = (exchangeName, identifier, key, secret) => {
-  return { exchangeName, identifier, key, secret };
+const CreateData = (_id, exchangeName, identifier, key, secret) => {
+  return { _id, exchangeName, identifier, key, secret };
 };
 
 export default CreateData;

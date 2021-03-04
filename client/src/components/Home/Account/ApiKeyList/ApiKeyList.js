@@ -31,6 +31,7 @@ const ApiKeyList = () => {
   exchangeAccounts.map((account) => {
     return rows.push(
       CreateData(
+        account._id,
         account.exchangeName,
         account.identifier,
         account.key,
@@ -96,7 +97,7 @@ const ApiKeyList = () => {
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((row) => {
                 return (
-                  <TableRow hover role="checkbox" tabIndex={-1} key={row.id}>
+                  <TableRow hover role="checkbox" tabIndex={-1} key={row._id}>
                     {Columns.map((column) => {
                       const value = row[column.id];
                       return (
