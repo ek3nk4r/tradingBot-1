@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { getKeys, sendKeys } from "./ApiKeyAxios";
+import { sendKeys } from "./ApiKeyAxios";
 import ApiKeyList from "./ApiKeyList";
 
 // material-ui
@@ -66,22 +66,15 @@ const AddKeys = (props) => {
               isError: true,
             });
           } else if (res.status === 200) {
-            // setState({
-            //   exchange: "",
-            //   identifier: "",
-            //   key: "",
-            //   secret: "",
-            //   error: res.data.msg,
-            //   isError: true,
-            // });
-
-            getKeys()
-              .then((response) => {
-                console.log("XXXXXXXXXXXXXXX", response);
-              })
-              .catch((err) => {
-                console.log("Error is: ", err);
-              });
+            setState({
+              exchange: "",
+              identifier: "",
+              key: "",
+              secret: "",
+              error: res.data.msg,
+              isError: true,
+              newExchangeAccount: true,
+            });
           }
         })
         .catch((err) => {
@@ -162,7 +155,7 @@ const AddKeys = (props) => {
       >
         Add Exchange Account
       </Button>
-      <ApiKeyList></ApiKeyList>
+      <ApiKeyList />
     </form>
   );
 };

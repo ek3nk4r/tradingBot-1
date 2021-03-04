@@ -18,16 +18,10 @@ const sendKeys = (id, exchange, identifier, key, secret) => {
 };
 
 const getKeys = () => {
-  axios
+  return axios
     .get("/addKeysRoutes/retrieveKeys")
     .then((res) => {
-      console.log("FFFFFFFFFFFFFF", res);
       return res;
-      // this.props.setUser(res.data);
-      // console.log(res.data);
-      // this.setState({ favorites: res.data.products }, () => {
-      //   // console.log("LOOOOOOK ", this.state);
-      // });
     })
     .catch((err) => {
       console.log("Error is: ", err);
