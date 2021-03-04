@@ -23,7 +23,6 @@ const ApiKeyList = () => {
     newExchangeAccount: false,
   });
   const { exchangeAccounts, newExchangeAccount } = state;
-  console.log(exchangeAccounts);
 
   //********************************/
   //**********Table Data************/
@@ -31,11 +30,11 @@ const ApiKeyList = () => {
   exchangeAccounts.map((account) => {
     return rows.push(
       CreateData(
-        account._id,
         account.exchangeName,
         account.identifier,
         account.key,
-        account.secret
+        account.secret,
+        account._id
       )
     );
   });
@@ -59,16 +58,12 @@ const ApiKeyList = () => {
   useEffect(() => {
     getKeys()
       .then((res) => {
-        console.log("XXXXXXXXXXXXXXX", res);
         const accounts = res.data.exchangeAccount;
         console.log(accounts);
-        // if (newExchangeAccount === true) {
         setState({
           exchangeAccounts: accounts,
           newExchangeAccount: false,
         });
-        console.log(exchangeAccounts);
-        // }
       })
       .catch((err) => {
         console.log("Error is: ", err);
@@ -95,6 +90,7 @@ const ApiKeyList = () => {
           <TableBody>
             {rows
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+              .reverse()
               .map((row) => {
                 return (
                   <TableRow hover role="checkbox" tabIndex={-1} key={row._id}>

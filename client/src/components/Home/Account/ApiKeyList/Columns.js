@@ -1,6 +1,6 @@
 const Columns = [
   {
-    id: "exchange",
+    id: "exchangeName",
     label: "Exchange",
     minWidth: 100,
     align: "center",
