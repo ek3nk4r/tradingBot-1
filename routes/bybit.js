@@ -8,6 +8,7 @@ var bybit = new ccxt.bybit({
   // secret: process.env.BYBIT_TESTNET_API_SECRET,
   apiKey: process.env.BYBIT_API_KEY,
   secret: process.env.BYBIT_API_SECRET,
+  timeout: 5000,
   enableRateLimit: true,
 });
 
