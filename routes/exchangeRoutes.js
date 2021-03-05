@@ -9,6 +9,7 @@ var bybit = new ccxt.bybit({
   secret: process.env.BYBIT_TESTNET_API_SECRET,
   // apiKey: process.env.BYBIT_API_KEY,
   // secret: process.env.BYBIT_API_SECRET,
+  timeout: 5000,
   enableRateLimit: true,
 });
 
@@ -17,6 +18,7 @@ var bitmex = new ccxt.bitmex({
   secret: process.env.BITMEX_TESTNET_API_SECRET,
   // apiKey: process.env.BYBIT_API_KEY,
   // secret: process.env.BYBIT_API_SECRET,
+  timeout: 5000,
   enableRateLimit: true,
 });
 
@@ -25,6 +27,7 @@ var phemex = new ccxt.phemex({
   secret: process.env.PHEMEX_TESTNET_API_SECRET,
   // apiKey: process.env.BYBIT_API_KEY,
   // secret: process.env.BYBIT_API_SECRET,
+  timeout: 5000,
   enableRateLimit: true,
 });
 
