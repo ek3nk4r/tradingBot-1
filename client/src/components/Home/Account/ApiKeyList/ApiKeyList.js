@@ -17,7 +17,7 @@ import TableRow from "@material-ui/core/TableRow";
 
 const rows = [];
 
-const ApiKeyList = () => {
+const ApiKeyList = (props) => {
   const [state, setState] = useState({
     exchangeAccounts: [],
     newExchangeAccount: false,
@@ -68,7 +68,7 @@ const ApiKeyList = () => {
       .catch((err) => {
         console.log("Error is: ", err);
       });
-  }, [newExchangeAccount]);
+  }, []);
 
   return (
     <Paper className={classes.root}>

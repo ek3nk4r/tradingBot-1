@@ -12,6 +12,7 @@ const UseStyles = makeStyles(() => ({
     maxHeight: "35vh",
     maxWidth: "65vw",
     border: "1px solid #c4c4c4",
+    borderRadius: "4px",
   },
 }));
 
