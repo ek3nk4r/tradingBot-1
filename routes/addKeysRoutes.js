@@ -7,6 +7,15 @@ const ExchangeAccount = require("../models/ExchangeAccount");
 // password SALT
 var salt = bcrypt.genSaltSync(10);
 
+//RETRIEVE API KEYS
+addKeysRoutes.get("/retrieveKeys", (req, res) => {
+  User.findById(req.user._id)
+    .populate("exchangeAccount")
+    .then((response) => {
+      res.json(response);
+    });
+});
+
 // ADD API KEYS
 addKeysRoutes.post("/addApiKeys", (req, res, next) => {
   const key = req.body.key.toString();
@@ -40,11 +49,39 @@ addKeysRoutes.post("/addApiKeys", (req, res, next) => {
     .catch((err) => console.log(err));
 });
 
-addKeysRoutes.get("/retrieveKeys", (req, res) => {
+// DELETE API KEYS
+addKeysRoutes.put("/deleteApiKeys", (req, res, next) => {
+  console.log("***DELETE KEYS***", typeof req.body.id);
+  const { id } = req.body;
+
   User.findById(req.user._id)
-    .populate("exchangeAccount")
-    .then((response) => {
-      res.json(response);
+    .populate("ExchangeAccount")
+    // POPULATE GETS THE ARRAY WITH ALL THE PRODUCTS THERE
+    .then((userInfo) => {
+      console.log("***USER INFO***", userInfo.exchangeAccount);
+
+      // THIS FILTER IS GOING TO RETURN JUST THE OBJECT THAT WERE TRYING TO REMOVE FROM THE USER FAVORITES ARRAY
+      const [keysToDelete] = userInfo.exchangeAccount.filter((el) => {
+        console.log("********************", el._id.id);
+        parseInt(el._id) === id;
+      });
+      console.log("***KEYS TO DELETE***", keysToDelete);
+      // AND NOW WERE GOING TO REMOVE SAID PRODUCT FROM THE USER PRODUCTS ARRAY
+      User.findByIdAndUpdate(
+        req.user._id,
+        {
+          $pull: { exchangeAccount: keysToDelete._id },
+        },
+        { new: true }
+      ).then(() => {
+        // MESSAGE OF SUCCESS SENT TO USER
+        res.json({ message: "API Keys Deleted" });
+        // PRODUCT NO LONGER RELEVANT ENOUGH TO KEEP IN DATABASE. TIME TO DELETE
+        ExchangeAccount.findByIdAndDelete(keysToDelete).then(() => {
+          // HERE IT SINGLAS THAT SAID PRODUCT WAS DELETED
+          console.log("Keys Successfully Deleted");
+        });
+      });
     });
 });
 

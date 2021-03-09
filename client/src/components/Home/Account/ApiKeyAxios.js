@@ -28,4 +28,16 @@ const getKeys = () => {
     });
 };
 
-export { sendKeys, getKeys };
+const deleteKeys = (id) => {
+  console.log("***DELETE KEYS***", typeof id);
+  return axios
+    .put("/addKeysRoutes/deleteApiKeys", { id: id })
+    .then((res) => {
+      return res;
+    })
+    .catch((err) => {
+      console.log("Error is: ", err);
+    });
+};
+
+export { sendKeys, getKeys, deleteKeys };

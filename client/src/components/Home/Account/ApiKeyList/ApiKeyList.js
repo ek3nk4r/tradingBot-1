@@ -40,7 +40,6 @@ const ApiKeyList = (props) => {
     getKeys()
       .then((res) => {
         const accounts = res.data.exchangeAccount;
-        console.log(accounts);
         setState({
           exchangeAccounts: accounts,
         });
@@ -55,7 +54,12 @@ const ApiKeyList = (props) => {
       <TableContainer className={classes.container}>
         <Table stickyHeader aria-label="sticky table">
           <TableHead />
-          <TableBody page={page} rowsPerPage={rowsPerPage} rows={rows} />
+          <TableBody
+            page={page}
+            rowsPerPage={rowsPerPage}
+            rows={rows}
+            exchangeAccounts={exchangeAccounts}
+          />
         </Table>
       </TableContainer>
       <TablePagination

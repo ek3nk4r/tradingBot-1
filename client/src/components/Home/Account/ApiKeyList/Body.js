@@ -10,7 +10,7 @@ import TableCell from "@material-ui/core/TableCell";
 import TableRow from "@material-ui/core/TableRow";
 
 const Body = (props) => {
-  const { page, rowsPerPage, rows } = props;
+  const { page, rowsPerPage, rows, handleDelete, exchangeAccounts } = props;
 
   return (
     <TableBody>
@@ -31,7 +31,7 @@ const Body = (props) => {
                 );
               })}
               <TableCell>
-                <DeleteButton />
+                <DeleteButton row={row} />
               </TableCell>
             </TableRow>
           );
