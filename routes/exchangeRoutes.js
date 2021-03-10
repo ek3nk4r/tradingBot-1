@@ -96,7 +96,7 @@ router.post("/coinData", (req, res) => {
 });
 
 router.post("/webHookBybit", (req, res) => {
-  // console.log("WEBHOOK RECEIVED:", req.body.text);
+  console.log("WEBHOOK RECEIVED:", req.body.text);
 
   const exchangeName = req.body.text.exchange;
 
@@ -135,10 +135,16 @@ router.post("/webHookBybit", (req, res) => {
       } else {
         amount = Number(webHook.amount);
       }
-
-      const order = await exchangeObject.createMarketBuyOrder(
+      // *****PLACE A MARKET BUY ORDER*****
+      // const order = await exchangeObject.createMarketBuyOrder(
+      //   instrument,
+      //   amount
+      // );
+      // *****PLACE A LIMIT BUY ORDER*****
+      const order = await exchangeObject.createLimitBuyOrder(
         instrument,
-        amount
+        amount,
+        price
       );
 
       console.log(`${exchangeName}`, "SUCCESSFUL LONG OPENED", amount);
@@ -181,10 +187,12 @@ router.post("/webHookBybit", (req, res) => {
       } else if (exchangeName == "phemex") {
         amount = executions.data.positions[0].size;
       }
+      // *****PLACE A MARKET SELL ORDER*****
       const order = await exchangeObject.createMarketSellOrder(
         instrument,
         amount
       );
+
       console.log(`${exchangeName}`, "BUY ORDERS CLOSED SUCCESSFULLY");
     } catch (err) {
       console.error(err);
@@ -284,19 +292,19 @@ router.post("/webHookBybit", (req, res) => {
     }
   };
 
-  if (webHook.signal === "buy") {
+  if (webHook.alert_message === "buy") {
     (async function () {
       buy();
     })();
-  } else if (webHook.signal === "sell") {
+  } else if (webHook.alert_message === "sell") {
     (async function () {
       sell();
     })();
-  } else if (webHook.signal === "close buy") {
+  } else if (webHook.alert_message === "close buy") {
     (async function () {
       closeBuy();
     })();
-  } else if (webHook.signal === "close sell") {
+  } else if (webHook.alert_message === "close sell") {
     (async function () {
       closeSell();
     })();

@@ -32,7 +32,7 @@ const Columns = [
     label: "Cost",
     minWidth: 100,
     align: "center",
-    format: (value) => value.toFixed(2),
+    format: (value) => value.toFixed(4),
   },
   {
     id: "price",

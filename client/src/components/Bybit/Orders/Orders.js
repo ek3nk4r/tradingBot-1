@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, memo } from "react";
 // import axios from "axios";
 
 // material-ui
@@ -17,7 +17,7 @@ import TableRow from "@material-ui/core/TableRow";
 
 const rows = [];
 
-const Orders = React.memo((props) => {
+const Orders = memo((props) => {
   const { orders } = props;
 
   //********************************/
@@ -31,7 +31,7 @@ const Orders = React.memo((props) => {
         order.type,
         order.amount,
         order.cost,
-        order.price,
+        order.average,
         order.status,
         order.datetime,
         order.id

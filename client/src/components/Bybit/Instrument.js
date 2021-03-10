@@ -1,13 +1,13 @@
-import React from "react";
+import React, { useState, memo, useEffect } from "react";
 import axios from "axios";
 import Orders from "./Orders/Orders";
 import Balance from "./Balance";
 
-const Instrument = React.memo((props) => {
+const Instrument = memo((props) => {
   console.log(props);
   const { symbol } = props;
 
-  const [state, setState] = React.useState({
+  const [state, setState] = useState({
     balance: [],
     available: [],
     used: [],
@@ -55,7 +55,7 @@ const Instrument = React.memo((props) => {
       });
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     getCoinData(symbol);
   }, [symbol]);
 
