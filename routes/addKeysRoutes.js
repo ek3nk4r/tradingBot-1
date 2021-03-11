@@ -33,16 +33,11 @@ addKeysRoutes.post("/addApiKeys", (req, res, next) => {
   ExchangeAccount.create({ ...exchangeAccount })
     .then((response) => {
       const exchangeAccountId = response._id;
-      // ADD API KEYS TO LIST OF USERS EXCHANGE ACCOUNTS
-      // $PUSH ADDS TO MONGO ARRAY
       User.findByIdAndUpdate(req.user._id, {
         $push: { exchangeAccount: exchangeAccountId },
       })
         .then(() => {
           res.json({ msg: "API Keys successfully added!" });
-
-          /* ***** HERE YOU NEED TO PLACE THE LOGIC THAT PULLS THE API KEY DATA FROM 
-            THE DATA BASE AND SENDS IT TO THE FRONT END TO BE RENDERED ***** */
         })
         .catch((err) => console.log(err));
     })
@@ -51,34 +46,25 @@ addKeysRoutes.post("/addApiKeys", (req, res, next) => {
 
 // DELETE API KEYS
 addKeysRoutes.put("/deleteApiKeys", (req, res, next) => {
-  console.log("***DELETE KEYS***", typeof req.body.id);
-  const { id } = req.body;
+  const { apiKey_id } = req.body;
 
   User.findById(req.user._id)
-    .populate("ExchangeAccount")
-    // POPULATE GETS THE ARRAY WITH ALL THE PRODUCTS THERE
+    .populate("exchangeAccount")
     .then((userInfo) => {
-      console.log("***USER INFO***", userInfo.exchangeAccount);
-
-      // THIS FILTER IS GOING TO RETURN JUST THE OBJECT THAT WERE TRYING TO REMOVE FROM THE USER FAVORITES ARRAY
-      const [keysToDelete] = userInfo.exchangeAccount.filter((el) => {
-        console.log("********************", el._id.id);
-        parseInt(el._id) === id;
+      const [exhangeAccountToDelete] = userInfo.exchangeAccount.filter((el) => {
+        if (el._id.toString() == apiKey_id) {
+          return el;
+        }
       });
-      console.log("***KEYS TO DELETE***", keysToDelete);
-      // AND NOW WERE GOING TO REMOVE SAID PRODUCT FROM THE USER PRODUCTS ARRAY
       User.findByIdAndUpdate(
         req.user._id,
         {
-          $pull: { exchangeAccount: keysToDelete._id },
+          $pull: { exchangeAccount: exhangeAccountToDelete._id },
         },
         { new: true }
-      ).then(() => {
-        // MESSAGE OF SUCCESS SENT TO USER
+      ).then((updateUser) => {
         res.json({ message: "API Keys Deleted" });
-        // PRODUCT NO LONGER RELEVANT ENOUGH TO KEEP IN DATABASE. TIME TO DELETE
-        ExchangeAccount.findByIdAndDelete(keysToDelete).then(() => {
-          // HERE IT SINGLAS THAT SAID PRODUCT WAS DELETED
+        ExchangeAccount.findByIdAndDelete(exhangeAccountToDelete).then(() => {
           console.log("Keys Successfully Deleted");
         });
       });

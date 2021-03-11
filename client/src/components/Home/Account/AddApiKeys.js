@@ -10,7 +10,7 @@ const AddApiKeys = (props) => {
           <AddKeys {...props} />
         </div>
       </div>
-      <ApiKeyList />
+      <ApiKeyList {...props} />
     </div>
   );
 };

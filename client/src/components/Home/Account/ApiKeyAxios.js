@@ -31,7 +31,7 @@ const getKeys = () => {
 const deleteKeys = (id) => {
   console.log("***DELETE KEYS***", typeof id);
   return axios
-    .put("/addKeysRoutes/deleteApiKeys", { id: id })
+    .put("/addKeysRoutes/deleteApiKeys", { apiKey_id: id })
     .then((res) => {
       return res;
     })

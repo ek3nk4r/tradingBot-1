@@ -14,6 +14,7 @@ import Table from "@material-ui/core/Table";
 import TableContainer from "@material-ui/core/TableContainer";
 
 const ApiKeyList = (props) => {
+  const { user } = props;
   const classes = UseStyles();
 
   const [state, setState] = useState({
@@ -58,7 +59,7 @@ const ApiKeyList = (props) => {
             page={page}
             rowsPerPage={rowsPerPage}
             rows={rows}
-            exchangeAccounts={exchangeAccounts}
+            user={user}
           />
         </Table>
       </TableContainer>
