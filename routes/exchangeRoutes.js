@@ -109,6 +109,7 @@ router.post("/webHookBybit", (req, res) => {
   const webHook = req.body.text;
   res.json(webHook);
   res.status(200).end();
+  const coin = webHook.instrument.slice(0, webHook.instrument.indexOf("/"));
 
   const buy = async () => {
     let count = 0;
@@ -116,7 +117,7 @@ router.post("/webHookBybit", (req, res) => {
       let balance;
       if (exchangeName == "phemex") {
         balance = await exchangeObject.fetchBalance(
-          (params = { type: "swap", code: "BTC" })
+          (params = { type: "swap", code: coin })
         );
       } else {
         balance = await exchangeObject.fetchBalance();
@@ -128,7 +129,7 @@ router.post("/webHookBybit", (req, res) => {
       let amount;
       if (webHook.amount.includes("%")) {
         amount =
-          ((balance.free.BTC *
+          ((balance.free[coin] *
             Number(webHook.amount.substring(0, webHook.amount.length - 1))) /
             100) *
           price;
