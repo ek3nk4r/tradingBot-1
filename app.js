@@ -93,8 +93,9 @@ app.use("/google", googleRoutes);
 
 const exchangeRoutes = require("./routes/exchangeRoutes");
 app.use("/exchangeRoutes", exchangeRoutes);
-app.use("/webHookBybit", exchangeRoutes);
-// app.use("/marketBuy", bybitRoutes);
+
+const tradingRoutes = require("./routes/tradingRoutes");
+app.use("/tradingRoutes", tradingRoutes);
 
 const passChange = require("./routes/passChange");
 app.use("/passChange", passChange);
@@ -105,8 +106,5 @@ app.use("/addKeysRoutes", addKeysRoutes);
 app.use("*", (req, res) => {
   res.status(404).json({ msg: "Not Found" });
 });
-
-// const krakenRoutes = require("./routes/kraken");
-// app.use("/kraken", krakenRoutes);
 
 module.exports = app;
