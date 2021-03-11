@@ -6,8 +6,7 @@ import IconButton from "@material-ui/core/IconButton";
 import DeleteIcon from "@material-ui/icons/DeleteOutlined";
 
 const DeleteButton = (props) => {
-  const { row, user } = props;
-  console.log(user.exchangeAccount);
+  const { row } = props;
 
   const handleDelete = (id) => {
     deleteKeys(id);

@@ -62,13 +62,16 @@ addKeysRoutes.put("/deleteApiKeys", (req, res, next) => {
           $pull: { exchangeAccount: exhangeAccountToDelete._id },
         },
         { new: true }
-      ).then((updateUser) => {
-        res.json({ message: "API Keys Deleted" });
-        ExchangeAccount.findByIdAndDelete(exhangeAccountToDelete).then(() => {
-          console.log("Keys Successfully Deleted");
-        });
-      });
-    });
+      )
+        .then(() => {
+          res.json({ msg: "API Keys Deleted" });
+          ExchangeAccount.findByIdAndDelete(exhangeAccountToDelete).then(() => {
+            console.log("Keys Successfully Deleted");
+          });
+        })
+        .catch((err) => console.log(err));
+    })
+    .catch((err) => console.log(err));
 });
 
 module.exports = addKeysRoutes;

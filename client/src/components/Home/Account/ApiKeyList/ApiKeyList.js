@@ -13,8 +13,7 @@ import Paper from "@material-ui/core/Paper";
 import Table from "@material-ui/core/Table";
 import TableContainer from "@material-ui/core/TableContainer";
 
-const ApiKeyList = (props) => {
-  const { user } = props;
+const ApiKeyList = () => {
   const classes = UseStyles();
 
   const [state, setState] = useState({
@@ -55,12 +54,7 @@ const ApiKeyList = (props) => {
       <TableContainer className={classes.container}>
         <Table stickyHeader aria-label="sticky table">
           <TableHead />
-          <TableBody
-            page={page}
-            rowsPerPage={rowsPerPage}
-            rows={rows}
-            user={user}
-          />
+          <TableBody page={page} rowsPerPage={rowsPerPage} rows={rows} />
         </Table>
       </TableContainer>
       <TablePagination
