@@ -29,7 +29,10 @@ const closeSell = async (exchangeObject, exchangeName, instrument) => {
     // *****PLACE A MARKET BUY ORDER*****
     const order = await exchangeObject.createMarketBuyOrder(instrument, amount);
 
-    console.log(`${exchangeName}`, "SELL ORDERS CLOSED SUCCESSFULLY");
+    console.log(
+      `${exchangeName}`,
+      `${instrument} SELL ORDERS CLOSED SUCCESSFULLY`
+    );
   } catch (err) {
     console.error(err);
     if (count <= 10) {

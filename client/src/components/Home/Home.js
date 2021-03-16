@@ -89,9 +89,15 @@ const Home = (props) => {
                 </Tabs>
               </div>
               <TabPanel value={value} index={0}></TabPanel>
-              {value === 0 && <BybitVertical marketNames={marketNames} />}
-              {value === 1 && <BybitVertical marketNames={marketNames} />}
-              {value === 2 && <BybitVertical marketNames={marketNames} />}
+              {value === 0 && (
+                <BybitVertical marketNames={marketNames} user={user} />
+              )}
+              {value === 1 && (
+                <BybitVertical marketNames={marketNames} user={user} />
+              )}
+              {value === 2 && (
+                <BybitVertical marketNames={marketNames} user={user} />
+              )}
             </div>
           )}
         />

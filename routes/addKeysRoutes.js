@@ -1,13 +1,11 @@
 const express = require("express");
 const addKeysRoutes = express.Router();
-const bcrypt = require("bcryptjs");
+const { encrypt } = require("../crypto/crypto");
 const User = require("../models/User");
 const ExchangeAccount = require("../models/ExchangeAccount");
+const ApiSecret = require("../models/ApiSecret");
 
-// password SALT
-var salt = bcrypt.genSaltSync(10);
-
-//RETRIEVE API KEYS
+//RETRIEVE API KEYS TO DISPLAY IN THE FRONTEND
 addKeysRoutes.get("/retrieveKeys", (req, res) => {
   User.findById(req.user._id)
     .populate("exchangeAccount")
@@ -22,22 +20,27 @@ addKeysRoutes.post("/addApiKeys", (req, res, next) => {
   const secret = req.body.secret.toString();
   const exchangeName = req.body.exchange;
   const identifier = req.body.identifier;
-  const newHashPass = bcrypt.hashSync(secret, salt);
-  const exchangeAccount = {
-    exchangeName: exchangeName,
-    identifier: identifier,
-    key: key,
-    secret: newHashPass,
-  };
+  const hash = encrypt(secret);
 
-  ExchangeAccount.create({ ...exchangeAccount })
+  ApiSecret.create({ ...hash })
     .then((response) => {
-      const exchangeAccountId = response._id;
-      User.findByIdAndUpdate(req.user._id, {
-        $push: { exchangeAccount: exchangeAccountId },
-      })
-        .then(() => {
-          res.json({ msg: "API Keys successfully added!" });
+      const apiSecretId = response._id;
+      const exchangeAccount = {
+        exchangeName: exchangeName,
+        identifier: identifier,
+        key: key,
+        secret: apiSecretId,
+      };
+      ExchangeAccount.create({ ...exchangeAccount })
+        .then((response) => {
+          const exchangeAccountId = response._id;
+          User.findByIdAndUpdate(req.user._id, {
+            $push: { exchangeAccount: exchangeAccountId, secret: apiSecretId },
+          })
+            .then(() => {
+              res.json({ msg: "API Keys successfully added!" });
+            })
+            .catch((err) => console.log(err));
         })
         .catch((err) => console.log(err));
     })

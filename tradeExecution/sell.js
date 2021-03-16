@@ -43,7 +43,7 @@ const sell = async (
       price
     );
 
-    console.log(`${exchangeName}`, "SUCCESSFUL SHORT OPENED");
+    console.log(`${exchangeName}`, `SUCCESSFUL ${instrument} SHORT OPENED`);
   } catch (err) {
     console.error(err);
     if (count <= 10) {

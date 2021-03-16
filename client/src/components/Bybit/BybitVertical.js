@@ -21,7 +21,7 @@ A11yProps();
 
 const BybitVertical = React.memo((props) => {
   const classes = UseStyles();
-  const { marketNames } = props;
+  const { marketNames, user } = props;
 
   const [state, setState] = React.useState({
     value: false,
@@ -67,7 +67,7 @@ const BybitVertical = React.memo((props) => {
       </Tabs>
       <TabPanel value={value} index={value}>
         {" "}
-        {symbol ? <Instrument symbol={symbol} /> : <></>}
+        {symbol ? <Instrument symbol={symbol} user={user} /> : <></>}
       </TabPanel>
     </div>
   );

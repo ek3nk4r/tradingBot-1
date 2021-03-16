@@ -4,8 +4,7 @@ import Orders from "./Orders/Orders";
 import Balance from "./Balance";
 
 const Instrument = memo((props) => {
-  console.log(props);
-  const { symbol } = props;
+  const { symbol, user } = props;
 
   const [state, setState] = useState({
     balance: [],
@@ -17,7 +16,7 @@ const Instrument = memo((props) => {
 
   const getCoinData = (symbol) => {
     axios
-      .post("/exchangeRoutes/coinData", { name: symbol })
+      .post("/exchangeRoutes/coinData", { name: symbol, user_id: user._id })
       .then((res) => {
         console.log(res);
         const balances = res.data[0];

@@ -31,7 +31,10 @@ const closeBuy = async (exchangeObject, exchangeName, instrument) => {
       amount
     );
 
-    console.log(`${exchangeName}`, "BUY ORDERS CLOSED SUCCESSFULLY");
+    console.log(
+      `${exchangeName}`,
+      `${instrument} BUY ORDERS CLOSED SUCCESSFULLY`
+    );
   } catch (err) {
     console.error(err);
   }

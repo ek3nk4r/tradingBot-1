@@ -5,7 +5,12 @@ const ExchangeAccountSchema = new Schema({
   exchangeName: String,
   identifier: String,
   key: String,
-  secret: String,
+  secret: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "ApiSecret",
+    },
+  ],
 });
 
 const ExchangeAccount = mongoose.model(

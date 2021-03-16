@@ -35,7 +35,11 @@ const buy = async (exchangeObject, exchangeName, webHook, instrument, coin) => {
       price
     );
 
-    console.log(`${exchangeName}`, "SUCCESSFUL LONG OPENED", amount);
+    console.log(
+      `${exchangeName}`,
+      `SUCCESSFUL ${instrument} LONG OPENED`,
+      amount
+    );
   } catch (err) {
     console.error(err);
   }
