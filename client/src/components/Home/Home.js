@@ -22,7 +22,9 @@ TabPanel.propTypes = {
 
 const Home = (props) => {
   const { setUser, user } = props;
+  const userId = user._id;
   const classes = UseStyles();
+  console.log(user);
 
   const [value, setValue] = useState(false);
   const [marketNames, setMarketNames] = useState([]);
@@ -35,9 +37,9 @@ const Home = (props) => {
     setValue(newValue);
   };
 
-  const getTickers = (exchangeName) => {
+  const getTickers = (exchangeName, userId) => {
     axios
-      .get(`/exchangeRoutes/tickers/${exchangeName}`)
+      .get(`/exchangeRoutes/tickers/${exchangeName}/${userId}`)
       .then((res) => {
         const markets = res.data[1];
         const marketNames = Object.keys(markets)
@@ -57,7 +59,7 @@ const Home = (props) => {
 
   useEffect(() => {
     if (exchangeName) {
-      getTickers(exchangeName);
+      getTickers(exchangeName, userId);
     }
   }, [exchangeName]);
 

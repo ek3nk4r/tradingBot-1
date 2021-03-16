@@ -1,6 +1,32 @@
 const express = require("express");
 const ccxt = require("ccxt");
-// const { decrypt } = require("./crypto");
+const { decrypt } = require("../crypto/crypto");
+const User = require("../models/User");
+const ExchangeAccount = require("../models/ExchangeAccount");
+
+//RETRIEVE API KEYS
+const userKeys = (exchangeName, userId) => {
+  User.findById(userId)
+    .populate("exchangeAccount")
+    // .populate("secret")
+    .then((userInfo) => {
+      const [exhangeAccountIdToPopulate] = userInfo.exchangeAccount.filter(
+        (el) => {
+          if (el.exchangeName.toLowerCase() == exchangeName) {
+            return el._id;
+          }
+        }
+      );
+      ExchangeAccount.findById(exhangeAccountIdToPopulate)
+        .populate("secret")
+        .then((secretInfo) => {
+          let hash = secretInfo.secret[0];
+          console.log("***DECRYPT***", decrypt(hash));
+        })
+        .catch((err) => console.log(err));
+    })
+    .catch((err) => console.log(err));
+};
 
 var bybit = new ccxt.bybit({
   apiKey: process.env.BYBIT_TESTNET_API_KEY,
@@ -29,4 +55,4 @@ var phemex = new ccxt.phemex({
   enableRateLimit: true,
 });
 
-module.exports = { bybit, bitmex, phemex };
+module.exports = { bybit, bitmex, phemex, userKeys };

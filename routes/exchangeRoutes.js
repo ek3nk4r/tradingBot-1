@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const axios = require("axios");
 const exchange = require("../exchangeObjects/exchangeObjects");
+const { userKeys } = require("../exchangeObjects/exchangeObjects");
 
 const bybit = exchange.bybit;
 const bitmex = exchange.bitmex;
@@ -14,9 +15,12 @@ phemex.urls["api"] = phemex.urls["test"];
 
 let exchangeObject;
 
-router.get("/tickers/:exchangeName", (req, res) => {
+router.get("/tickers/:exchangeName/:userId", (req, res) => {
   const exchangeName = req.params.exchangeName;
-  console.log("***EXCHANGE NAME***", exchangeName);
+  const userId = req.params.userId;
+  console.log("***EXCHANGE NAME***", exchangeName, userId);
+
+  userKeys(exchangeName, userId);
 
   const exchangeFilter = exchanges.filter((exchange) => {
     if (exchange.constructor.name == exchangeName) {
@@ -29,7 +33,6 @@ router.get("/tickers/:exchangeName", (req, res) => {
       const exchangeInfo = await exchangeObject.has;
       const markets = await exchangeObject.load_markets();
       let tickers;
-      console.log("***EXCHANGE NAME***", exchangeName);
       if (exchangeName == "phemex") {
         tickers = await exchangeObject.publicGetCfgV2Products();
       } else {

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, memo } from "react";
 
 //  Components
 import Instrument from "./Instrument";
@@ -19,11 +19,11 @@ TabPanel.propTypes = {
 
 A11yProps();
 
-const BybitVertical = React.memo((props) => {
+const BybitVertical = memo((props) => {
   const classes = UseStyles();
   const { marketNames, user } = props;
 
-  const [state, setState] = React.useState({
+  const [state, setState] = useState({
     value: false,
     symbol: "",
   });
