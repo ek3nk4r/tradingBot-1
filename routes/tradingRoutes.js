@@ -14,7 +14,7 @@ router.post("/tradingRoutes", (req, res) => {
   console.log("WEBHOOK RECEIVED:", req.body.text);
 
   const exchangeName = req.body.text.exchange;
-  const userId = req.params.userId;
+  const userId = req.body.text.userId;
   const webHook = req.body.text;
   const instrument = webHook.instrument;
   const coin = instrument.slice(0, instrument.indexOf("/"));

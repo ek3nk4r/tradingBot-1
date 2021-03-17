@@ -1,3 +1,4 @@
+const { bybit } = require("ccxt");
 const express = require("express");
 
 const closeBuy = async (exchangeObject, exchangeName, instrument) => {
@@ -25,11 +26,21 @@ const closeBuy = async (exchangeObject, exchangeName, instrument) => {
     } else if (exchangeName == "phemex") {
       amount = executions.data.positions[0].size;
     }
+
+    // let since = undefined;
+    // let limit = 1;
+    // const open = await exchangeObject.fetchOpenOrders(instrument, since, limit);
+    // console.log("***OPEN***", open);
+
     // *****PLACE A MARKET SELL ORDER*****
     const order = await exchangeObject.createMarketSellOrder(
       instrument,
       amount
     );
+
+    // bybit  fetchOpenOrders
+    // bitmex  fetchOpenOrders
+    // phemex  fetchOpenOrders
 
     console.log(
       `${exchangeName}`,
