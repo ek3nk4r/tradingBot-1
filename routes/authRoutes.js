@@ -16,7 +16,7 @@ const msgs = {
 };
 
 // SIGNUP
-authRoutes.post("/signup", (req, res, next) => {
+authRoutes.post("/signup", (req, res) => {
   const username = req.body.username;
   const password = req.body.password;
 
@@ -59,6 +59,8 @@ authRoutes.post("/signup", (req, res, next) => {
       username: username,
       password: hashPass,
     });
+
+    console.log("***NEW USER***", newUser);
 
     newUser.save((err) => {
       console.log(err);
@@ -132,34 +134,27 @@ authRoutes.get("/loggedin", (req, res, next) => {
 // EMAIL CONFIRMATION
 authRoutes.get("/email/confirm/:id", (req, res, next) => {
   const { id } = req.params;
-  console.log("ID: ", id);
 
   User.findById(id)
     .then((user) => {
-      // console.log(user);
-      // A user with that id does not exist in the DB. Perhaps some tricky
-      // user tried to go to a different url than the one provided in the
-      // confirmation email.
+      // A user with that id does not exist in the DB.
       if (!user) {
         res.json({ msg: msgs.couldNotFind });
       }
 
-      // The user exists but has not been confirmed. We need to confirm this
-      // user and let them know their email address has been confirmed.
+      // The user exists but has not been confirmed.
       else if (user && !user.emailConfirmed) {
         User.findByIdAndUpdate(id, { emailConfirmed: true })
-          .then(
-            () =>
-              req.login(user, (err) => {
-                if (err) {
-                  res
-                    .status(500)
-                    .json({ message: "Login after signup went bad." });
-                  return;
-                }
-                res.status(200).json(user);
-              })
-            // res.json({ msg: msgs.confirmed })
+          .then(() =>
+            req.login(user, (err) => {
+              if (err) {
+                res
+                  .status(500)
+                  .json({ message: "Login after signup went bad." });
+                return;
+              }
+              res.status(200).json(user);
+            })
           )
           .catch((err) => console.log(err));
       }

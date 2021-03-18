@@ -64,7 +64,6 @@ router.get("/tickers/:exchangeName/:userId", (req, res) => {
 router.post("/coinData", (req, res) => {
   console.log(req.body.user_id);
   const tickerSymbol = req.body.name;
-  const user_id = req.body.user_id;
 
   (async function () {
     const symbol = tickerSymbol;

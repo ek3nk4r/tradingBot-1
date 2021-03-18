@@ -17,10 +17,10 @@ addKeysRoutes.get("/retrieveKeys", (req, res) => {
 // ADD API KEYS
 addKeysRoutes.post("/addApiKeys", (req, res, next) => {
   const key = req.body.key.toString();
-  const secret = req.body.secret.toString();
+  // const secret = req.body.secret.toString();
   const exchangeName = req.body.exchange;
   const identifier = req.body.identifier;
-  const hash = encrypt(secret);
+  const hash = encrypt(req.body.secret.toString());
 
   ApiSecret.create({ ...hash })
     .then((response) => {
