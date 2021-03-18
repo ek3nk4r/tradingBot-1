@@ -14,7 +14,7 @@ const Instrument = memo((props) => {
   });
   const { balance, available, used, orders } = state;
 
-  const getCoinData = (symbol) => {
+  useEffect(() => {
     axios
       .post("/exchangeRoutes/coinData", { name: symbol, user_id: user._id })
       .then((res) => {
@@ -52,10 +52,6 @@ const Instrument = memo((props) => {
       .catch((err) => {
         console.log("Error is: ", err);
       });
-  };
-
-  useEffect(() => {
-    getCoinData(symbol);
   }, [symbol]);
 
   return (

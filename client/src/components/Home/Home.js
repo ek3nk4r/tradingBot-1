@@ -24,7 +24,6 @@ const Home = (props) => {
   const { setUser, user } = props;
   const userId = user._id;
   const classes = UseStyles();
-  console.log(user);
 
   const [value, setValue] = useState(false);
   const [marketNames, setMarketNames] = useState([]);
