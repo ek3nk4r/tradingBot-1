@@ -37,6 +37,7 @@ router.get("/tickers/:exchangeName/:userId", (req, res) => {
           });
 
           exchangeObject.urls["api"] = exchangeObject.urls["test"];
+          // exchangeObject.urls["api"] = exchangeObject.urls["api"];
 
           (async function () {
             try {
@@ -62,7 +63,6 @@ router.get("/tickers/:exchangeName/:userId", (req, res) => {
 });
 
 router.post("/coinData", (req, res) => {
-  console.log(req.body.user_id);
   const tickerSymbol = req.body.name;
 
   (async function () {

@@ -19,6 +19,10 @@ const flash = require("connect-flash");
 
 mongoose
   .connect(process.env.MONGODB_URI || "mongodb://localhost/botTrader", {
+    // .connect(
+    //   process.env.MONGODB_URI_LIVE ||
+    //     "mongodb+srv://KyleChorley:hN%5EpZxV%261kDE@cluster1-live.hskqz.mongodb.net/test",
+    //   {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useFindAndModify: false,
