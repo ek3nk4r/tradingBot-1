@@ -43,8 +43,8 @@ router.post("/tradingRoutes", (req, res) => {
             enableRateLimit: true,
           });
 
-          exchangeObject.urls["api"] = exchangeObject.urls["test"];
-          // exchangeObject.urls["api"] = exchangeObject.urls["api"];
+          // exchangeObject.urls["api"] = exchangeObject.urls["test"];
+          exchangeObject.urls["api"] = exchangeObject.urls["api"];
 
           if (webHook.alert_message === "buy") {
             (async function () {

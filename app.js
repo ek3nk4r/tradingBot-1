@@ -13,20 +13,20 @@ const path = require("path");
 const session = require("express-session");
 const passport = require("passport");
 const MongoStore = require("connect-mongo")(session);
-// const LocalStrategy = require("passport-local").Strategy;
 require("./passport/index");
 const flash = require("connect-flash");
 
 mongoose
-  .connect(process.env.MONGODB_URI || "mongodb://localhost/botTrader", {
-    // .connect(
-    //   process.env.MONGODB_URI_LIVE ||
-    //     "mongodb+srv://KyleChorley:hN%5EpZxV%261kDE@cluster1-live.hskqz.mongodb.net/test",
-    //   {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    useFindAndModify: false,
-  })
+  // .connect(process.env.MONGODB_URI || "mongodb://localhost/botTrader", {
+  .connect(
+    process.env.MONGODB_URI_LIVE ||
+      "mongodb+srv://KyleChorley:hN%5EpZxV%261kDE@cluster1-live.hskqz.mongodb.net/test",
+    {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      useFindAndModify: false,
+    }
+  )
   .then((x) => {
     console.log(
       `Connected to Mongo! Database name: "${x.connections[0].name}"`
@@ -50,7 +50,6 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 // Express View engine setup
-
 app.use(
   require("node-sass-middleware")({
     src: path.join(__dirname, "public"),
