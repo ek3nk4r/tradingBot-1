@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { Route } from "react-router-dom";
 
 // components
 import UseStyles from "../../VerticalTabs/UseStyles";
@@ -22,7 +21,7 @@ TabPanel.propTypes = {
 A11yProps();
 
 const Account = (props) => {
-  const { user } = props;
+  const { user, history } = props;
   const classes = UseStyles();
   const [value, setValue] = useState(false);
 
@@ -33,30 +32,32 @@ const Account = (props) => {
 
   return (
     <>
-      <Route
-        path="/account"
-        render={(props) => (
-          <div className={classes.root}>
-            <div className="tabs-container">
-              <Tabs
-                orientation="vertical"
-                variant="scrollable"
-                value={value}
-                onChange={handleChange}
-                aria-label="Vertical tabs"
-                className={classes.tabs}
-              >
-                <Tab label="Change Password" style={{ color: "#5b9ca0" }} />
-                <Tab label="Add API Keys" style={{ color: "#5b9ca0" }} />
-              </Tabs>
-            </div>
-            <TabPanel value={value} index={0}></TabPanel>
-            {/* <TabPanel value={value} index={1}></TabPanel> */}
-            {value === 0 && <ChangePassword {...props} user={user} />}
-            {value === 1 && <AddApiKeys {...props} user={user} />}
-          </div>
-        )}
-      />
+      <div className={classes.root}>
+        <div className="tabs-container">
+          <Tabs
+            orientation="vertical"
+            variant="scrollable"
+            value={value}
+            onChange={handleChange}
+            aria-label="Vertical tabs"
+            className={classes.tabs}
+          >
+            <Tab
+              onClick={() => history.push("/account/password")}
+              label="Change Password"
+              style={{ color: "#5b9ca0" }}
+            />
+            <Tab
+              onClick={() => history.push("/account/apiKeys")}
+              label="Add API Keys"
+              style={{ color: "#5b9ca0" }}
+            />
+          </Tabs>
+        </div>
+        <TabPanel value={value} index={0}></TabPanel>
+        {value === 0 && <ChangePassword {...props} user={user} />}
+        {value === 1 && <AddApiKeys {...props} user={user} />}
+      </div>
     </>
   );
 };

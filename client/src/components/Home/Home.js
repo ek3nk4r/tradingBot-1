@@ -84,20 +84,44 @@ const Home = (props) => {
                   aria-label="Vertical tabs"
                   className={classes.tabs}
                 >
-                  <Tab label="Bybit" style={{ color: "#5b9ca0" }} />
-                  <Tab label="Bitmex" style={{ color: "#5b9ca0" }} />
-                  <Tab label="Phemex" style={{ color: "#5b9ca0" }} />
+                  <Tab
+                    onClick={() => props.history.push("/home/bybit")}
+                    label="Bybit"
+                    style={{ color: "#5b9ca0" }}
+                  />
+                  <Tab
+                    onClick={() => props.history.push("/home/bitmex")}
+                    label="Bitmex"
+                    style={{ color: "#5b9ca0" }}
+                  />
+                  <Tab
+                    onClick={() => props.history.push("/home/phemex")}
+                    label="Phemex"
+                    style={{ color: "#5b9ca0" }}
+                  />
                 </Tabs>
               </div>
               <TabPanel value={value} index={0}></TabPanel>
               {value === 0 && (
-                <BybitVertical marketNames={marketNames} user={user} />
+                <BybitVertical
+                  exchangeName={exchangeName}
+                  marketNames={marketNames}
+                  user={user}
+                />
               )}
               {value === 1 && (
-                <BybitVertical marketNames={marketNames} user={user} />
+                <BybitVertical
+                  exchangeName={exchangeName}
+                  marketNames={marketNames}
+                  user={user}
+                />
               )}
               {value === 2 && (
-                <BybitVertical marketNames={marketNames} user={user} />
+                <BybitVertical
+                  exchangeName={exchangeName}
+                  marketNames={marketNames}
+                  user={user}
+                />
               )}
             </div>
           )}
