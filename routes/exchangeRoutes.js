@@ -36,8 +36,8 @@ router.get("/tickers/:exchangeName/:userId", (req, res) => {
             enableRateLimit: true,
           });
 
-          // exchangeObject.urls["api"] = exchangeObject.urls["test"];
-          exchangeObject.urls["api"] = exchangeObject.urls["api"];
+          exchangeObject.urls["api"] = exchangeObject.urls["test"];
+          // exchangeObject.urls["api"] = exchangeObject.urls["api"];
 
           (async function () {
             try {
