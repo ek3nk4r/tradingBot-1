@@ -1,6 +1,4 @@
-const express = require("express");
-
-const closeSell = async (exchangeObject, exchangeName, instrument) => {
+const closeSell = async (exchangeObject, exchangeName, webHook, instrument) => {
   let count = 0;
   try {
     let executions;
@@ -19,15 +17,37 @@ const closeSell = async (exchangeObject, exchangeName, instrument) => {
     }
 
     let amount;
-    if (exchangeName == "bybit") {
-      amount = executions.result.size;
-    } else if (exchangeName == "bitmex") {
-      amount = executions[0].currentQty;
-    } else if (exchangeName == "phemex") {
-      amount = executions.data.positions[0].size;
+    if (exchangeName == "bybit" && webHook.amount.includes("%")) {
+      amount =
+        (executions.result.size *
+          Number(webHook.amount.substring(0, webHook.amount.length - 1))) /
+        100;
+    } else if (exchangeName == "bitmex" && webHook.amount.includes("%")) {
+      amount =
+        (executions[0].currentQty *
+          Number(webHook.amount.substring(0, webHook.amount.length - 1))) /
+        100;
+    } else if (exchangeName == "phemex" && webHook.amount.includes("%")) {
+      amount =
+        (executions.data.positions[0].size *
+          Number(webHook.amount.substring(0, webHook.amount.length - 1))) /
+        100;
+    } else {
+      amount = webhook.amount;
     }
-    // *****PLACE A MARKET BUY ORDER*****
-    const order = await exchangeObject.createMarketBuyOrder(instrument, amount);
+
+    if (webHook.orderType === "limit") {
+      const order = await exchangeObject.createLimitBuyOrder(
+        instrument,
+        amount,
+        webHook.limitPrice
+      );
+    } else if (webHook.orderType === "market") {
+      const order = await exchangeObject.createMarketBuyOrder(
+        instrument,
+        amount
+      );
+    }
 
     console.log(
       `${exchangeName}`,

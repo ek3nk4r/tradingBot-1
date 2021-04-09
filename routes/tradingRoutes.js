@@ -56,11 +56,11 @@ router.post("/tradingRoutes", (req, res) => {
             })();
           } else if (webHook.alert_message === "close buy") {
             (async function () {
-              closeBuy(exchangeObject, exchangeName, instrument);
+              closeBuy(exchangeObject, exchangeName, webHook, instrument);
             })();
           } else if (webHook.alert_message === "close sell") {
             (async function () {
-              closeSell(exchangeObject, exchangeName, instrument);
+              closeSell(exchangeObject, exchangeName, webHook, instrument);
             })();
           }
         })
