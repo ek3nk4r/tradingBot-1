@@ -31,17 +31,18 @@ const sell = async (
       amount = Number(webHook.amount);
     }
 
-    // *****PLACE A MARKET SELL ORDER*****
-    // const order = await exchangeObject.createMarketSellOrder(
-    //   instrument,
-    //   amount
-    // );
-    // *****PLACE A LIMIT SELL ORDER*****
-    const order = await exchangeObject.createLimitSellOrder(
-      instrument,
-      amount,
-      price
-    );
+    if (webHook.orderType === "limit") {
+      const order = await exchangeObject.createLimitSellOrder(
+        instrument,
+        amount,
+        webHook.limitPrice
+      );
+    } else if (webHook.orderType === "market") {
+      const order = await exchangeObject.createMarketSellOrder(
+        instrument,
+        amount
+      );
+    }
 
     console.log(`${exchangeName}`, `SUCCESSFUL ${instrument} SHORT OPENED`);
   } catch (err) {

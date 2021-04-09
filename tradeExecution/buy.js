@@ -23,14 +23,19 @@ const buy = async (exchangeObject, exchangeName, webHook, instrument, coin) => {
     } else {
       amount = Number(webHook.amount);
     }
-    // *****PLACE A MARKET BUY ORDER*****
-    const order = await exchangeObject.createMarketBuyOrder(instrument, amount);
-    // *****PLACE A LIMIT BUY ORDER*****
-    // const order = await exchangeObject.createLimitBuyOrder(
-    //   instrument,
-    //   amount,
-    //   price
-    // );
+
+    if (webHook.orderType === "limit") {
+      const order = await exchangeObject.createLimitBuyOrder(
+        instrument,
+        amount,
+        webHook.limitPrice
+      );
+    } else if (webHook.orderType === "market") {
+      const order = await exchangeObject.createMarketBuyOrder(
+        instrument,
+        amount
+      );
+    }
 
     console.log(
       `${exchangeName}`,
