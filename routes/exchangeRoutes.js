@@ -6,6 +6,9 @@ const User = require("../models/User");
 const ExchangeAccount = require("../models/ExchangeAccount");
 const { decrypt } = require("../crypto/crypto");
 
+// const one = new ccxt.bybit();
+// console.log(one);
+
 let exchangeObject;
 
 router.get("/tickers/:exchangeName/:userId", (req, res) => {

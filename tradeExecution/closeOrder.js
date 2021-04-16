@@ -1,5 +1,9 @@
-const closeSell = async (exchangeObject, exchangeName, webHook, instrument) => {
-  let count = 0;
+const closeOrder = async (
+  exchangeObject,
+  exchangeName,
+  webHook,
+  instrument
+) => {
   try {
     let executions;
     if (exchangeName == "bybit") {
@@ -36,32 +40,26 @@ const closeSell = async (exchangeObject, exchangeName, webHook, instrument) => {
       amount = webhook.amount;
     }
 
-    if (webHook.orderType === "limit") {
-      const order = await exchangeObject.createLimitBuyOrder(
-        instrument,
-        amount,
-        webHook.limitPrice
-      );
-    } else if (webHook.orderType === "market") {
-      const order = await exchangeObject.createMarketBuyOrder(
-        instrument,
-        amount
-      );
+    const side = webHook.side;
+    const price = webHook.limitPrice;
+    const type = webHook.orderType;
+
+    switch (webHook.orderType) {
+      case "limit":
+        await exchangeObject.createOrder(instrument, type, side, amount, price);
+        break;
+      case "market":
+        await exchangeObject.createOrder(instrument, type, side, amount);
+        break;
     }
 
     console.log(
       `${exchangeName}`,
-      `${instrument} SELL ORDERS CLOSED SUCCESSFULLY`
+      `${instrument} BUY ORDERS CLOSED SUCCESSFULLY`
     );
   } catch (err) {
     console.error(err);
-    if (count <= 10) {
-      count++;
-      return await closeBuy();
-    } else {
-      console.log("Max Order Attempts - Try again on he next one!");
-    }
   }
 };
 
-module.exports = { closeSell };
+module.exports = { closeOrder };

@@ -5,10 +5,8 @@ const ccxt = require("ccxt");
 const User = require("../models/User");
 const ExchangeAccount = require("../models/ExchangeAccount");
 const { decrypt } = require("../crypto/crypto");
-const { buy } = require("../tradeExecution/buy");
-const { closeBuy } = require("../tradeExecution/closeBuy");
-const { sell } = require("../tradeExecution/sell");
-const { closeSell } = require("../tradeExecution/closeSell");
+const { order } = require("../tradeExecution/order");
+const { closeOrder } = require("../tradeExecution/closeOrder");
 
 router.post("/tradingRoutes", (req, res) => {
   console.log("WEBHOOK RECEIVED:", req.body.text);
@@ -46,21 +44,13 @@ router.post("/tradingRoutes", (req, res) => {
           exchangeObject.urls["api"] = exchangeObject.urls["test"];
           // exchangeObject.urls["api"] = exchangeObject.urls["api"];
 
-          if (webHook.alert_message === "buy") {
+          if (webHook.alert_message === "open") {
             (async function () {
-              buy(exchangeObject, exchangeName, webHook, instrument, coin);
+              order(exchangeObject, exchangeName, webHook, instrument, coin);
             })();
-          } else if (webHook.alert_message === "sell") {
+          } else if (webHook.alert_message === "close") {
             (async function () {
-              sell(exchangeObject, exchangeName, webHook, instrument, coin);
-            })();
-          } else if (webHook.alert_message === "close buy") {
-            (async function () {
-              closeBuy(exchangeObject, exchangeName, webHook, instrument);
-            })();
-          } else if (webHook.alert_message === "close sell") {
-            (async function () {
-              closeSell(exchangeObject, exchangeName, webHook, instrument);
+              closeOrder(exchangeObject, exchangeName, webHook, instrument);
             })();
           }
         })

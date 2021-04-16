@@ -44,12 +44,12 @@ const Account = (props) => {
           >
             <Tab
               onClick={() => history.push("/account/password")}
-              label="Change Password"
+              label="Password"
               style={{ color: "#5b9ca0" }}
             />
             <Tab
               onClick={() => history.push("/account/apiKeys")}
-              label="Add API Keys"
+              label="API Keys"
               style={{ color: "#5b9ca0" }}
             />
           </Tabs>
