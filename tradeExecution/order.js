@@ -76,23 +76,41 @@ const order = async (
       //   break;
     }
 
-    const side = webHook.side;
-    const limitPrice = webHook.limitPrice;
-    const type = webHook.orderType;
-    const market = exchangeObject.market(instrument);
+    const instrumentEnding = instrument.charAt(instrument.length - 1);
 
     if (exchangeName == "bybit") {
+      const market = exchangeObject.market(instrument);
       const executions = await exchangeObject.v2PrivateGetTradeClosedPnlList({
         symbol: market["id"],
       });
 
-      if (executions.result.data[0].leverage != webHook.leverage) {
-        await exchangeObject.v2PrivatePostPositionLeverageSave({
-          symbol: instrument.replace("/", ""),
-          leverage: webHook.leverage,
-        });
+      switch (webHook.leverage) {
+        case executions.result.data[0].leverage != webHook.leverage &&
+          instrumentEnding == "d":
+          await exchangeObject.v2PrivatePostPositionLeverageSave({
+            symbol: instrument.replace("/", ""),
+            leverage: webHook.leverage,
+          });
+          break;
+        case executions.result.data[0].leverage != webHook.leverage &&
+          instrumentEnding == "t":
+          // **********************************************************************
+          // This may need to be updated to privateLinearPostPositionLeverageSave()
+          await exchangeObject.v2PrivatePostPositionLeverageSave({
+            symbol: instrument.replace("/", ""),
+            leverage: webHook.leverage,
+          });
+          // **********************************************************************
+          // **********************************************************************
+          break;
+        case executions.result.data[0].leverage == 0 && webHook.leverage == 0:
+          break;
       }
     }
+
+    const side = webHook.side;
+    const limitPrice = webHook.limitPrice;
+    const type = webHook.orderType;
 
     switch (webHook.orderType) {
       case "limit":

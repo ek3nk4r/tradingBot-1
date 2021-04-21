@@ -37,7 +37,7 @@ const closeOrder = async (
           Number(webHook.amount.substring(0, webHook.amount.length - 1))) /
         100;
     } else {
-      amount = webhook.amount;
+      amount = webHook.amount;
     }
 
     const side = webHook.side;
