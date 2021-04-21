@@ -1,6 +1,5 @@
 require("dotenv").config();
 
-const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const express = require("express");
 const favicon = require("serve-favicon");
@@ -9,11 +8,24 @@ const mongoose = require("mongoose");
 const logger = require("morgan");
 const path = require("path");
 
+// authentication
+const session = require("express-session");
+const passport = require("passport");
+const MongoStore = require("connect-mongo")(session);
+require("./passport/index");
+const flash = require("connect-flash");
+
 mongoose
-  .connect(process.env.MONGODB_URI || "mongodb://localhost/bottrader", {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
+  // .connect(process.env.MONGODB_URI || "mongodb://localhost/botTrader", {
+  .connect(
+    process.env.MONGODB_URI_LIVE ||
+      "mongodb+srv://KyleChorley:hN%5EpZxV%261kDE@cluster1-live.hskqz.mongodb.net/test",
+    {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      useFindAndModify: false,
+    }
+  )
   .then((x) => {
     console.log(
       `Connected to Mongo! Database name: "${x.connections[0].name}"`
@@ -32,12 +44,11 @@ const app = express();
 
 // Middleware Setup
 app.use(logger("dev"));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 // Express View engine setup
-
 app.use(
   require("node-sass-middleware")({
     src: path.join(__dirname, "public"),
@@ -52,18 +63,51 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use(favicon(path.join(__dirname, "public", "images", "favicon.ico")));
 
 // default value for title local
-app.locals.title = "Express - Generated with IronGenerator";
+app.locals.title = "botTrader";
+
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET,
+    resave: true,
+    cookie: { maxAge: 24 * 60 * 60 * 1000 },
+    saveUninitialized: true,
+    store: new MongoStore({ mongooseConnection: mongoose.connection }),
+  })
+);
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+app.use(flash());
+require("./passport")(app);
 
 const index = require("./routes/index");
 app.use("/", index);
 
-const bybitRoutes = require("./routes/bybit");
-app.use("/bybit", bybitRoutes);
-app.use("/webHookBybit", bybitRoutes);
-// app.use("/marketBuy", bybitRoutes);
+const auth = require("./routes/auth");
+app.use("/auth", auth);
 
-// const krakenRoutes = require("./routes/kraken");
-// app.use("/kraken", krakenRoutes);
+const authRoutes = require("./routes/authRoutes");
+app.use("/api", authRoutes);
+
+const googleRoutes = require("./routes/googleRoutes");
+app.use("/google", googleRoutes);
+
+const exchangeRoutes = require("./routes/exchangeRoutes");
+app.use("/exchangeRoutes", exchangeRoutes);
+
+const tradingRoutes = require("./routes/tradingRoutes");
+app.use("/tradingRoutes", tradingRoutes);
+
+const passChange = require("./routes/passChange");
+app.use("/passChange", passChange);
+
+const addKeysRoutes = require("./routes/addKeysRoutes");
+app.use("/addKeysRoutes", addKeysRoutes);
+
+app.use("*", (req, res) => {
+  res.status(404).json({ msg: "Not Found" });
+});
 
 app.use((req, res) => {
   // If no routes match, send them the React HTML.

@@ -1,10 +1,10 @@
-import React from "react";
+import React, { useState, memo } from "react";
 
 //  Components
-import Instrument from "../Instrument";
-import UseStyles from "./UseStyles";
-import TabPanel from "./TabPanel";
-import A11yProps from "./A11yProps";
+import Instrument from "./Instrument";
+import UseStyles from "../VerticalTabs/UseStyles";
+import TabPanel from "../VerticalTabs/TabPanel";
+import A11yProps from "../VerticalTabs/A11yProps";
 
 // material-ui
 import PropTypes from "prop-types";
@@ -19,11 +19,11 @@ TabPanel.propTypes = {
 
 A11yProps();
 
-const BybitVertical = React.memo((props) => {
+const BybitVertical = memo((props) => {
   const classes = UseStyles();
-  const { marketNames } = props;
+  const { marketNames, user } = props;
 
-  const [state, setState] = React.useState({
+  const [state, setState] = useState({
     value: false,
     symbol: "",
   });
@@ -54,13 +54,20 @@ const BybitVertical = React.memo((props) => {
       >
         {marketNames.length
           ? marketNames.map((market, index) => {
-              return <Tab key={index} label={market} {...A11yProps(index)} />;
+              return (
+                <Tab
+                  key={index}
+                  label={market}
+                  {...A11yProps(index)}
+                  style={{ color: "#5b9ca0" }}
+                />
+              );
             })
           : 0}
       </Tabs>
       <TabPanel value={value} index={value}>
         {" "}
-        {symbol ? <Instrument symbol={symbol} /> : <></>}
+        {symbol ? <Instrument symbol={symbol} user={user} /> : <></>}
       </TabPanel>
     </div>
   );

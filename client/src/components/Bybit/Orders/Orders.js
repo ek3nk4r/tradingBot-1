@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, memo } from "react";
 // import axios from "axios";
 
 // material-ui
@@ -17,7 +17,7 @@ import TableRow from "@material-ui/core/TableRow";
 
 const rows = [];
 
-const Orders = React.memo((props) => {
+const Orders = memo((props) => {
   const { orders } = props;
 
   //********************************/
@@ -31,7 +31,7 @@ const Orders = React.memo((props) => {
         order.type,
         order.amount,
         order.cost,
-        order.price,
+        order.average,
         order.status,
         order.datetime,
         order.id
@@ -42,8 +42,8 @@ const Orders = React.memo((props) => {
   //********************************/
 
   const classes = UseStyles();
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
 
   const handleChangePage = (event, newPage) => {
     event.preventDefault();
@@ -76,6 +76,7 @@ const Orders = React.memo((props) => {
           <TableBody>
             {rows
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+              .reverse()
               .map((row) => {
                 return (
                   <TableRow hover role="checkbox" tabIndex={-1} key={row.id}>

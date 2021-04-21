@@ -4,7 +4,7 @@ import React from "react";
 import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
 
-const BybitTabPanel = React.memo((props) => {
+const AppTabPanel = React.memo((props) => {
   const { children, value, index, ...other } = props;
 
   return (
@@ -16,7 +16,7 @@ const BybitTabPanel = React.memo((props) => {
       {...other}
     >
       {value === index && (
-        <Box p={3}>
+        <Box p={0}>
           <Typography component={"span"}>{children}</Typography>
         </Box>
       )}
@@ -24,4 +24,4 @@ const BybitTabPanel = React.memo((props) => {
   );
 });
 
-export default BybitTabPanel;
+export default AppTabPanel;

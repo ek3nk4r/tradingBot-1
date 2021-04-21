@@ -1,23 +1,22 @@
-import React from "react";
+import React, { useState, memo, useEffect } from "react";
 import axios from "axios";
 import Orders from "./Orders/Orders";
 import Balance from "./Balance";
 
-const Instrument = React.memo((props) => {
-  console.log(props);
-  const { symbol } = props;
+const Instrument = memo((props) => {
+  const { symbol, user } = props;
 
-  const [state, setState] = React.useState({
-    balance: 0,
-    available: 0,
-    used: 0,
+  const [state, setState] = useState({
+    balance: [],
+    available: [],
+    used: [],
     orders: [],
   });
   const { balance, available, used, orders } = state;
 
-  const getCoinData = (symbol) => {
+  useEffect(() => {
     axios
-      .post("/bybit/coinData", { name: symbol })
+      .post("/exchangeRoutes/coinData", { name: symbol, user_id: user._id })
       .then((res) => {
         console.log(res);
         const balances = res.data[0];
@@ -53,10 +52,6 @@ const Instrument = React.memo((props) => {
       .catch((err) => {
         console.log("Error is: ", err);
       });
-  };
-
-  React.useEffect(() => {
-    getCoinData(symbol);
   }, [symbol]);
 
   return (
