@@ -89,7 +89,7 @@ const Home = (props) => {
                     label="Bybit"
                     style={{ color: "#5b9ca0" }}
                   />
-                  <Tab
+                  {/* <Tab
                     onClick={() => props.history.push("/home/bitmex")}
                     label="Bitmex"
                     style={{ color: "#5b9ca0" }}
@@ -98,7 +98,7 @@ const Home = (props) => {
                     onClick={() => props.history.push("/home/phemex")}
                     label="Phemex"
                     style={{ color: "#5b9ca0" }}
-                  />
+                  /> */}
                 </Tabs>
               </div>
               <TabPanel value={value} index={0}></TabPanel>
@@ -109,7 +109,7 @@ const Home = (props) => {
                   user={user}
                 />
               )}
-              {value === 1 && (
+              {/* {value === 1 && (
                 <BybitVertical
                   exchangeName={exchangeName}
                   marketNames={marketNames}
@@ -122,7 +122,7 @@ const Home = (props) => {
                   marketNames={marketNames}
                   user={user}
                 />
-              )}
+              )} */}
             </div>
           )}
         />
