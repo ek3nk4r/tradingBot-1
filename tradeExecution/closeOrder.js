@@ -59,20 +59,6 @@ const closeOrder = async (
 
     console.log("***AMOUNT***", amount);
 
-    // else if (exchangeName == "bitmex" && webHook.amount.includes("%")) {
-    //   amount =
-    //     (executions[0].currentQty *
-    //       Number(webHook.amount.substring(0, webHook.amount.length - 1))) /
-    //     100;
-    // } else if (exchangeName == "phemex" && webHook.amount.includes("%")) {
-    //   amount =
-    //     (executions.data.positions[0].size *
-    //       Number(webHook.amount.substring(0, webHook.amount.length - 1))) /
-    //     100;
-    // } else {
-    //   amount = webHook.amount;
-    // }
-
     switch (webHook.orderType) {
       case "limit":
         await exchangeObject.createOrder(
