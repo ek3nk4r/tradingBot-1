@@ -6,15 +6,7 @@ const order = async (
   coin
 ) => {
   try {
-    let balance;
-    if (exchangeName == "phemex") {
-      let params;
-      balance = await exchangeObject.fetchBalance(
-        (params = { type: "swap", code: coin })
-      );
-    } else {
-      balance = await exchangeObject.fetchBalance();
-    }
+    const balance = await exchangeObject.fetchBalance();
     const ticker = await exchangeObject.fetchTicker(instrument);
     const price = ticker.ask;
 

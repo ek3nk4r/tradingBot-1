@@ -23,7 +23,9 @@ const Instrument = memo((props) => {
         const newOrders = [...res.data[1]];
 
         let coin;
-        if (symbol.includes("/")) {
+        if (symbol.charAt(symbol.length - 1) === "T") {
+          coin = symbol.slice(symbol.indexOf("/") + 1, symbol.length);
+        } else if (symbol.charAt(symbol.length - 1) === "D") {
           coin = symbol.slice(0, symbol.indexOf("/"));
         } else {
           coin = symbol;

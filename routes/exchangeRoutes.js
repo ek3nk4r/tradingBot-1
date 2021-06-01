@@ -46,12 +46,7 @@ router.get("/tickers/:exchangeName/:userId", (req, res) => {
             try {
               const exchangeInfo = await exchangeObject.has;
               const markets = await exchangeObject.load_markets();
-              let tickers;
-              if (exchangeName == "phemex") {
-                tickers = await exchangeObject.publicGetCfgV2Products();
-              } else {
-                tickers = await exchangeObject.fetchTickers();
-              }
+              const tickers = await exchangeObject.fetchTickers();
               const exchangeData = [exchangeInfo, markets, tickers];
               res.json(exchangeData);
             } catch (err) {

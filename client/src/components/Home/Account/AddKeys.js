@@ -114,8 +114,8 @@ const AddKeys = (props) => {
           >
             <option aria-label="None" value="" />
             <option value={"Bybit"}>Bybit</option>
-            <option value={"Bitmex"}>Bitmex</option>
-            <option value={"Phemex"}>Phemex</option>
+            {/* <option value={"Bitmex"}>Bitmex</option>
+            <option value={"Phemex"}>Phemex</option> */}
             {/* <option value={"Kraken"}>Kraken</option> */}
           </Select>
         </FormControl>
