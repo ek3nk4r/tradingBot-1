@@ -19,118 +19,192 @@ const order = async (
     const price = ticker.ask;
 
     let amount;
-    if (webHook.amount.includes("%")) {
+    if (
+      webHook.amount.includes("%") &&
+      instrument.charAt(instrument.length - 1) === "D"
+    ) {
       amount =
-        ((balance.free[coin] *
-          Number(webHook.amount.substring(0, webHook.amount.length - 1))) /
-          100) *
+        balance.free[coin] *
+        Number(webHook.amount.substring(0, webHook.amount.length - 1)) *
         price;
+    } else if (
+      webHook.amount.includes("%") &&
+      instrument.charAt(instrument.length - 1) === "T"
+    ) {
+      amount =
+        balance.free[instrument.slice(-4, instrument.length)] *
+        (Number(webHook.amount.substring(0, webHook.amount.length - 1)) /
+          price);
     } else {
       amount = Number(webHook.amount);
     }
 
-    let params;
-    switch (exchangeObject) {
-      case "bybit":
-        if (webHook.stopOrder === true && webHook.takeProfit === false) {
-          params = {
-            stop_loss: webHook.stopPrice,
-          };
-        } else if (webHook.takeProfit === true && webHook.stopOrder === false) {
-          params = {
-            take_profit: webHook.profitPrice,
-          };
-        } else if (webHook.stopOrder === true && webHook.takeProfit === true) {
-          params = {
-            stop_loss: webHook.stopPrice,
-            take_profit: webHook.profitPrice,
-          };
-        } else {
-          params = {};
-        }
-        break;
-      // case "phemex":
-      //   if (webHook.stopOrder === true && webHook.takeProfit === false) {
-      //     params = {
-      //       ordType: "Stop",
-      //       // priceEp: exchange.to_ep(webHook.stopPrice, instrument),
-      //       stopPx: webHook.stopPrice,
-      //       // stopLossEp: exchange.to_ep(webHook.stopPrice, instrument),
-      //       // triggerType: webHook.triggerType,
-      //     };
-      //   } else if (webHook.takeProfit === true && webHook.stopOrder === false) {
-      //     params = {
-      //       ordType: webHook.orderType,
-      //       takeProfitEp: exchange.to_ep(webHook.profitPrice, instrument),
-      //     };
-      //   } else if (webHook.stopOrder === true && webHook.takeProfit === true) {
-      //     params = {
-      //       // stopPxEp: exchange.to_ep(webHook.triggerPrice, instrument),
-      //       takeProfitEp: exchange.to_ep(webHook.profitPrice, instrument),
-      //       stopLossEp: exchange.to_ep(webHook.stopPrice, instrument),
-      //       // triggerType: webHook.triggerType,
-      //     };
-      //   } else {
-      //     params = {};
-      //   }
-      //   break;
-    }
+    const market = exchangeObject.market(instrument);
+    // *********************************************************************************
+    // **********This is an attempt to set the leverage programmatically****************
+    // *********************************************************************************
+    // *********************************************************************************
 
-    const instrumentEnding = instrument.charAt(instrument.length - 1);
+    if (instrument.charAt(instrument.length - 1) === "T") {
+      console.log("T");
+      const executions =
+        await exchangeObject.privateLinearGetTradeClosedPnlList({
+          symbol: market["id"],
+        });
 
-    if (exchangeName == "bybit") {
-      const market = exchangeObject.market(instrument);
+      switch (webHook.leverage) {
+        case executions.result.data.length === 0:
+          console.log("*** LENGTH 0 ***", webHook.leverage);
+          await exchangeObject.privateLinearPostPositionSetLeverage({
+            symbol: instrument.replace("/", ""),
+            buy_leverage: webHook.leverage,
+            sell_leverage: webHook.leverage,
+          });
+          break;
+        case executions.result.data[0].leverage != webHook.leverage &&
+          executions.result.data[0].leverage == 100:
+          console.log("*** LEVERAGE 100 ***");
+          await exchangeObject.privateLinearPostPositionSwitchIsolated({
+            symbol: instrument.replace("/", ""),
+            is_isolated: true,
+            buy_leverage: webHook.leverage,
+            sell_leverage: webHook.leverage,
+          });
+          // await exchangeObject.privateLinearPostPositionSetLeverage({
+          //   symbol: instrument.replace("/", ""),
+          //   buy_leverage: webHook.leverage,
+          //   sell_leverage: webHook.leverage,
+          // });
+          break;
+        case executions.result.data[0].leverage != webHook.leverage &&
+          webHook.leverage == 100:
+          console.log("*** LEVERAGE 100 ***");
+          await exchangeObject.privateLinearPostPositionSwitchIsolated({
+            symbol: instrument.replace("/", ""),
+            is_isolated: false,
+            buy_leverage: webHook.leverage,
+            sell_leverage: webHook.leverage,
+          });
+          break;
+        case executions.result.data[0].leverage == webHook.leverage:
+          console.log("*** LEVERAGE EQUAL ***");
+          break;
+        case executions.result.data[0].leverage != webHook.leverage &&
+          executions.result.data[0].leverage != 100 &&
+          webHook.leverage != 100:
+          // **********************************************************************
+          // This may need to be updated to privateLinearPostPositionLeverageSave()
+          console.log("*** ISOLATED LEVERAGE ***");
+          await exchangeObject.privateLinearPostPositionSetLeverage({
+            symbol: instrument.replace("/", ""),
+            buy_leverage: webHook.leverage,
+            sell_leverage: webHook.leverage,
+          });
+          // **********************************************************************
+          // **********************************************************************
+          break;
+      }
+    } else if (instrument.charAt(instrument.length - 1) === "D") {
+      console.log("D");
       const executions = await exchangeObject.v2PrivateGetTradeClosedPnlList({
         symbol: market["id"],
       });
 
       switch (webHook.leverage) {
-        case executions.result.data[0].leverage != webHook.leverage &&
-          instrumentEnding == "d":
+        case executions.result.data.length === 0:
           await exchangeObject.v2PrivatePostPositionLeverageSave({
             symbol: instrument.replace("/", ""),
             leverage: webHook.leverage,
           });
           break;
-        case executions.result.data[0].leverage != webHook.leverage &&
-          instrumentEnding == "t":
-          // **********************************************************************
-          // This may need to be updated to privateLinearPostPositionLeverageSave()
+        case executions.result.data[0].leverage == webHook.leverage:
+          console.log("*** LEVERAGE EQUAL ***");
+          break;
+        case executions.result.data[0].leverage != webHook.leverage:
+          console.log("*** LEVERAGE CHANGED ***");
           await exchangeObject.v2PrivatePostPositionLeverageSave({
             symbol: instrument.replace("/", ""),
             leverage: webHook.leverage,
           });
-          // **********************************************************************
-          // **********************************************************************
-          break;
-        case executions.result.data[0].leverage == 0 && webHook.leverage == 0:
           break;
       }
     }
 
-    const side = webHook.side;
+    // *********************************************************************************
+    // *********************************************************************************
+    // *********************************************************************************
+    // *********************************************************************************
+
+    const side = webHook.side.toLowerCase();
     const limitPrice = webHook.limitPrice;
     const type = webHook.orderType;
 
     switch (webHook.orderType) {
       case "limit":
-        await exchangeObject.createOrder(
-          instrument,
-          type,
-          side,
-          amount,
-          limitPrice,
-          params
-        );
+        if (webHook.stopOrder == false) {
+          await exchangeObject.createOrder(
+            instrument,
+            type,
+            side,
+            amount,
+            limitPrice
+          );
+        } else if (
+          instrument.charAt(instrument.length - 1) === "D" &&
+          webHook.stopOrder == true
+        ) {
+          await exchangeObject.createOrder(
+            instrument,
+            type,
+            side,
+            amount,
+            limitPrice
+          );
+          await exchangeObject.v2PrivatePostPositionTradingStop({
+            symbol: market["id"],
+            stop_loss: webHook.stopPrice,
+          });
+        } else if (
+          instrument.charAt(instrument.length - 1) === "T" &&
+          webHook.stopOrder == true
+        ) {
+          await exchangeObject.createOrder(
+            instrument,
+            type,
+            side,
+            amount,
+            limitPrice
+          );
+          await exchangeObject.privateLinearPostPositionTradingStop({
+            symbol: market["id"],
+            side: webHook.side.toLowerCase(),
+            stop_loss: webHook.stopPrice,
+          });
+        }
         break;
       case "market":
-        await exchangeObject.createOrder(
-          instrument,
-          type,
-          side,
-          amount,
-          params
-        );
+        if (webHook.stopOrder == false) {
+          await exchangeObject.createOrder(instrument, type, side, amount);
+        } else if (
+          instrument.charAt(instrument.length - 1) === "T" &&
+          webHook.stopOrder == true
+        ) {
+          await exchangeObject.createOrder(instrument, type, side, amount);
+          await exchangeObject.privateLinearPostPositionTradingStop({
+            symbol: market["id"],
+            side: webHook.side.toLowerCase(),
+            stop_loss: webHook.stopPrice,
+          });
+        } else if (
+          instrument.charAt(instrument.length - 1) === "D" &&
+          webHook.stopOrder == true
+        ) {
+          await exchangeObject.createOrder(instrument, type, side, amount);
+          await exchangeObject.v2PrivatePostPositionTradingStop({
+            symbol: market["id"],
+            stop_loss: webHook.stopPrice,
+          });
+        }
         break;
     }
 
