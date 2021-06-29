@@ -15,6 +15,7 @@ router.post("/tradingRoutes", (req, res) => {
   const userId = req.body.text.userId;
   const webHook = req.body.text;
   const instrument = webHook.instrument;
+  const net = webHook.net;
   const coin = instrument.slice(0, instrument.indexOf("/"));
   res.json(webHook);
   res.status(200).end();
@@ -41,8 +42,11 @@ router.post("/tradingRoutes", (req, res) => {
             enableRateLimit: true,
           });
 
-          exchangeObject.urls["api"] = exchangeObject.urls["test"];
-          // exchangeObject.urls["api"] = exchangeObject.urls["api"];
+          if (net == "api") {
+            exchangeObject.urls["api"] = exchangeObject.urls["api"];
+          } else if (net == "test") {
+            exchangeObject.urls["api"] = exchangeObject.urls["test"];
+          }
 
           if (webHook.alert_message === "open") {
             (async function () {

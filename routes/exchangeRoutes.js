@@ -39,8 +39,14 @@ router.get("/tickers/:exchangeName/:userId", (req, res) => {
             enableRateLimit: true,
           });
 
-          exchangeObject.urls["api"] = exchangeObject.urls["test"];
-          // exchangeObject.urls["api"] = exchangeObject.urls["api"];
+          
+          const net = exhangeAccountIdToPopulate.net
+          if (net == "api") {
+            exchangeObject.urls["api"] = exchangeObject.urls["api"];
+          } else if (net == "test") {
+            exchangeObject.urls["api"] = exchangeObject.urls["test"];
+          }
+        
 
           (async function () {
             try {

@@ -4,6 +4,7 @@ const Schema = mongoose.Schema;
 const ExchangeAccountSchema = new Schema({
   exchangeName: String,
   identifier: String,
+  net: String,
   key: String,
   secret: [
     {

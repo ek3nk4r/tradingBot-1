@@ -14,6 +14,13 @@ const Columns = [
     format: (value) => value.toLocaleString("en-US"),
   },
   {
+    id: "net",
+    label: "Net",
+    minWidth: 100,
+    align: "center",
+    format: (value) => value.toLocaleString("en-US"),
+  },
+  {
     id: "key",
     label: "Key",
     minWidth: 100,

@@ -9,6 +9,7 @@ const Rows = (exchangeAccounts) => {
       CreateData(
         account.exchangeName,
         account.identifier,
+        account.net,
         account.key,
         account.secret,
         account._id

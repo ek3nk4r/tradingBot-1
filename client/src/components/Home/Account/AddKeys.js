@@ -28,12 +28,13 @@ const AddKeys = (props) => {
     key: "",
     secret: "",
     exchange: "",
+    net: "",
     identifier: "",
     isError: false,
     error: "",
   });
 
-  const { key, secret, exchange, identifier } = state;
+  const { key, secret, exchange, identifier, net } = state;
 
   const errorMessage = () => {
     if (state.isError) {
@@ -52,14 +53,15 @@ const AddKeys = (props) => {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    if (key && secret && exchange && identifier) {
-      sendKeys(_id, exchange, identifier, key, secret)
+    if (key && secret && exchange && identifier && net) {
+      sendKeys(_id, exchange, identifier, key, secret, net)
         .then((res) => {
           if (res.status === 401) {
             // handle errors
             setState({
               exchange: "",
               identifier: "",
+              net: "",
               key: "",
               secret: "",
               error: res.message,
@@ -69,6 +71,7 @@ const AddKeys = (props) => {
             setState({
               exchange: "",
               identifier: "",
+              net: "",
               key: "",
               secret: "",
               error: res.data.msg,
@@ -117,6 +120,26 @@ const AddKeys = (props) => {
             {/* <option value={"Bitmex"}>Bitmex</option>
             <option value={"Phemex"}>Phemex</option> */}
             {/* <option value={"Kraken"}>Kraken</option> */}
+          </Select>
+        </FormControl>
+        <FormControl variant="outlined" className={classes.formControl}>
+          <InputLabel htmlFor="outlined-age-native-simple">
+            Net *
+          </InputLabel>
+          <Select
+            native
+            value={state.exchange}
+            onChange={handleChange}
+            label="Net"
+            inputProps={{
+              name: "net",
+              id: "outlined-age-native-simple",
+            }}
+            style={{ width: "30vw", marginTop: "5px", marginBottom: "5px" }}
+          >
+            <option aria-label="None" value="" />
+            <option value={"Net"}>Api</option>
+            <option value={"Net"}>Test</option>
           </Select>
         </FormControl>
         <TextField

@@ -1,11 +1,12 @@
 import axios from "axios";
 
-const sendKeys = (id, exchange, identifier, key, secret) => {
+const sendKeys = (id, exchange, identifier, key, secret, net) => {
   return axios
     .post("/addKeysRoutes/addApiKeys", {
       id: id,
       exchange: exchange,
       identifier: identifier,
+      net: net,
       key: key,
       secret: secret,
     })
