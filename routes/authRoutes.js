@@ -4,6 +4,7 @@ const passport = require("passport");
 const bcrypt = require("bcryptjs");
 const validator = require("email-validator");
 const User = require("../models/User");
+const ExchangeAccount = require("../models/ExchangeAccount");
 const sendEmail = require("../emailLogic/send");
 const templates = require("../emailLogic/templates");
 
@@ -128,7 +129,17 @@ authRoutes.delete("/logout", (req, res, next) => {
 
 // LOGGEDIN -???-
 authRoutes.get("/loggedin", (req, res, next) => {
-  res.json(req.user);
+  const user = req.user;
+
+  User.findById(user._id)
+    .populate("exchangeAccount")
+    .then((userInfo) => {
+      const exchanges = userInfo.exchangeAccount.map((el) => {
+        return el;
+      });
+      res.json([user, exchanges]);
+    })
+    .catch((err) => console.log(err));
 });
 
 // EMAIL CONFIRMATION

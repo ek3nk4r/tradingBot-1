@@ -7,7 +7,6 @@ import BybitVertical from "../Bybit/BybitVertical";
 import TabPanel from "./TabPanel";
 import UseStyles from "./UseStyles";
 import Account from "./Account/Account";
-// import Kraken from "../Kraken";
 
 // material_ui
 import PropTypes from "prop-types";
@@ -21,24 +20,28 @@ TabPanel.propTypes = {
 };
 
 const Home = (props) => {
-  const { setUser, user } = props;
+  const { setUser, user, exchangeNames } = props;
+  const exchangeIdentifiers = props.exchangeIdentifiers.sort((a, b) =>
+    a.localeCompare(b)
+  );
   const userId = user._id;
   const classes = UseStyles();
 
   const [value, setValue] = useState(false);
   const [marketNames, setMarketNames] = useState([]);
+  const [identifier, setIdentifier] = useState("");
   const [exchangeName, setExchangeName] = useState("");
 
   const handleChange = (event, newValue) => {
     event.preventDefault();
-    const exchange = event.target.innerHTML.toLowerCase();
-    setExchangeName(exchange);
+    setIdentifier(event.target.innerHTML);
+    setExchangeName(exchangeNames[newValue]);
     setValue(newValue);
   };
 
-  const getTickers = (exchangeName, userId) => {
+  const getTickers = (exchangeName, identifier, userId) => {
     axios
-      .get(`/exchangeRoutes/tickers/${exchangeName}/${userId}`)
+      .get(`/exchangeRoutes/tickers/${exchangeName}/${identifier}/${userId}`)
       .then((res) => {
         const markets = res.data[1];
         const marketNames = Object.keys(markets)
@@ -57,10 +60,12 @@ const Home = (props) => {
   };
 
   useEffect(() => {
-    if (exchangeName) {
-      getTickers(exchangeName, userId);
+    if (identifier) {
+      getTickers(exchangeName, identifier, userId);
     }
-  }, [exchangeName]);
+  }, [identifier]);
+
+  let exchangeIndex;
 
   return (
     <>
@@ -84,45 +89,24 @@ const Home = (props) => {
                   aria-label="Vertical tabs"
                   className={classes.tabs}
                 >
-                  <Tab
-                    onClick={() => props.history.push("/home/bybit")}
-                    label="Bybit"
-                    style={{ color: "#5b9ca0" }}
-                  />
-                  {/* <Tab
-                    onClick={() => props.history.push("/home/bitmex")}
-                    label="Bitmex"
-                    style={{ color: "#5b9ca0" }}
-                  />
-                  <Tab
-                    onClick={() => props.history.push("/home/phemex")}
-                    label="Phemex"
-                    style={{ color: "#5b9ca0" }}
-                  /> */}
+                  {exchangeIdentifiers.map((identifier, i) => {
+                    exchangeIndex = i;
+                    return (
+                      <Tab
+                        onClick={() =>
+                          props.history.push(`/home/${identifier}`)
+                        }
+                        label={`${identifier}`}
+                        style={{ color: "#5b9ca0" }}
+                      />
+                    );
+                  })}
                 </Tabs>
               </div>
-              <TabPanel value={value} index={0}></TabPanel>
-              {value === 0 && (
-                <BybitVertical
-                  exchangeName={exchangeName}
-                  marketNames={marketNames}
-                  user={user}
-                />
+              <TabPanel value={value} index={exchangeIndex}></TabPanel>
+              {value === value && (
+                <BybitVertical marketNames={marketNames} user={user} />
               )}
-              {/* {value === 1 && (
-                <BybitVertical
-                  exchangeName={exchangeName}
-                  marketNames={marketNames}
-                  user={user}
-                />
-              )}
-              {value === 2 && (
-                <BybitVertical
-                  exchangeName={exchangeName}
-                  marketNames={marketNames}
-                  user={user}
-                />
-              )} */}
             </div>
           )}
         />

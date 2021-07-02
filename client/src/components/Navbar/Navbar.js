@@ -49,6 +49,20 @@ const Navbar = (props) => {
                 >
                   pineTrader
                 </Typography>
+                <Typography
+                  variant="h8"
+                  className={classes.title}
+                  style={{ textDecoration: "none", color: "#5b9ca0" }}
+                >
+                  username: {user.username}
+                </Typography>
+                <Typography
+                  variant="h8"
+                  className={classes.title}
+                  style={{ textDecoration: "none", color: "#5b9ca0" }}
+                >
+                  user id: {user._id}
+                </Typography>
                 <div>
                   <Button
                     aria-controls="simple-menu"

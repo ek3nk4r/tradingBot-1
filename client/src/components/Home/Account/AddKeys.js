@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { sendKeys } from "./ApiKeyAxios";
-// import ApiKeyList from "./ApiKeyList/ApiKeyList";
 
 // material-ui
 import TextField from "@material-ui/core/TextField";
@@ -123,12 +122,10 @@ const AddKeys = (props) => {
           </Select>
         </FormControl>
         <FormControl variant="outlined" className={classes.formControl}>
-          <InputLabel htmlFor="outlined-age-native-simple">
-            Net *
-          </InputLabel>
+          <InputLabel htmlFor="outlined-age-native-simple">Net *</InputLabel>
           <Select
             native
-            value={state.exchange}
+            value={state.net}
             onChange={handleChange}
             label="Net"
             inputProps={{
@@ -138,8 +135,8 @@ const AddKeys = (props) => {
             style={{ width: "30vw", marginTop: "5px", marginBottom: "5px" }}
           >
             <option aria-label="None" value="" />
-            <option value={"Net"}>Api</option>
-            <option value={"Net"}>Test</option>
+            <option value={"Api"}>Api</option>
+            <option value={"Test"}>Test</option>
           </Select>
         </FormControl>
         <TextField

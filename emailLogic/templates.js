@@ -1,6 +1,6 @@
 module.exports = {
   confirm: (id) => ({
-    subject: "React Confirm Email",
+    subject: "pineTrader Confirm Email",
     html: `
       <a href='${process.env.SUCCESS_URL}/confirm/${id}'>
         click to confirm email
