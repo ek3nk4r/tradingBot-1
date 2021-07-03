@@ -9,7 +9,14 @@ import axios from "axios";
 axios
   .get("/api/loggedin")
   .then((response) => {
-    const user = response.data[0];
+    console.log("*** RESPONSE ***", response);
+
+    let user;
+    if (response.data) {
+      user = response.data[0];
+    } else {
+      user = response.data;
+    }
 
     const exchangeIdentifiers = [];
     const exchange = response.data[1].map((el) => {
@@ -31,11 +38,21 @@ axios
     ReactDOM.render(
       // <React.StrictMode>
       <Router>
-        <App
-          user={user}
-          exchangeIdentifiers={exchangeIdentifiers}
-          exchangeNames={exchangeNames}
-        />
+        <div>
+          {user ? (
+            <>
+              <App
+                user={user}
+                exchangeIdentifiers={exchangeIdentifiers}
+                exchangeNames={exchangeNames}
+              />
+            </>
+          ) : (
+            <>
+              <App user={user} />
+            </>
+          )}
+        </div>
       </Router>,
       //</React.StrictMode>,
       document.getElementById("root")
