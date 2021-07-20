@@ -50,14 +50,14 @@ const Navbar = (props) => {
                   pineTrader
                 </Typography>
                 <Typography
-                  variant="h8"
+                  variant="h6"
                   className={classes.title}
                   style={{ textDecoration: "none", color: "#5b9ca0" }}
                 >
                   username: {user.username}
                 </Typography>
                 <Typography
-                  variant="h8"
+                  variant="h6"
                   className={classes.title}
                   style={{ textDecoration: "none", color: "#5b9ca0" }}
                 >
