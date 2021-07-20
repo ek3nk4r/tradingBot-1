@@ -93,6 +93,7 @@ const Home = (props) => {
                     exchangeIndex = i;
                     return (
                       <Tab
+                        key={i}
                         onClick={() =>
                           props.history.push(`/home/${identifier}`)
                         }

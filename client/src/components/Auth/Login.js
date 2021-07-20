@@ -38,7 +38,7 @@ const Login = (props) => {
   };
 
   const handleSubmit = (event) => {
-    event.preventDefault();
+    // event.preventDefault();
 
     login(state.username, state.password)
       .then((data) => {

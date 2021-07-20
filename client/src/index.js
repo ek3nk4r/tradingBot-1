@@ -12,21 +12,22 @@ axios
     console.log("*** RESPONSE ***", response);
 
     let user;
+    let exchangeIdentifiers = [];
+    let exchangeNames = [];
+
     if (response.data) {
       user = response.data[0];
+
+      const exchange = response.data[1].map((el) => {
+        return exchangeIdentifiers.push(el.identifier);
+      });
+
+      const exchangeName = response.data[1].map((el) => {
+        return exchangeNames.push(el.exchangeName);
+      });
     } else {
       user = response.data;
     }
-
-    const exchangeIdentifiers = [];
-    const exchange = response.data[1].map((el) => {
-      return exchangeIdentifiers.push(el.identifier);
-    });
-
-    const exchangeNames = [];
-    const exchangeName = response.data[1].map((el) => {
-      return exchangeNames.push(el.exchangeName);
-    });
 
     console.log(
       "*** INDEX USER DATA ***",
@@ -59,6 +60,7 @@ axios
     );
   })
   .catch((err) => {
+    console.log("*** ERROR ***", err);
     return err.response.data;
   });
 
