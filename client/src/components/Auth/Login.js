@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Login = (props) => {
-  console.log(props);
+  console.log("*** LOGIN PROPS ***", props);
   const classes = useStyles();
   const [state, setState] = useState({
     username: "",
@@ -38,11 +38,10 @@ const Login = (props) => {
   };
 
   const handleSubmit = (event) => {
-    // event.preventDefault();
+    event.preventDefault();
 
     login(state.username, state.password)
       .then((data) => {
-        console.log(data);
         if (data.message) {
           // handle errors
           setState({

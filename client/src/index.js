@@ -9,51 +9,13 @@ import axios from "axios";
 axios
   .get("/api/loggedin")
   .then((response) => {
-    console.log("*** RESPONSE ***", response);
-
-    let user;
-    let exchangeIdentifiers = [];
-    let exchangeNames = [];
-
-    if (response.data) {
-      user = response.data[0];
-
-      const exchange = response.data[1].map((el) => {
-        return exchangeIdentifiers.push(el.identifier);
-      });
-
-      const exchangeName = response.data[1].map((el) => {
-        return exchangeNames.push(el.exchangeName);
-      });
-    } else {
-      user = response.data;
-    }
-
-    console.log(
-      "*** INDEX USER DATA ***",
-      user,
-      exchangeIdentifiers,
-      exchangeNames
-    );
+    console.log("index.js *** response ***", response);
+    const user = response.data;
 
     ReactDOM.render(
       // <React.StrictMode>
       <Router>
-        <div>
-          {user ? (
-            <>
-              <App
-                user={user}
-                exchangeIdentifiers={exchangeIdentifiers}
-                exchangeNames={exchangeNames}
-              />
-            </>
-          ) : (
-            <>
-              <App user={user} />
-            </>
-          )}
-        </div>
+        <App user={user} />
       </Router>,
       //</React.StrictMode>,
       document.getElementById("root")

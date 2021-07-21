@@ -31,6 +31,7 @@ const Navbar = (props) => {
   const handleLogout = () => {
     logout();
     updateUser(null);
+    setAnchorEl(null);
   };
 
   let loggedinUser;

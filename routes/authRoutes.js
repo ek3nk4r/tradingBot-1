@@ -129,21 +129,7 @@ authRoutes.delete("/logout", (req, res, next) => {
 
 // LOGGEDIN -???-
 authRoutes.get("/loggedin", (req, res, next) => {
-  const user = req.user;
-
-  if (user) {
-    User.findById(user._id)
-      .populate("exchangeAccount")
-      .then((userInfo) => {
-        const exchanges = userInfo.exchangeAccount.map((el) => {
-          return el;
-        });
-        res.json([user, exchanges]);
-      })
-      .catch((err) => console.log(err));
-  } else {
-    res.json(user);
-  }
+  res.json(req.user);
 });
 
 // EMAIL CONFIRMATION

@@ -20,12 +20,9 @@ TabPanel.propTypes = {
 };
 
 const Home = (props) => {
-  const { setUser, user, exchangeNames } = props;
-  const exchangeIdentifiers = props.exchangeIdentifiers.sort((a, b) =>
-    a.localeCompare(b)
-  );
-  const userId = user._id;
   const classes = UseStyles();
+  const { setUser, user, exchangeIdentifiers, exchangeNames } = props;
+  const userId = user._id;
 
   const [value, setValue] = useState(false);
   const [marketNames, setMarketNames] = useState([]);

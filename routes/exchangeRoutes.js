@@ -9,6 +9,23 @@ const { decrypt } = require("../crypto/crypto");
 // const one = new ccxt.bybit();
 // console.log(one);
 
+router.get(`/exchangeAccounts/:userId`, (req, res) => {
+  const userId = req.params.userId;
+  const user = req.user;
+
+  if (user) {
+    User.findById(userId)
+      .populate("exchangeAccount")
+      .then((userInfo) => {
+        const exchanges = userInfo.exchangeAccount.map((el) => {
+          return el;
+        });
+        res.json([exchanges]);
+      })
+      .catch((err) => console.log(err));
+  }
+});
+
 let exchangeObject;
 
 router.get("/tickers/:exchangeName/:identifier/:userId", (req, res) => {
