@@ -2,9 +2,11 @@ import React, { useState, memo, useEffect } from "react";
 import axios from "axios";
 import Orders from "./Orders/Orders";
 import Balance from "./Balance";
+import { postCoinData } from "../ExchangeRouteAxios";
 
 const Instrument = memo((props) => {
   const { symbol, user } = props;
+  const userId = user._id;
 
   const [state, setState] = useState({
     balance: [],
@@ -15,45 +17,45 @@ const Instrument = memo((props) => {
   const { balance, available, used, orders } = state;
 
   useEffect(() => {
-    axios
-      .post("/exchangeRoutes/coinData", { name: symbol, user_id: user._id })
-      .then((res) => {
-        console.log(res);
-        const balances = res.data[0];
-        const newOrders = [...res.data[1]];
+    if (symbol) {
+      postCoinData(symbol, userId)
+        .then((res) => {
+          const balances = res[0];
+          const newOrders = [...res[1]];
 
-        let coin;
-        if (symbol.charAt(symbol.length - 1) === "T") {
-          coin = symbol.slice(symbol.indexOf("/") + 1, symbol.length);
-        } else if (symbol.charAt(symbol.length - 1) === "D") {
-          coin = symbol.slice(0, symbol.indexOf("/"));
-        } else {
-          coin = symbol;
-        }
+          let coin;
+          if (symbol.charAt(symbol.length - 1) === "T") {
+            coin = symbol.slice(symbol.indexOf("/") + 1, symbol.length);
+          } else if (symbol.charAt(symbol.length - 1) === "D") {
+            coin = symbol.slice(0, symbol.indexOf("/"));
+          } else {
+            coin = symbol;
+          }
 
-        let balance;
-        let available;
-        let used;
-        if (balances.free.hasOwnProperty(coin) === true) {
-          balance = balances.total[coin];
-          available = balances.free[coin];
-          used = balances.used[coin];
-        } else {
-          balance = 0;
-          available = 0;
-          used = 0;
-        }
+          let balance;
+          let available;
+          let used;
+          if (balances.free.hasOwnProperty(coin) === true) {
+            balance = balances.total[coin];
+            available = balances.free[coin];
+            used = balances.used[coin];
+          } else {
+            balance = 0;
+            available = 0;
+            used = 0;
+          }
 
-        setState({
-          balance: balance,
-          available: available,
-          used: used,
-          orders: newOrders,
+          setState({
+            balance: balance,
+            available: available,
+            used: used,
+            orders: newOrders,
+          });
+        })
+        .catch((err) => {
+          console.log("Error is: ", err);
         });
-      })
-      .catch((err) => {
-        console.log("Error is: ", err);
-      });
+    }
   }, [symbol]);
 
   return (

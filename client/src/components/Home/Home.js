@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Switch, Route } from "react-router-dom";
-import axios from "axios";
+import { getTickers } from "../../components/ExchangeRouteAxios";
 
 // components
 import BybitVertical from "../Bybit/BybitVertical";
@@ -36,29 +36,25 @@ const Home = (props) => {
     setValue(newValue);
   };
 
-  const getTickers = (exchangeName, identifier, userId) => {
-    axios
-      .get(`/exchangeRoutes/tickers/${exchangeName}/${identifier}/${userId}`)
-      .then((res) => {
-        const markets = res.data[1];
-        const marketNames = Object.keys(markets)
-          .map((key) => {
-            return markets[key];
-          })
-          .map((market) => {
-            return market.symbol;
-          });
-
-        setMarketNames(marketNames);
-      })
-      .catch((err) => {
-        console.log("Error is: ", err);
-      });
-  };
-
   useEffect(() => {
     if (identifier) {
-      getTickers(exchangeName, identifier, userId);
+      getTickers(exchangeName, identifier, userId)
+        .then((res) => {
+          const markets = res[1];
+          const marketNames = Object.keys(markets)
+            .map((key) => {
+              return markets[key];
+            })
+            .map((market) => {
+              return market.symbol;
+            });
+
+          setMarketNames(marketNames);
+        })
+        .catch((err) => {
+          console.log("***ERROR***", err);
+          return err.res.data;
+        });
     }
   }, [identifier]);
 

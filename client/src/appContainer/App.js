@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Route, Switch, Redirect } from "react-router-dom";
 import "./App.css";
-import axios from "axios";
+import { getExchanges } from "../components/ExchangeRouteAxios";
 
 // components
 import Navbar from "../components/Navbar/Navbar";
@@ -12,7 +12,6 @@ import Confirm from "../components/Auth/Confirm";
 
 const App = (props) => {
   const [user, setUser] = useState(props.user);
-
   const [exchangeIdentifiers, setExchangeIdentifiers] = useState([]);
   const [exchangeNames, setExchangeNames] = useState([]);
 
@@ -21,36 +20,26 @@ const App = (props) => {
     userId = user._id;
   }
 
-  const getExchanges = () => {
-    return axios
-      .get(`/exchangeRoutes/exchangeAccounts/${userId}`)
-      .then((res) => {
-        let exchangeIdentifiers = [];
-        let exchangeNames = [];
-
-        const identifiers = res.data[0].map((el) => {
-          return exchangeIdentifiers.push(el.identifier);
-        });
-
-        const exchanges = res.data[0].map((el) => {
-          return exchangeNames.push(el.exchangeName);
-        });
-
-        const sortIdentifiers = exchangeIdentifiers.sort((a, b) =>
-          a.localeCompare(b)
-        );
-        setExchangeNames(exchangeNames);
-        setExchangeIdentifiers(sortIdentifiers);
-      })
-      .catch((err) => {
-        console.log("Error is", err);
-        return err.res.data;
-      });
-  };
-
   useEffect(() => {
     if (user) {
-      getExchanges();
+      getExchanges(userId)
+        .then((res) => {
+          const exchangeIdentifiers = res[0]
+            .map((el) => {
+              return el.identifier;
+            })
+            .sort((a, b) => a.localeCompare(b));
+
+          const exchangeNames = res[0].map((el) => {
+            return el.exchangeName;
+          });
+
+          setExchangeNames(exchangeNames);
+          setExchangeIdentifiers(exchangeIdentifiers);
+        })
+        .catch((err) => {
+          return err.response.data;
+        });
     }
   }, [user]);
 
