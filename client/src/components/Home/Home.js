@@ -3,7 +3,7 @@ import { Switch, Route } from "react-router-dom";
 import { getTickers } from "../../components/ExchangeRouteAxios";
 
 // components
-import BybitVertical from "../Bybit/BybitVertical";
+import BybitVertical from "../Bybit/BybitVertical/BybitVertical";
 import TabPanel from "./TabPanel";
 import UseStyles from "./UseStyles";
 import Account from "./Account/Account";

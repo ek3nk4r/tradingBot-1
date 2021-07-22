@@ -2,10 +2,10 @@ import React from "react";
 import "../../../Assets/stylesheets/balance.css";
 
 // components
-import InstrumentBalance from "./InstrumentBalance";
-import TotalBalance from "./TotalBalance";
-import AvailableBalance from "./AvailableBalance";
-import UsedBalance from "./UsedBalance";
+import InstrumentBalance from "./JSX/InstrumentBalance";
+import TotalBalance from "./JSX/TotalBalance";
+import AvailableBalance from "./JSX/AvailableBalance";
+import UsedBalance from "./JSX/UsedBalance";
 
 const Balance = React.memo((props) => {
   const { symbol, balance, available, used } = props;

@@ -1,5 +1,5 @@
 import React from "react";
-import { rows } from "../TableData";
+import { rows } from "../Material-ui/TableData";
 
 // components
 import OrderTableRow from "./OrderTableRow";

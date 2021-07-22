@@ -1,5 +1,5 @@
 import React, { useState, memo } from "react";
-import { TableData, rows } from "./TableData";
+import { TableData, rows } from "./Material-ui/TableData";
 
 // components
 import OrderTable from "./JSX/OrderTable";

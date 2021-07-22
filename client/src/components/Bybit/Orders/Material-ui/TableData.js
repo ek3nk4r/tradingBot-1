@@ -1,5 +1,5 @@
 // material-ui
-import CreateData from "./Material-ui/CreateData";
+import CreateData from "./CreateData";
 
 const rows = [];
 
