@@ -58,8 +58,6 @@ const Home = (props) => {
     }
   }, [identifier]);
 
-  let exchangeIndex;
-
   return (
     <>
       <Switch>
@@ -83,7 +81,6 @@ const Home = (props) => {
                   className={classes.tabs}
                 >
                   {exchangeIdentifiers.map((identifier, i) => {
-                    exchangeIndex = i;
                     return (
                       <Tab
                         key={i}
@@ -97,7 +94,7 @@ const Home = (props) => {
                   })}
                 </Tabs>
               </div>
-              <TabPanel value={value} index={exchangeIndex}></TabPanel>
+              <TabPanel value={value} index={value}></TabPanel>
               {value === value && (
                 <BybitVertical marketNames={marketNames} user={user} />
               )}
