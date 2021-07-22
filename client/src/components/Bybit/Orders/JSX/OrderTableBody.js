@@ -16,20 +16,18 @@ const OrderTableBody = (props) => {
         .reverse()
         .map((row) => {
           return (
-            <TableBody>
-              <TableRow hover role="checkbox" tabIndex={-1} key={row.id}>
-                {Columns.map((column) => {
-                  const value = row[column.id];
-                  return (
-                    <TableCell key={column.id} align={column.align}>
-                      {column.format && typeof value === "number"
-                        ? column.format(value)
-                        : value}
-                    </TableCell>
-                  );
-                })}
-              </TableRow>
-            </TableBody>
+            <TableRow hover role="checkbox" tabIndex={-1} key={row.id}>
+              {Columns.map((column) => {
+                const value = row[column.id];
+                return (
+                  <TableCell key={column.id} align={column.align}>
+                    {column.format && typeof value === "number"
+                      ? column.format(value)
+                      : value}
+                  </TableCell>
+                );
+              })}
+            </TableRow>
           );
         })}
     </>

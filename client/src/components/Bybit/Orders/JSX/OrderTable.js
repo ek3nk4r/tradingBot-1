@@ -12,6 +12,7 @@ import Paper from "@material-ui/core/Paper";
 import Table from "@material-ui/core/Table";
 import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
+import TableBody from "@material-ui/core/TableBody";
 
 const OrderTable = (props) => {
   const {
@@ -30,7 +31,13 @@ const OrderTable = (props) => {
             <TableHead>
               <OrderTableRow Columns={Columns} />
             </TableHead>
-            <OrderTableBody rowsPerPage={rowsPerPage} page={page} rows={rows} />
+            <TableBody>
+              <OrderTableBody
+                rowsPerPage={rowsPerPage}
+                page={page}
+                rows={rows}
+              />
+            </TableBody>
           </Table>
         </TableContainer>
         <OrderTablePagination
