@@ -1,14 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { Route, Switch, Redirect } from "react-router-dom";
-import "./App.css";
 import { getExchanges } from "../components/ExchangeRouteAxios";
+import "./App.css";
 
-// components
-import Navbar from "../components/Navbar/Navbar";
-import SignUp from "../components/Auth/Signup";
-import Login from "../components/Auth/Login";
-import Home from "../components/Home/Home";
-import Confirm from "../components/Auth/Confirm";
+// Components
+import User from "./JSX/User";
+import NoUser from "./JSX/NoUser";
 
 const App = (props) => {
   const [user, setUser] = useState(props.user);
@@ -47,8 +43,7 @@ const App = (props) => {
     <div>
       {user ? (
         <>
-          <Navbar updateUser={setUser} user={user} />
-          <Home
+          <User
             {...props}
             exchangeIdentifiers={exchangeIdentifiers}
             exchangeNames={exchangeNames}
@@ -58,30 +53,7 @@ const App = (props) => {
         </>
       ) : (
         <>
-          <Navbar updateUser={setUser} user={user} />
-          <>
-            <Switch>
-              <Route
-                path="/signup"
-                render={(props) => (
-                  <SignUp {...props} setUser={setUser} user={user} />
-                )}
-              />
-              <Route
-                path="/login"
-                render={(props) => (
-                  <Login {...props} user={user} setUser={setUser} />
-                )}
-              />
-              <Route
-                path="/confirm/:id"
-                render={(props) => (
-                  <Confirm {...props} setUser={setUser} user={user} />
-                )}
-              />
-              <Redirect from="*" to="/" />
-            </Switch>
-          </>
+          <NoUser {...props} setUser={setUser} user={user} />
         </>
       )}
     </div>

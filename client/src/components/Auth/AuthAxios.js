@@ -7,9 +7,9 @@ const signup = (username, password) => {
       password: password,
       userType: "user",
     })
-    .then((response) => {
-      console.log(response);
-      return response.data;
+    .then((res) => {
+      console.log(res);
+      return res.data;
     })
     .catch((err) => {
       console.log("err", err);
@@ -23,9 +23,9 @@ const login = (username, password) => {
       username: username,
       password: password,
     })
-    .then((response) => {
-      console.log(response.data);
-      return response.data;
+    .then((res) => {
+      console.log(res.data);
+      return res.data;
     })
     .catch((err) => {
       return err.response.data;
@@ -36,4 +36,16 @@ const logout = () => {
   axios.delete("/api/logout");
 };
 
-export { signup, login, logout };
+const emailConfirmed = (id) => {
+  axios
+    .get(`/api/email/confirm/${id}`)
+    .then((res) => {
+      console.log(res);
+      return res.data;
+    })
+    .catch((err) => {
+      return err.response.data;
+    });
+};
+
+export { signup, login, logout, emailConfirmed };
