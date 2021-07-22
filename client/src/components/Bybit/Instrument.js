@@ -1,7 +1,6 @@
 import React, { useState, memo, useEffect } from "react";
-import axios from "axios";
 import Orders from "./Orders/Orders";
-import Balance from "./Balance";
+import Balance from "./Balance/Balance";
 import { postCoinData } from "../ExchangeRouteAxios";
 
 const Instrument = memo((props) => {
