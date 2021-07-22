@@ -1,10 +1,11 @@
 import React from "react";
 import "../../Assets/stylesheets/balance.css";
 
+// components
+// import
+
 const Balance = React.memo((props) => {
-  console.log(props);
-  const { symbol } = props;
-  const { balance, available, used } = props;
+  const { symbol, balance, available, used } = props;
 
   return (
     <div className="balance-container">
