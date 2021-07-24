@@ -6,6 +6,7 @@ import TabPanel from "../../VerticalTabs/TabPanel";
 import A11yProps from "../../VerticalTabs/A11yProps";
 import BybitMarketTabs from "./JSX/BybitMarketTabs";
 import BybitTabPanel from "./JSX/BybitTabPanel";
+import SetSymbol from "./SetSymbol";
 
 // material-ui
 import PropTypes from "prop-types";
@@ -19,8 +20,8 @@ TabPanel.propTypes = {
 A11yProps();
 
 const BybitVertical = memo((props) => {
-  const classes = UseStyles();
   const { marketNames, user } = props;
+  const classes = UseStyles();
 
   const [state, setState] = useState({
     value: false,
@@ -31,14 +32,7 @@ const BybitVertical = memo((props) => {
   const handleChange = (event, newValue) => {
     event.preventDefault();
     const { innerHTML } = event.target;
-    if (innerHTML !== symbol) {
-      return setState({
-        value: newValue,
-        symbol: innerHTML,
-      });
-    } else {
-      return null;
-    }
+    SetSymbol(newValue, symbol, innerHTML, setState);
   };
 
   return (

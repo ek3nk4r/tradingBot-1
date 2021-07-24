@@ -2,21 +2,9 @@ import React, { useState } from "react";
 
 // components
 import UseStyles from "../../VerticalTabs/UseStyles";
-import TabPanel from "../../VerticalTabs/TabPanel";
 import A11yProps from "../../VerticalTabs/A11yProps";
-import AddApiKeys from "../Account/AddApiKeys";
-import ChangePassword from "../Account/ChangePassword";
-
-// material_ui
-import PropTypes from "prop-types";
-import Tabs from "@material-ui/core/Tabs";
-import Tab from "@material-ui/core/Tab";
-
-TabPanel.propTypes = {
-  children: PropTypes.node,
-  index: PropTypes.any.isRequired,
-  value: PropTypes.any.isRequired,
-};
+import AccountTabs from "./JSX/AccountTabs";
+import AccountTabPanel from "./JSX/AccountTabPanel";
 
 A11yProps();
 
@@ -24,6 +12,7 @@ const Account = (props) => {
   const { user, history } = props;
   const classes = UseStyles();
   const [value, setValue] = useState(false);
+  const [exchangeAccounts, setExchangeAccounts] = useState([]);
 
   const handleChange = (event, newValue) => {
     event.preventDefault();
@@ -34,29 +23,20 @@ const Account = (props) => {
     <>
       <div className={classes.root}>
         <div className="tabs-container">
-          <Tabs
-            orientation="vertical"
-            variant="scrollable"
+          <AccountTabs
             value={value}
-            onChange={handleChange}
-            aria-label="Vertical tabs"
-            className={classes.tabs}
-          >
-            <Tab
-              onClick={() => history.push("/account/password")}
-              label="Password"
-              style={{ color: "#5b9ca0" }}
-            />
-            <Tab
-              onClick={() => history.push("/account/apiKeys")}
-              label="API Keys"
-              style={{ color: "#5b9ca0" }}
-            />
-          </Tabs>
+            handleChange={handleChange}
+            classes={classes}
+            history={history}
+          />
         </div>
-        <TabPanel value={value} index={0}></TabPanel>
-        {value === 0 && <ChangePassword {...props} user={user} />}
-        {value === 1 && <AddApiKeys {...props} user={user} />}
+        <AccountTabPanel
+          {...props}
+          value={value}
+          user={user}
+          exchangeAccounts={exchangeAccounts}
+          setExchangeAccounts={setExchangeAccounts}
+        />
       </div>
     </>
   );

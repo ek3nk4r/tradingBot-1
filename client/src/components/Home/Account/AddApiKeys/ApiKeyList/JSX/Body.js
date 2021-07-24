@@ -2,15 +2,15 @@ import React from "react";
 
 // components
 import DeleteButton from "./DeleteButton";
-import Columns from "./Columns";
 
 // material-ui
+import Columns from "../Material-ui/Columns";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableRow from "@material-ui/core/TableRow";
 
 const Body = (props) => {
-  const { page, rowsPerPage, rows } = props;
+  const { page, rowsPerPage, rows, setExchangeAccounts } = props;
 
   return (
     <TableBody>
@@ -31,7 +31,10 @@ const Body = (props) => {
                 );
               })}
               <TableCell>
-                <DeleteButton row={row} />
+                <DeleteButton
+                  row={row}
+                  setExchangeAccounts={setExchangeAccounts}
+                />
               </TableCell>
             </TableRow>
           );

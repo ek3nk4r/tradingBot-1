@@ -1,7 +1,7 @@
 import React from "react";
 
 // components
-import Columns from "./Columns";
+import Columns from "../Material-ui/Columns";
 
 // material-ui
 import TableHead from "@material-ui/core/TableHead";
