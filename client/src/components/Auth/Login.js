@@ -4,10 +4,13 @@ import { LoginUseStyles } from "./Material-ui/UseStyles";
 import "../../Assets/stylesheets/form.css";
 
 // components
-import LoginForm from "./JSX/LoginForm";
+import LoginFormContainer from "./JSX/LoginFormContainer";
+import ErrorMessage from "../ErrorMessage";
+import SendLogin from "./LoginFunctions/SendLogin";
 
 const Login = (props) => {
   console.log("*** LOGIN PROPS ***", props);
+  const { user, setUser, history } = props;
   const classes = LoginUseStyles();
   const [state, setState] = useState({
     username: "",
@@ -15,6 +18,7 @@ const Login = (props) => {
     isError: false,
     error: "",
   });
+  const { username, password, isError, error } = state;
 
   const handleChange = (event) => {
     event.persist();
@@ -26,45 +30,20 @@ const Login = (props) => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-
-    login(state.username, state.password)
-      .then((data) => {
-        if (data.message) {
-          // handle errors
-          setState({
-            username: "",
-            password: "",
-            error: data.message,
-            isError: true,
-          });
-        } else {
-          // no error
-          // lift the data up to the App state
-          props.setUser(data);
-          // redirect to "/"
-          props.history.push("/home");
-        }
-      })
-      .catch((err) => {
-        return err.response.data;
-      });
+    SendLogin(username, password, setState, setUser, history);
   };
 
   useEffect(() => {
-    if (props.user) {
-      props.history.push("/home");
+    if (user) {
+      history.push("/home");
     }
   });
 
-  const errorMessage = () => {
-    if (state.isError) {
-      return <span id="warning">{state.error}</span>;
-    }
-  };
+  const errorMessage = ErrorMessage(isError, error);
 
   return (
     <>
-      <LoginForm
+      <LoginFormContainer
         state={state}
         handleChange={handleChange}
         errorMessage={errorMessage}

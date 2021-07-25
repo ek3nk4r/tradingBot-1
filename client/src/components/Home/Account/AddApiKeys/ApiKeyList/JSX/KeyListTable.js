@@ -18,34 +18,32 @@ const KeyListTable = (props) => {
     rows,
     handleChangePage,
     handleChangeRowsPerPage,
-    setExchangeAccounts,
+    handleSubmit,
   } = props;
 
   const classes = UseStyles();
 
   return (
-    <>
-      <Paper className={classes.root}>
-        <TableContainer className={classes.container}>
-          <Table stickyHeader aria-label="sticky table">
-            <TableHead />
-            <TableBody
-              page={page}
-              rowsPerPage={rowsPerPage}
-              rows={rows}
-              setExchangeAccounts={setExchangeAccounts}
-            />
-          </Table>
-        </TableContainer>
-        <TablePagination
-          rows={rows}
-          handleChangePage={handleChangePage}
-          handleChangeRowsPerPage={handleChangeRowsPerPage}
-          rowsPerPage={rowsPerPage}
-          page={page}
-        />
-      </Paper>
-    </>
+    <Paper className={classes.root}>
+      <TableContainer className={classes.container}>
+        <Table stickyHeader aria-label="sticky table">
+          <TableHead />
+          <TableBody
+            page={page}
+            rowsPerPage={rowsPerPage}
+            rows={rows}
+            handleSubmit={handleSubmit}
+          />
+        </Table>
+      </TableContainer>
+      <TablePagination
+        rows={rows}
+        handleChangePage={handleChangePage}
+        handleChangeRowsPerPage={handleChangeRowsPerPage}
+        rowsPerPage={rowsPerPage}
+        page={page}
+      />
+    </Paper>
   );
 };
 

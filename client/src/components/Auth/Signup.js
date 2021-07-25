@@ -1,19 +1,24 @@
 import React, { useState, useEffect } from "react";
-import { signup } from "./AuthAxios";
+// import { signup } from "./AuthAxios";
 import { SignupUseStyles } from "./Material-ui/UseStyles";
 import "../../Assets/stylesheets/form.css";
 
 //  components
-import SignupForm from "./JSX/SignupForm";
+import SignupFormContainer from "./JSX/SignupFormContainer";
+import ErrorMessage from "../ErrorMessage";
+import SendSignup from "./SignUpFunctions/SendSignup";
 
 const Signup = (props) => {
+  const { user, setUser, history } = props;
   const classes = SignupUseStyles();
+
   const [state, setState] = useState({
     username: "",
     password: "",
     isError: false,
     error: "",
   });
+  const { username, password, isError, error } = state;
 
   const handleChange = (event) => {
     event.persist();
@@ -26,43 +31,20 @@ const Signup = (props) => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-
-    signup(state.username, state.password)
-      .then((data) => {
-        if (data.message) {
-          // handle errors
-          setState({
-            error: data.message,
-            isError: true,
-          });
-        } else {
-          console.log("no error", data);
-          // no error
-          // lift the data up to the App state
-          props.setUser(data);
-
-          props.history.push("/");
-        }
-      })
-      .catch((err) => {
-        return err.response.data;
-      });
+    SendSignup(username, password, setState, setUser, history);
   };
 
   useEffect(() => {
-    if (props.user) {
-      props.history.push("/");
+    if (user) {
+      history.push("/");
     }
   });
 
-  const errorMessage = () => {
-    if (state.isError) {
-      return <span id="warning">{state.error}</span>;
-    }
-  };
+  const errorMessage = ErrorMessage(isError, error);
+
   return (
     <>
-      <SignupForm
+      <SignupFormContainer
         state={state}
         classes={classes}
         handleChange={handleChange}

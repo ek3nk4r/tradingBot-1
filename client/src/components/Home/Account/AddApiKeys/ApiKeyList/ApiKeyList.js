@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { getKeys } from "../ApiKeyAxios";
+import { deleteKeys } from "../ApiKeyAxios";
 
 // components
 import KeyListTable from "./JSX/KeyListTable";
 import { Rows, rows } from "./Material-ui/Rows";
+import GetKeys from "./ApiKeyList Functions/GetKeys";
 
 const ApiKeyList = (props) => {
   const { exchangeAccounts, setExchangeAccounts } = props;
@@ -23,15 +24,13 @@ const ApiKeyList = (props) => {
     setPage(0);
   };
 
+  const handleSubmit = (id) => {
+    deleteKeys(id);
+    GetKeys(setExchangeAccounts);
+  };
+
   useEffect(() => {
-    getKeys()
-      .then((res) => {
-        const accounts = res.data.exchangeAccount;
-        setExchangeAccounts(accounts);
-      })
-      .catch((err) => {
-        console.log("Error is: ", err);
-      });
+    GetKeys(setExchangeAccounts);
   }, []);
 
   return (
@@ -42,6 +41,7 @@ const ApiKeyList = (props) => {
         rows={rows}
         handleChangePage={handleChangePage}
         handleChangeRowsPerPage={handleChangeRowsPerPage}
+        handleSubmit={handleSubmit}
         setExchangeAccounts={setExchangeAccounts}
       />
     </>

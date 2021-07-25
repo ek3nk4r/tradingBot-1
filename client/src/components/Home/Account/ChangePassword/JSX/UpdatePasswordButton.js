@@ -3,7 +3,7 @@ import React from "react";
 // material-ui
 import Button from "@material-ui/core/Button";
 
-const AddExchangeButton = () => {
+const UpdatePasswordButton = () => {
   return (
     <>
       <Button
@@ -17,10 +17,10 @@ const AddExchangeButton = () => {
           color: "#5b9ca0",
         }}
       >
-        Add Exchange Account
+        Update Password
       </Button>
     </>
   );
 };
 
-export default AddExchangeButton;
+export default UpdatePasswordButton;

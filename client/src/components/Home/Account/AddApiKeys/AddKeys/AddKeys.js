@@ -2,8 +2,8 @@ import React, { useState } from "react";
 
 // components
 import UseStyles from "./Material-ui/UseStyles";
-import ErrorMessage from "./ErrorMessage";
-import SendKeys from "./SendKeys";
+import ErrorMessage from "../../../../ErrorMessage";
+import SendKeys from "./AddKeysFunctions/SendKeys";
 import AddKeysForm from "./JSX/AddKeysForm";
 
 const AddKeys = (props) => {
@@ -26,7 +26,6 @@ const AddKeys = (props) => {
 
   const handleChange = (event) => {
     event.persist();
-
     setState((prevState) => ({
       ...prevState,
       [event.target.name]: event.target.value,
@@ -35,7 +34,6 @@ const AddKeys = (props) => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-
     SendKeys(_id, exchange, identifier, apiKey, secret, net, setState);
   };
 

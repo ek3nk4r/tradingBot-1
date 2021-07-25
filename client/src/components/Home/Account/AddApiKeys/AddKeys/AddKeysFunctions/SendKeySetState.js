@@ -1,5 +1,3 @@
-// import React from "react";
-
 const SendKeySetState = (res, setState) => {
   if (res.status === 401) {
     // handle errors
