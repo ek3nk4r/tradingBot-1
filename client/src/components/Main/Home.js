@@ -2,10 +2,10 @@ import React, { useEffect, useState } from "react";
 import { Switch, Route } from "react-router-dom";
 
 // components
-import UseStyles from "./Material-ui/UseStyles";
-import Account from "../Account/Account";
-import GetTickers from "./HomeFunctions/GetTickers";
-import HomeRoute from "./JSX/HomeRoute";
+import UseStyles from "./Homepage/Material-ui/UseStyles";
+import Account from "./Account/Account";
+import GetTickers from "./Homepage/HomeFunctions/GetTickers";
+import HomeRoute from "./Homepage/JSX/HomeRoute";
 
 const Home = (props) => {
   const classes = UseStyles();
