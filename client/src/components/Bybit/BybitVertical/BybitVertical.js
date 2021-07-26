@@ -1,9 +1,9 @@
 import React, { useState, memo } from "react";
 
 //  Components
-import UseStyles from "../../VerticalTabs/UseStyles";
-import TabPanel from "../../VerticalTabs/TabPanel";
-import A11yProps from "../../VerticalTabs/A11yProps";
+import UseStyles from "./Material-ui/UseStyles";
+import TabPanel from "./Material-ui/TabPanel";
+import A11yProps from "./Material-ui/A11yProps";
 import BybitMarketTabs from "./JSX/BybitMarketTabs";
 import BybitTabPanel from "./JSX/BybitTabPanel";
 import SetSymbol from "./SetSymbol";

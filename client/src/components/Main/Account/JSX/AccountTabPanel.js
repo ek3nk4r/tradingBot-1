@@ -1,7 +1,7 @@
 import React from "react";
 
 // components
-import TabPanel from "../../../VerticalTabs/TabPanel";
+import TabPanel from "../../../Bybit/BybitVertical/Material-ui/TabPanel";
 import AddApiKeys from "../AddApiKeys/AddApiKeys";
 import ChangePassword from "../ChangePassword/ChangePassword";
 

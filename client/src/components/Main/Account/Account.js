@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 
 // components
-import UseStyles from "../../VerticalTabs/UseStyles";
-import A11yProps from "../../VerticalTabs/A11yProps";
+import UseStyles from "../../Bybit/BybitVertical/Material-ui/UseStyles";
+import A11yProps from "../../Bybit/BybitVertical/Material-ui/A11yProps";
 import AccountTabs from "./JSX/AccountTabs";
 import AccountTabPanel from "./JSX/AccountTabPanel";
 

@@ -2,7 +2,7 @@ import React from "react";
 
 // Components
 import Navbar from "../../components/Navbar/Navbar";
-import Home from "../../components/Home/Home";
+import Home from "../../components/Main/Homepage/Home";
 
 const User = (props) => {
   const { setUser, user, exchangeIdentifiers, exchangeNames } = props;

@@ -1,7 +1,7 @@
 import React from "react";
 
 //  Components
-import A11yProps from "../../../VerticalTabs/A11yProps";
+import A11yProps from "../Material-ui/A11yProps";
 
 // material-ui
 import Tabs from "@material-ui/core/Tabs";

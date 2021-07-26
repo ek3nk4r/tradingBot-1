@@ -1,7 +1,7 @@
 // material-ui
 import { makeStyles } from "@material-ui/core/styles";
 
-const AppUseStyles = makeStyles((theme) => ({
+const UseStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
     backgroundColor: theme.palette.background.paper,
@@ -13,4 +13,4 @@ const AppUseStyles = makeStyles((theme) => ({
   },
 }));
 
-export default AppUseStyles;
+export default UseStyles;

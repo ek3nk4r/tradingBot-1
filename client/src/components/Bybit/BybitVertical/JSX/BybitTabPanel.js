@@ -2,7 +2,7 @@ import React from "react";
 
 //  Components
 import Instrument from "../../Instrument/Instrument";
-import TabPanel from "../../../VerticalTabs/TabPanel";
+import TabPanel from "../Material-ui/TabPanel";
 
 const BybitTabPanel = (props) => {
   const { value, symbol, user } = props;
