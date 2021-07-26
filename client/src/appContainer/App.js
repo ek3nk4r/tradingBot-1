@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { getExchanges } from "../components/ExchangeRouteAxios";
 import "./App.css";
 
 // Components
 import User from "./JSX/User";
 import NoUser from "./JSX/NoUser";
+import GetExchanges from "./AppFunctions/GetExchanges";
 
 const App = (props) => {
   const [user, setUser] = useState(props.user);
@@ -17,26 +17,7 @@ const App = (props) => {
   }
 
   useEffect(() => {
-    if (user) {
-      getExchanges(userId)
-        .then((res) => {
-          const exchangeIdentifiers = res[0]
-            .map((el) => {
-              return el.identifier;
-            })
-            .sort((a, b) => a.localeCompare(b));
-
-          const exchangeNames = res[0].map((el) => {
-            return el.exchangeName;
-          });
-
-          setExchangeNames(exchangeNames);
-          setExchangeIdentifiers(exchangeIdentifiers);
-        })
-        .catch((err) => {
-          return err.response.data;
-        });
-    }
+    GetExchanges(user, userId, setExchangeNames, setExchangeIdentifiers);
   }, [user]);
 
   return (
