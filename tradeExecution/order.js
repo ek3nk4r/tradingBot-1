@@ -2,13 +2,7 @@ const Amount = require("./Order/Amount");
 const Limit = require("./Order/Limit");
 const Market = require("./Order/Market");
 
-const order = async (
-  exchangeObject,
-  exchangeName,
-  webHook
-  // instrument,
-  // coin
-) => {
+const order = async (exchangeObject, exchangeName, webHook) => {
   try {
     const { instrument } = webHook;
     const coin = instrument.slice(0, instrument.indexOf("/"));

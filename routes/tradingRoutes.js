@@ -14,7 +14,6 @@ router.post("/tradingRoutes", (req, res) => {
   const exchangeName = req.body.text.exchange;
   const userId = req.body.text.userId;
   const webHook = req.body.text;
-  const instrument = webHook.instrument;
   const net = webHook.net;
   // const coin = instrument.slice(0, instrument.indexOf("/"));
   res.json(webHook);
@@ -54,7 +53,7 @@ router.post("/tradingRoutes", (req, res) => {
             })();
           } else if (webHook.alert_message === "close") {
             (async function () {
-              closeOrder(exchangeObject, exchangeName, webHook, instrument);
+              closeOrder(exchangeObject, exchangeName, webHook);
             })();
           }
         })
