@@ -16,7 +16,7 @@ router.post("/tradingRoutes", (req, res) => {
   const webHook = req.body.text;
   const instrument = webHook.instrument;
   const net = webHook.net;
-  const coin = instrument.slice(0, instrument.indexOf("/"));
+  // const coin = instrument.slice(0, instrument.indexOf("/"));
   res.json(webHook);
   res.status(200).end();
 
@@ -50,7 +50,7 @@ router.post("/tradingRoutes", (req, res) => {
 
           if (webHook.alert_message === "open") {
             (async function () {
-              order(exchangeObject, exchangeName, webHook, instrument, coin);
+              order(exchangeObject, exchangeName, webHook);
             })();
           } else if (webHook.alert_message === "close") {
             (async function () {
