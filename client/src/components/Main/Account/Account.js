@@ -12,7 +12,6 @@ const Account = (props) => {
   const { user, history } = props;
   const classes = UseStyles();
   const [value, setValue] = useState(false);
-  const [exchangeAccounts, setExchangeAccounts] = useState([]);
 
   const handleChange = (event, newValue) => {
     event.preventDefault();
@@ -30,13 +29,7 @@ const Account = (props) => {
             history={history}
           />
         </div>
-        <AccountTabPanel
-          {...props}
-          value={value}
-          user={user}
-          exchangeAccounts={exchangeAccounts}
-          setExchangeAccounts={setExchangeAccounts}
-        />
+        <AccountTabPanel {...props} value={value} user={user} />
       </div>
     </>
   );

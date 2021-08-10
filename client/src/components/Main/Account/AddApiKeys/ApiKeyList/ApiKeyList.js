@@ -6,10 +6,10 @@ import KeyListTable from "./JSX/KeyListTable";
 import { Rows, rows } from "./Material-ui/Rows";
 import GetKeys from "./ApiKeyList Functions/GetKeys";
 
-const ApiKeyList = (props) => {
-  const { exchangeAccounts, setExchangeAccounts } = props;
+const ApiKeyList = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [exchangeAccounts, setExchangeAccounts] = useState([]);
 
   Rows(exchangeAccounts);
 
@@ -25,8 +25,13 @@ const ApiKeyList = (props) => {
   };
 
   const handleSubmit = (id) => {
-    deleteKeys(id);
-    GetKeys(setExchangeAccounts);
+    deleteKeys(id)
+      .then(() => {
+        GetKeys(setExchangeAccounts);
+      })
+      .catch((err) => {
+        console.log("Error is: ", err);
+      });
   };
 
   useEffect(() => {
