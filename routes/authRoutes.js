@@ -76,16 +76,16 @@ authRoutes.post("/signup", (req, res) => {
 
       // Automatically log in user after sign up
       // .login() here is actually predefined passport method
-      req.login(newUser, (err) => {
-        if (err) {
-          res.status(500).json({ message: "Login after signup went bad." });
-          return;
-        }
+      // req.login(newUser, (err) => {
+      //   if (err) {
+      //     res.status(500).json({ message: "Login after signup went bad." });
+      //     return;
+      //   }
 
-        //   // Send the user's information to the frontend
-        //   // We can use also: res.status(200).json(req.user);
-        res.status(200).json(newUser);
-      });
+      //   // Send the user's information to the frontend
+      //   // We can use also: res.status(200).json(req.user);
+      //   res.status(200).json(newUser);
+      // });
     });
   });
 });

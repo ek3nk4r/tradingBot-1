@@ -37,10 +37,10 @@ const logout = () => {
 };
 
 const emailConfirmed = (id) => {
-  axios
+  return axios
     .get(`/api/email/confirm/${id}`)
     .then((res) => {
-      console.log(res);
+      console.log("***EMAIL CONFIRMED AUTH***", res);
       return res.data;
     })
     .catch((err) => {
