@@ -9,19 +9,36 @@ const { decrypt } = require("../crypto/crypto");
 // const one = new ccxt.bybit();
 // console.log(one);
 
+router.get(`/exchangeAccounts/:userId`, (req, res) => {
+  const userId = req.params.userId;
+  const user = req.user;
+
+  if (user) {
+    User.findById(userId)
+      .populate("exchangeAccount")
+      .then((userInfo) => {
+        const exchanges = userInfo.exchangeAccount.map((el) => {
+          return el;
+        });
+        res.json([exchanges]);
+      })
+      .catch((err) => console.log(err));
+  }
+});
+
 let exchangeObject;
 
-router.get("/tickers/:exchangeName/:userId", (req, res) => {
-  const exchangeName = req.params.exchangeName;
+router.get("/tickers/:exchangeName/:identifier/:userId", (req, res) => {
+  const uniqueIdentifier = req.params.identifier;
   const userId = req.params.userId;
-  console.log("***EXCHANGE NAME***", exchangeName, userId);
+  const exchangeName = req.params.exchangeName.toLowerCase();
 
   User.findById(userId)
     .populate("exchangeAccount")
     .then((userInfo) => {
       const [exhangeAccountIdToPopulate] = userInfo.exchangeAccount.filter(
         (el) => {
-          if (el.exchangeName.toLowerCase() == exchangeName) {
+          if (el.identifier == uniqueIdentifier) {
             return el._id;
           }
         }
@@ -39,8 +56,12 @@ router.get("/tickers/:exchangeName/:userId", (req, res) => {
             enableRateLimit: true,
           });
 
-          // exchangeObject.urls["api"] = exchangeObject.urls["test"];
-          exchangeObject.urls["api"] = exchangeObject.urls["api"];
+          const net = exhangeAccountIdToPopulate.net;
+          if (net == "api") {
+            exchangeObject.urls["api"] = exchangeObject.urls["api"];
+          } else if (net == "test") {
+            exchangeObject.urls["api"] = exchangeObject.urls["test"];
+          }
 
           (async function () {
             try {

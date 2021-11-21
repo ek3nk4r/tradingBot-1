@@ -20,6 +20,7 @@ addKeysRoutes.post("/addApiKeys", (req, res, next) => {
   // const secret = req.body.secret.toString();
   const exchangeName = req.body.exchange;
   const identifier = req.body.identifier;
+  const net = req.body.net.toLowerCase();
   const hash = encrypt(req.body.secret.toString());
 
   ApiSecret.create({ ...hash })
@@ -28,6 +29,7 @@ addKeysRoutes.post("/addApiKeys", (req, res, next) => {
       const exchangeAccount = {
         exchangeName: exchangeName,
         identifier: identifier,
+        net: net,
         key: key,
         secret: apiSecretId,
       };

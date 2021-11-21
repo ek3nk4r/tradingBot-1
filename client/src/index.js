@@ -9,8 +9,8 @@ import axios from "axios";
 axios
   .get("/api/loggedin")
   .then((response) => {
+    console.log("index.js *** response ***", response);
     const user = response.data;
-    console.log(user);
 
     ReactDOM.render(
       // <React.StrictMode>
@@ -22,6 +22,7 @@ axios
     );
   })
   .catch((err) => {
+    console.log("*** ERROR ***", err);
     return err.response.data;
   });
 

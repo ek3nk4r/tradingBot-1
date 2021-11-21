@@ -1,50 +1,40 @@
-import React, { useState } from "react";
-import { Route, Switch, Redirect } from "react-router-dom";
+import React, { useState, useEffect } from "react";
 import "./App.css";
 
-// components
-import Navbar from "../components/Navbar/Navbar";
-import SignUp from "../components/Auth/Signup";
-import Login from "../components/Auth/Login";
-import Home from "../components/Home/Home";
-import Confirm from "../components/Auth/Confirm";
+// Components
+import User from "./JSX/User";
+import NoUser from "./JSX/NoUser";
+import GetExchanges from "./AppFunctions/GetExchanges";
 
 const App = (props) => {
   const [user, setUser] = useState(props.user);
+  const [exchangeIdentifiers, setExchangeIdentifiers] = useState([]);
+  const [exchangeNames, setExchangeNames] = useState([]);
+
+  let userId;
+  if (user) {
+    userId = user._id;
+  }
+
+  useEffect(() => {
+    GetExchanges(user, userId, setExchangeNames, setExchangeIdentifiers);
+  }, [user]);
 
   return (
     <div>
       {user ? (
         <>
-          <Navbar updateUser={setUser} user={user} />
-          <Home {...props} setUser={setUser} user={user} />
+          <User
+            {...props}
+            exchangeIdentifiers={exchangeIdentifiers}
+            exchangeNames={exchangeNames}
+            setUser={setUser}
+            user={user}
+          />
         </>
       ) : (
         <>
-          <Navbar updateUser={setUser} user={user} />
-          <>
-            <Switch>
-              <Route
-                path="/signup"
-                render={(props) => (
-                  <SignUp {...props} setUser={setUser} user={user} />
-                )}
-              />
-              <Route
-                path="/login"
-                render={(props) => (
-                  <Login {...props} user={user} setUser={setUser} />
-                )}
-              />
-              <Route
-                path="/confirm/:id"
-                render={(props) => (
-                  <Confirm {...props} setUser={setUser} user={user} />
-                )}
-              />
-              <Redirect from="*" to="/" />
-            </Switch>
-          </>
+          <NoUser {...props} setUser={setUser} user={user} />
         </>
       )}
     </div>
