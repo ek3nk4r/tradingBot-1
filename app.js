@@ -16,10 +16,8 @@ require("./passport/index");
 const flash = require("connect-flash");
 
 mongoose
-  .connect(process.env.MONGODB_URI || "mongodb://localhost/botTrader", {
-    // .connect(
-    //   process.env.MONGODB_URI_LIVE,
-    //   {
+  // .connect(process.env.MONGODB_URI || "mongodb://localhost/botTrader", {
+  .connect(process.env.MONGODB_URI_LIVE, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useFindAndModify: false,
@@ -57,8 +55,8 @@ app.use(
 
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "hbs");
-app.use(express.static(path.join(__dirname, "public")));
-// app.use(express.static(path.join(__dirname, "/client/build")));
+// app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static(path.join(__dirname, "/client/build")));
 app.use(favicon(path.join(__dirname, "public", "images", "favicon.ico")));
 
 // default value for title local
@@ -108,9 +106,9 @@ app.use("*", (req, res) => {
   res.status(404).json({ msg: "Not Found" });
 });
 
-// app.use((req, res) => {
-//   // If no routes match, send them the React HTML.
-//   res.sendFile(__dirname + "/client/build/index.html");
-// });
+app.use((req, res) => {
+  // If no routes match, send them the React HTML.
+  res.sendFile(__dirname + "/client/build/index.html");
+});
 
 module.exports = app;
