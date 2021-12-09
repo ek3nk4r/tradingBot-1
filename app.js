@@ -16,10 +16,8 @@ require("./passport/index");
 const flash = require("connect-flash");
 
 mongoose
-  .connect(process.env.MONGODB_URI || "mongodb://localhost/botTrader", {
-    // .connect(
-    //   process.env.MONGODB_URI_LIVE,
-    //   {
+  // .connect(process.env.MONGODB_URI || "mongodb://localhost/botTrader", {
+  .connect(process.env.MONGODB_URI_LIVE, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useFindAndModify: false,

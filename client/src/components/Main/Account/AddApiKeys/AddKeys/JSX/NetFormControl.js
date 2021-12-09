@@ -11,7 +11,7 @@ const NetFormControl = (props) => {
   return (
     <>
       <FormControl variant="outlined" className={classes.formControl}>
-        <InputLabel htmlFor="outlined-age-native-simple">Net *</InputLabel>
+        <InputLabel htmlFor="net-input">Net *</InputLabel>
         <Select
           native
           value={net}
@@ -19,7 +19,7 @@ const NetFormControl = (props) => {
           label="Net"
           inputProps={{
             name: "net",
-            id: "outlined-age-native-simple",
+            id: "net-input",
           }}
           style={{ width: "30vw", marginTop: "5px", marginBottom: "5px" }}
         >
