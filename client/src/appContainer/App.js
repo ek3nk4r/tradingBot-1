@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import "./App.css";
 
 // Components
@@ -16,9 +16,13 @@ const App = (props) => {
     userId = user._id;
   }
 
-  useEffect(() => {
+  const fetchExchanges = useCallback(() => {
     GetExchanges(user, userId, setExchangeNames, setExchangeIdentifiers);
-  }, [user]);
+  }, [user, userId]);
+
+  useEffect(() => {
+    fetchExchanges();
+  }, [fetchExchanges]);
 
   return (
     <div>

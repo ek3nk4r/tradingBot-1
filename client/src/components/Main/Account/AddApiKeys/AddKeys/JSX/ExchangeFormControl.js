@@ -11,7 +11,7 @@ const ExchangeFormControl = (props) => {
   return (
     <>
       <FormControl variant="outlined" className={classes.formControl}>
-        <InputLabel htmlFor="outlined-age-native-simple">Exchange *</InputLabel>
+        <InputLabel htmlFor="exchange-input">Exchange *</InputLabel>
         <Select
           native
           value={exchange}
@@ -19,7 +19,7 @@ const ExchangeFormControl = (props) => {
           label="Exchange"
           inputProps={{
             name: "exchange",
-            id: "outlined-age-native-simple",
+            id: "exchange-input",
           }}
           style={{ width: "30vw", marginTop: "5px", marginBottom: "5px" }}
         >

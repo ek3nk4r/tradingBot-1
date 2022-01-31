@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { Switch, Route } from "react-router-dom";
 
 // components
@@ -24,9 +24,13 @@ const Home = (props) => {
     setValue(newValue);
   };
 
-  useEffect(() => {
+  const fetchTickers = useCallback(() => {
     GetTickers(exchangeName, identifier, userId, setMarketNames);
-  }, [identifier]);
+  }, [exchangeName, identifier, userId]);
+
+  useEffect(() => {
+    fetchTickers();
+  }, [fetchTickers]);
 
   return (
     <>

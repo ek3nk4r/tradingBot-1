@@ -1,4 +1,4 @@
-import React, { useState, memo, useEffect } from "react";
+import React, { useState, memo, useEffect, useCallback } from "react";
 
 // components
 import InstrumentBalance from "./JSX/InstrumentBalance";
@@ -18,7 +18,7 @@ const Instrument = memo((props) => {
   });
   const { balance, available, used, orders } = state;
 
-  useEffect(() => {
+  const fetchCoinData = useCallback(() => {
     if (symbol) {
       postCoinData(symbol, userId)
         .then((res) => {
@@ -32,7 +32,11 @@ const Instrument = memo((props) => {
           console.log("Error is: ", err);
         });
     }
-  }, [symbol]);
+  }, [symbol, userId]);
+
+  useEffect(() => {
+    fetchCoinData();
+  }, [fetchCoinData]);
 
   return (
     <>

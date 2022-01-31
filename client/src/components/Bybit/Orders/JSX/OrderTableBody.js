@@ -4,7 +4,6 @@ import React from "react";
 import Columns from "../Material-ui/Columns";
 import TableCell from "@material-ui/core/TableCell";
 import TableRow from "@material-ui/core/TableRow";
-import TableBody from "@material-ui/core/TableBody";
 
 const OrderTableBody = (props) => {
   const { rowsPerPage, page, rows } = props;

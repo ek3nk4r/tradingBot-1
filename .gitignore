@@ -9,3 +9,6 @@ npm-debug.log
 
 # eslintcache
 .eslintcache
+
+# .ds_store
+.DS_Store
