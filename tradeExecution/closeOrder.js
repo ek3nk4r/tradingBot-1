@@ -2,7 +2,7 @@ const Amount = require("./closeOrder/Amount");
 const Executions = require("./closeOrder/Executions");
 const OrderType = require("./closeOrder/OrderType");
 
-const closeOrder = async (exchangeObject, webHook) => {
+const closeOrder = async (exchangeObject, exchangeName, webHook) => {
   const { instrument, limitPrice, exchange } = webHook;
   const side = webHook.side.toLowerCase();
   const orderType = webHook.orderType.toLowerCase();
@@ -22,7 +22,10 @@ const closeOrder = async (exchangeObject, webHook) => {
       amount,
       limitPrice
     );
-    console.log(`${exchange}`, `${instrument} BUY ORDERS CLOSED SUCCESSFULLY`);
+    console.log(
+      `${exchangeName}`,
+      `${instrument} BUY ORDERS CLOSED SUCCESSFULLY`
+    );
   } catch (err) {
     console.error(err);
   }
