@@ -5,7 +5,7 @@ const Amount = (webHook, instrument, coin, balance, price) => {
   ) {
     return (
       balance.free[coin] *
-      Number(webHook.amount.substring(0, webHook.amount.length - 1)) *
+      Number(webHook.amount.substring(0, webHook.amount.length - 1) / 100) *
       price
     );
   } else if (
