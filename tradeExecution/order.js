@@ -10,9 +10,6 @@ const order = async (exchangeObject, exchangeName, webHook) => {
     const ticker = await exchangeObject.fetchTicker(instrument);
     const price = ticker.ask;
     const amount = Amount.Amount(webHook, instrument, coin, balance, price);
-
-    console.log("***AMOUNT***", amount);
-
     const market = exchangeObject.market(instrument);
 
     // *********************************************************************************
