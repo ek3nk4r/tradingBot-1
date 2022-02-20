@@ -17,7 +17,7 @@ const Amount = (webHook, instrument, coin, balance, price) => {
     } else if (
       balance.free[coin] *
         Number(webHook.amount.substring(0, webHook.amount.length - 1) / 100) *
-        price >
+        price <
       1
     ) {
       return Number(1);
