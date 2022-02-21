@@ -24,7 +24,10 @@ router.post("/tradingRoutes", (req, res) => {
     .then((userInfo) => {
       const [exhangeAccountIdToPopulate] = userInfo.exchangeAccount.filter(
         (el) => {
-          if (el.exchangeName.toLowerCase() == exchangeName) {
+          if (
+            el.exchangeName.toLowerCase() == exchangeName &&
+            el.net.toLowerCase() == net
+          ) {
             return el._id;
           }
         }
