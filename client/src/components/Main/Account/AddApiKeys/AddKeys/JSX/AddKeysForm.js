@@ -10,21 +10,19 @@ import AddExchangeButton from "../JSX/AddExchangeButton";
 
 const AddKeysForm = (props) => {
   const {
-    handleSubmit,
+    handleNewKeysSubmit,
     net,
-    errorMessage,
     classes,
     identifier,
     handleChange,
     exchange,
     apiKey,
-    setState,
     secret,
   } = props;
 
   return (
     <>
-      <form onSubmit={handleSubmit} className={classes.root}>
+      <form onSubmit={handleNewKeysSubmit} className={classes.root}>
         <IdentifierTextField
           identifier={identifier}
           handleChange={handleChange}
@@ -39,18 +37,8 @@ const AddKeysForm = (props) => {
           handleChange={handleChange}
           classes={classes}
         />
-        <KeyTextField
-          apiKey={apiKey}
-          handleChange={handleChange}
-          setState={setState}
-        />
-        <SecretTextField
-          secret={secret}
-          handleChange={handleChange}
-          setState={setState}
-        />
-        {/* show error message */}
-        {errorMessage}
+        <KeyTextField apiKey={apiKey} handleChange={handleChange} />
+        <SecretTextField secret={secret} handleChange={handleChange} />
         <AddExchangeButton />
       </form>
     </>
