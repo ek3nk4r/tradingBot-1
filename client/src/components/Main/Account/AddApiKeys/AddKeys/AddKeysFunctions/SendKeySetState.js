@@ -7,8 +7,6 @@ const SendKeySetState = (res, setState) => {
       net: "",
       key: "",
       secret: "",
-      error: res.message,
-      isError: true,
     });
   } else if (res.status === 200) {
     return setState({
@@ -17,8 +15,6 @@ const SendKeySetState = (res, setState) => {
       net: "",
       key: "",
       secret: "",
-      error: res.data.msg,
-      isError: true,
       newExchangeAccount: true,
     });
   }
