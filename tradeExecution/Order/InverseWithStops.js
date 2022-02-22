@@ -7,7 +7,7 @@ const InverseWithStops = async (
   side,
   amount
 ) => {
-  const { stopPrice, profitPrice, instrument, orderType } = webHook;
+  const { stopPrice, profitPrice, instrument, orderType, exchange } = webHook;
 
   const params = {
     stop_loss: stopPrice,
@@ -16,11 +16,21 @@ const InverseWithStops = async (
 
   await exchangeObject
     .createOrder(instrument, orderType, side, amount, params)
+    .then((res) => {
+      if (res.info.order_status === "Created") {
+        console.log(
+          `${exchange}`,
+          `SUCCESSFUL ${instrument} ${side} OPENED`,
+          amount
+        );
+      }
+      CreateInverseStop.CreateInverseStop(
+        exchangeObject,
+        market,
+        webHook
+      ).catch((err) => console.log(err));
+    })
     .catch((err) => console.log("*** ERROR ***", err));
-
-  CreateInverseStop.CreateInverseStop(exchangeObject, market, webHook).catch(
-    (err) => console.log(err)
-  );
 };
 
 module.exports = { InverseWithStops };

@@ -7,10 +7,20 @@ const LinearWithStops = async (
   side,
   amount
 ) => {
-  const { instrument, orderType } = webHook;
+  const { instrument, orderType, exchange } = webHook;
 
   await exchangeObject
     .createOrder(instrument, orderType, side, amount)
+    .then((res) => {
+      console.log("***RESPONSE***", res);
+      if (res.info.order_status === "Created") {
+        console.log(
+          `${exchange}`,
+          `SUCCESSFUL ${instrument} ${side} OPENED`,
+          amount
+        );
+      }
+    })
     .catch((err) => console.log("*** ERROR ***", err));
 
   CreateLinearStop.CreateLinearStop(exchangeObject, market, webHook).catch(
