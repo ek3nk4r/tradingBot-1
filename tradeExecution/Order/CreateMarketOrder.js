@@ -7,7 +7,7 @@ const CreateMarketOrder = async (
   amount,
   market
 ) => {
-  const { instrument, orderType, stopPrice, profitPrice } = webHook;
+  const { instrument, orderType, stopPrice, profitPrice, exchange } = webHook;
 
   if (stopPrice > 0 || profitPrice > 0) {
     MarketWithStops.MarketWithStops(
@@ -16,10 +16,19 @@ const CreateMarketOrder = async (
       side,
       amount,
       market
-    );
+    ).catch((err) => console.log(err));
   } else {
     await exchangeObject
       .createOrder(instrument, orderType, side, amount)
+      .then((res) => {
+        if (res.info.order_status === "Created") {
+          console.log(
+            `${exchange}`,
+            `SUCCESSFUL ${instrument} ${side} OPENED`,
+            amount
+          );
+        }
+      })
       .catch((err) => console.log("*** ERROR ***", err));
   }
 };

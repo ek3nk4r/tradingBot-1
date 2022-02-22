@@ -1,4 +1,6 @@
 const Amount = (webHook, instrument, coin, balance, price) => {
+  console.log("***AMOUNT***", balance);
+
   if (
     webHook.amount.includes("%") &&
     instrument.charAt(instrument.length - 1) === "D"
@@ -28,16 +30,29 @@ const Amount = (webHook, instrument, coin, balance, price) => {
   ) {
     if (
       balance.free[instrument.slice(-4, instrument.length)] *
-      (Number(webHook.amount.substring(0, webHook.amount.length - 1)) >= 100)
+        (+webHook.amount.substring(0, webHook.amount.length - 1) / 100) >=
+      100
     ) {
+      console.log(
+        "***************",
+        balance.free[instrument.slice(-4, instrument.length)] *
+          (+webHook.amount.substring(0, webHook.amount.length - 1) /
+            100 /
+            price)
+      );
       return (
         balance.free[instrument.slice(-4, instrument.length)] *
-        (Number(webHook.amount.substring(0, webHook.amount.length - 1)) / price)
+        (+webHook.amount.substring(0, webHook.amount.length - 1) / 100 / price)
       );
     } else if (
       balance.free[instrument.slice(-4, instrument.length)] *
-      (Number(webHook.amount.substring(0, webHook.amount.length - 1)) < 100)
+      (+webHook.amount.substring(0, webHook.amount.length - 1) / 100 < 100)
     ) {
+      console.log(
+        "!!!!!!!!!!!!!!!!!!!!!",
+        balance.free[instrument.slice(-4, instrument.length)] *
+          (+webHook.amount.substring(0, webHook.amount.length - 1) / 100)
+      );
       return Number(1);
     }
   } else {

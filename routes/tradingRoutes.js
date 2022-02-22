@@ -52,11 +52,11 @@ router.post("/tradingRoutes", (req, res) => {
 
           if (webHook.alert_message === "open") {
             (async function () {
-              order(exchangeObject, exchangeName, webHook);
+              order(exchangeObject, webHook);
             })();
           } else if (webHook.alert_message === "close") {
             (async function () {
-              closeOrder(exchangeObject, exchangeName, webHook);
+              closeOrder(exchangeObject, webHook);
             })();
           }
         })
