@@ -34,7 +34,7 @@ const OrderType = async (
         amount,
         side,
         exchange
-      ).catch((err) => console.log(err));
+      );
       break;
   }
 };

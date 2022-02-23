@@ -23,9 +23,7 @@ const LinearWithStops = async (
     })
     .catch((err) => console.log("*** ERROR ***", err));
 
-  CreateLinearStop.CreateLinearStop(exchangeObject, market, webHook).catch(
-    (err) => console.log(err)
-  );
+  CreateLinearStop.CreateLinearStop(exchangeObject, market, webHook);
 };
 
 module.exports = { LinearWithStops };

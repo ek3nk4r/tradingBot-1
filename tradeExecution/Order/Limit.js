@@ -17,7 +17,7 @@ const Limit = (webHook, exchangeObject, side, amount, market) => {
       side,
       amount,
       market
-    ).catch((err) => console.log(err));
+    );
   } else if (
     (instrument.charAt(instrument.length - 1) === "D" &&
       webHook.stopOrder == true) ||
@@ -28,9 +28,7 @@ const Limit = (webHook, exchangeObject, side, amount, market) => {
      * If you are trying to add a stop loss or take profit to an existing order
      * mark 'stopOrder' or 'takeProfit' in the JSON as true
      */
-    CreateInverseStop.CreateInverseStop(exchangeObject, market, webHook).catch(
-      (err) => console.log(err)
-    );
+    CreateInverseStop.CreateInverseStop(exchangeObject, market, webHook);
   } else if (
     (instrument.charAt(instrument.length - 1) === "T" &&
       webHook.stopOrder == true) ||
@@ -40,9 +38,7 @@ const Limit = (webHook, exchangeObject, side, amount, market) => {
       webHook.takeProfit == true &&
       webHook.stopOrder == true)
   ) {
-    CreateLinearStop.CreateLinearStop(exchangeObject, market, webHook).catch(
-      (err) => console.log(err)
-    );
+    CreateLinearStop.CreateLinearStop(exchangeObject, market, webHook);
   }
 };
 
