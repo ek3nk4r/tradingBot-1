@@ -24,11 +24,7 @@ const InverseWithStops = async (
           amount
         );
       }
-      CreateInverseStop.CreateInverseStop(
-        exchangeObject,
-        market,
-        webHook
-      ).catch((err) => console.log(err));
+      CreateInverseStop.CreateInverseStop(exchangeObject, market, webHook);
     })
     .catch((err) => console.log("*** ERROR ***", err));
 };

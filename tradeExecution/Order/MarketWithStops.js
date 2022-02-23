@@ -11,7 +11,7 @@ const MarketWithStops = (webHook, exchangeObject, side, amount, market) => {
       webHook,
       side,
       amount
-    ).catch((err) => console.log(err));
+    );
   } else if (instrument.charAt(instrument.length - 1) === "D") {
     InverseWithStops.InverseWithStops(
       exchangeObject,
@@ -19,7 +19,7 @@ const MarketWithStops = (webHook, exchangeObject, side, amount, market) => {
       webHook,
       side,
       amount
-    ).catch((err) => console.log(err));
+    );
   }
 };
 

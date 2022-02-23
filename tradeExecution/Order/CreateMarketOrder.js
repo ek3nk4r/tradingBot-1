@@ -16,7 +16,7 @@ const CreateMarketOrder = async (
       side,
       amount,
       market
-    ).catch((err) => console.log(err));
+    );
   } else {
     await exchangeObject
       .createOrder(instrument, orderType, side, amount)

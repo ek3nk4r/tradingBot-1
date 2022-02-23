@@ -5,17 +5,13 @@ const order = async (exchangeObject, webHook) => {
   try {
     const { instrument } = webHook;
     const coin = instrument.slice(0, instrument.indexOf("/"));
-    const balance = await exchangeObject
-      .fetchBalance()
-      .catch((err) => console.log(err));
-    const ticker = await exchangeObject
-      .fetchTicker(instrument)
-      .catch((err) => console.log(err));
+    const balance = await exchangeObject.fetchBalance();
+
+    const ticker = await exchangeObject.fetchTicker(instrument);
+
     const price = ticker.ask;
     const amount = Amount.Amount(webHook, instrument, coin, balance, price);
-    const market = exchangeObject
-      .market(instrument)
-      .catch((err) => console.log(err));
+    const market = exchangeObject.market(instrument);
 
     if (instrument.charAt(instrument.length - 1) === "T") {
       console.log("T");
@@ -161,13 +157,7 @@ const order = async (exchangeObject, webHook) => {
           .catch((err) => console.log(err));
         console.log("*** LEVERAGE CHANGED ***");
       } else if (executions.result.data[0].leverage == webHook.leverage) {
-        PlaceOrder.placeOrder(
-          webHook,
-          exchangeObject,
-          amount,
-          market,
-          price
-        ).catch((err) => console.log(err));
+        PlaceOrder.placeOrder(webHook, exchangeObject, amount, market, price);
       }
     }
   } catch (err) {

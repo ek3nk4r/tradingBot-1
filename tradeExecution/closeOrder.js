@@ -9,10 +9,9 @@ const closeOrder = async (exchangeObject, webHook) => {
   const type = webHook.orderType;
 
   try {
-    const executions = await Executions.Executions(
-      exchangeObject,
-      instrument
-    ).catch((err) => console.log(err));
+    const executions = JSON.parse(
+      await Executions.Executions(exchangeObject, instrument)
+    );
 
     const amount = Amount.Amount(webHook, executions);
 

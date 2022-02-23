@@ -8,7 +8,7 @@ const Market = (webHook, exchangeObject, side, amount, market, price) => {
     amount,
     market,
     price
-  ).catch((err) => console.log(err));
+  );
 };
 
 module.exports = { Market };
