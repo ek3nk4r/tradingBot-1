@@ -20,6 +20,8 @@ const CreateLimitOrder = async (
   const params = {
     stop_loss: stopPrice,
     take_profit: profitPrice,
+    base_price: basePrice,
+    stop_px: triggerPrice,
   };
 
   if (stopPrice > 0 || profitPrice > 0) {
